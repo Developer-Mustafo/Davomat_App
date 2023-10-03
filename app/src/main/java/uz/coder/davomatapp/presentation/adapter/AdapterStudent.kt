@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import uz.coder.davomatapp.databinding.ItemStudentBinding
-import uz.coder.davomatapp.domain.Student
+import uz.coder.davomatapp.domain.student.Student
 
-class AdapterStudent(val Onclick:(Int)->Unit, val Update:(Int)->Unit):ListAdapter<Student,AdapterStudent.VH>(DifCallBack()) {
+class AdapterStudent(private val onclick:(Int)->Unit, private val update:(Int)->Unit):ListAdapter<Student,AdapterStudent.VH>(DiffCallBack()) {
 
     inner class VH(var binding: ItemStudentBinding):RecyclerView.ViewHolder(binding.root)
 
@@ -19,8 +18,8 @@ class AdapterStudent(val Onclick:(Int)->Unit, val Update:(Int)->Unit):ListAdapte
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.binding.name.text = getItem(position).name
         holder.binding.surname.text = getItem(position).surname
-        holder.binding.edit.setOnClickListener { Update.invoke(position) }
-        holder.itemView.setOnClickListener{Onclick.invoke(position)}
+        holder.binding.edit.setOnClickListener { update.invoke(position) }
+        holder.itemView.setOnClickListener{onclick.invoke(position)}
     }
 
 }

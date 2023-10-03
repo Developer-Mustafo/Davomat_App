@@ -7,19 +7,25 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="uz.coder.davomatapp.presentation.HomeFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_studentFragment"
+            app:destination="@id/studentFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentFragment"
-        android:name="uz.coder.davomatapp.presentation.StudentFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.StudentFragment"
         android:label="fragment_student"
         tools:layout="@layout/fragment_student" >
+        <action
+            android:id="@+id/action_studentFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="uz.coder.davomatapp.presentation.SettingFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
 </navigation>

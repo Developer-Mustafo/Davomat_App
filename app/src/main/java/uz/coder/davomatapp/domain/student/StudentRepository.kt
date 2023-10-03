@@ -1,4 +1,4 @@
-package uz.coder.davomatapp.domain
+package uz.coder.davomatapp.domain.student
 
 
 interface StudentRepository {
@@ -6,5 +6,5 @@ interface StudentRepository {
     fun update(student: Student)
     fun delete(student: Student)
     fun getAllStudentList():List<Student>
-    fun getByStudentId(id:Int):Student
+    fun getByStudentId(id:Int): Student
 }

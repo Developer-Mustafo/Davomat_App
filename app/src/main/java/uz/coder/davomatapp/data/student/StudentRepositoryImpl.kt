@@ -1,11 +1,16 @@
-package uz.coder.davomatapp.data
+package uz.coder.davomatapp.data.student
 
 import android.app.Application
-import uz.coder.davomatapp.domain.Student
-import uz.coder.davomatapp.domain.StudentRepository
+import uz.coder.davomatapp.data.db.MyDatabase
+import uz.coder.davomatapp.domain.student.Student
+import uz.coder.davomatapp.domain.student.StudentRepository
 
 class StudentRepositoryImpl(private val application: Application) : StudentRepository {
     private val db = MyDatabase.getInstanse(application).studentDao()
+    init {
+        db.add(Student("ds","dsa","ds"))
+        db.add(Student("ds","dsa","ds"))
+    }
     override fun add(student: Student) {
         db.add(student)
     }

@@ -1,4 +1,4 @@
-package uz.coder.davomatapp.presentation
+package uz.coder.davomatapp.presentation.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

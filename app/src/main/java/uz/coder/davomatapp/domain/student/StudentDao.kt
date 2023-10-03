@@ -1,4 +1,4 @@
-package uz.coder.davomatapp.domain
+package uz.coder.davomatapp.domain.student
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -21,5 +21,5 @@ interface StudentDao {
     fun getAllStudentList():List<Student>
 
     @Query("select * from student where id =:id")
-    fun getByStudentId(id:Int):Student
+    fun getByStudentId(id:Int): Student
 }
