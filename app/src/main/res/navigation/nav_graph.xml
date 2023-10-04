@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_studentFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <argument
+            android:name="student"
+            app:argType="uz.coder.davomatapp.domain.student.Student"/>
     </fragment>
     <fragment
         android:id="@+id/settingFragment"

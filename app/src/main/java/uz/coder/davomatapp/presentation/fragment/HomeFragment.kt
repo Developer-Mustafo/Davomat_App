@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import uz.coder.davomatapp.R
+import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.databinding.FragmentHomeBinding
 import uz.coder.davomatapp.presentation.adapter.AdapterStudent
 import uz.coder.davomatapp.presentation.viewmodel.StudentViewModel
@@ -37,10 +39,25 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this)[StudentViewModel::class.java]
         adapter = AdapterStudent({
 
-        },{
-
+        },{position->
+            val id = viewModel.list[position].id
+            val get = viewModel.getStudentById(id)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(get))
         })
         adapter.submitList(viewModel.list)
+        val itemHelper = object :ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewModel.delete(adapter.currentList[viewHolder.adapterPosition])
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(itemHelper)
+        itemTouchHelper.attachToRecyclerView(binding.rec)
         with(binding){
             rec.adapter = adapter
             rec.layoutManager = LinearLayoutManager(requireContext())

@@ -11,7 +11,7 @@ import uz.coder.davomatapp.domain.student.StudentDao
 abstract class MyDatabase: RoomDatabase() {
     abstract fun studentDao(): StudentDao
     companion object{
-        var myDatabase: MyDatabase? = null
+        private var myDatabase: MyDatabase? = null
         fun getInstanse(context: Context): MyDatabase {
             if (myDatabase == null){
                 myDatabase = Room.databaseBuilder(context, MyDatabase::class.java,"my_db")
