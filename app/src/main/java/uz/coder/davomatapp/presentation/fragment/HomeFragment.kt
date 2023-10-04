@@ -14,13 +14,10 @@ import uz.coder.davomatapp.presentation.viewmodel.StudentViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var adapter:AdapterStudent
+    private lateinit var viewModel:StudentViewModel
     private var _binding:FragmentHomeBinding? = null
     private val binding:FragmentHomeBinding
         get() = _binding?:throw RuntimeException("binding init")
-    
-    private  val viewModel: StudentViewModel by lazy {
-        ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[StudentViewModel::class.java]
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,9 +34,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = AdapterStudent({position->
+        viewModel = ViewModelProvider(this)[StudentViewModel::class.java]
+        adapter = AdapterStudent({
 
-        },{position->
+        },{
 
         })
         adapter.submitList(viewModel.list)

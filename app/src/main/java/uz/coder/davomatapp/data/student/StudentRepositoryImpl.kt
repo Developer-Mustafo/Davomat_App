@@ -7,10 +7,6 @@ import uz.coder.davomatapp.domain.student.StudentRepository
 
 class StudentRepositoryImpl(private val application: Application) : StudentRepository {
     private val db = MyDatabase.getInstanse(application).studentDao()
-    init {
-        db.add(Student("ds","dsa","ds"))
-        db.add(Student("ds","dsa","ds"))
-    }
     override fun add(student: Student) {
         db.add(student)
     }

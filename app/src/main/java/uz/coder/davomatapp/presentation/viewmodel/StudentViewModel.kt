@@ -15,14 +15,14 @@ class StudentViewModel(application: Application) :AndroidViewModel(application) 
     private val deleteStudentUseCase = DeleteStudentUseCase(repository)
     private val getStudentByIdUseCase = GetStudentByIdUseCase(repository)
     private val getStudentAllListUseCase = GetStudentAllListUseCase(repository)
-    val list = getStudentAllListUseCase.invoke()
+    val list = getStudentAllListUseCase()
     fun delete(student: Student){
-        deleteStudentUseCase.invoke(student)
+        deleteStudentUseCase(student)
     }
     fun edit(student: Student){
-        editStudentUseCase.invoke(student)
+        editStudentUseCase(student)
     }
     fun getStudentById(id:Int):Student{
-        return getStudentByIdUseCase.invoke(id)
+        return getStudentByIdUseCase(id)
     }
 }

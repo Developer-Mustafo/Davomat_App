@@ -16,6 +16,7 @@ abstract class MyDatabase: RoomDatabase() {
             if (myDatabase == null){
                 myDatabase = Room.databaseBuilder(context, MyDatabase::class.java,"my_db")
                     .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
                     .build()
             }
             return myDatabase!!
