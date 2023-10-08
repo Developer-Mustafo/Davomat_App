@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.databinding.FragmentHomeBinding
+import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.adapter.AdapterStudent
 import uz.coder.davomatapp.presentation.viewmodel.StudentViewModel
 
@@ -37,12 +38,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[StudentViewModel::class.java]
-        adapter = AdapterStudent({
-
+        adapter = AdapterStudent({position->
+            val student: Student = viewModel.list[position]
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentAboutFragment(student))
         },{position->
-            val id = viewModel.list[position].id
-            val get = viewModel.getStudentById(id)
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(get))
+            val student = viewModel.list[position]
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.EDIT,student))
         })
         adapter.submitList(viewModel.list)
         val itemHelper = object :ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
@@ -53,7 +54,7 @@ class HomeFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.delete(adapter.currentList[viewHolder.adapterPosition])
+                viewModel.delete(adapter.currentList[viewHolder.adapterPosition].id)
             }
         }
         val itemTouchHelper = ItemTouchHelper(itemHelper)

@@ -15,15 +15,11 @@ class StudentRepositoryImpl(private val application: Application) : StudentRepos
         db.update(student)
     }
 
-    override fun delete(student: Student) {
-        db.delete(student)
+    override fun delete(id: Int) {
+        db.delete(id)
     }
 
     override fun getAllStudentList(): List<Student> {
         return db.getAllStudentList()
-    }
-
-    override fun getByStudentId(id: Int): Student {
-        return db.getByStudentId(id)
     }
 }

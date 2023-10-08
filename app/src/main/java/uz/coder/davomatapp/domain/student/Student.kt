@@ -6,13 +6,10 @@ import java.io.Serializable
 
 @Entity(tableName = "student")
 data class Student(
+    @PrimaryKey(autoGenerate = true)
+    var id:Int = 0,
     val name:String,
     val surname:String,
-    val phone:String,
-    @PrimaryKey(autoGenerate = true)
-    val id:Int = UNDIFINEID
-):Serializable{
-companion object{
-    const val UNDIFINEID = -1
-}
-}
+    val phone:String
+
+):Serializable

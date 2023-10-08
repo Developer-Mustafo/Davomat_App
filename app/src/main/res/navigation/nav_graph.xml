@@ -13,15 +13,24 @@
         <action
             android:id="@+id/action_homeFragment_to_studentFragment"
             app:destination="@id/studentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_studentAboutFragment"
+            app:destination="@id/studentAboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentFragment"
         android:name="uz.coder.davomatapp.presentation.fragment.StudentFragment"
         android:label="fragment_student"
         tools:layout="@layout/fragment_student" >
-       <argument
+        <argument
+            android:name="status"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_studentFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <argument
             android:name="student"
-            app:argType="uz.coder.davomatapp.domain.student.Student"/>
+            app:argType="uz.coder.davomatapp.domain.student.Student" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -29,4 +38,13 @@
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
       </fragment>
+    <fragment
+        android:id="@+id/studentAboutFragment"
+        android:name="uz.coder.davomatapp.domain.student.StudentAboutFragment"
+        android:label="fragment_student_about"
+        tools:layout="@layout/fragment_student_about" >
+        <argument
+            android:name="student"
+            app:argType="uz.coder.davomatapp.domain.student.Student" />
+    </fragment>
 </navigation>

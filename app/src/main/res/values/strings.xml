@@ -5,4 +5,11 @@
     <string name="home">Home</string>
     <string name="student">Student</string>
     <string name="setting">Setting</string>
+    <string name="student_name">Student name</string>
+    <string name="student_surname">Student surname</string>
+    <string name="saqlash">Saqlash</string>
+    <string name="student_phone">Student phone</string>
+    <string name="Name">Nomi xato yozilgan</string>
+    <string name="SurName">Familiya xato yozilgan\n</string>
+    <string name="Phone">Telefon xato yozilgan</string>
 </resources>

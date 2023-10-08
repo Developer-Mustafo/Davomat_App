@@ -8,6 +8,9 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationBarView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityMainBinding
+import uz.coder.davomatapp.domain.student.Student
+import uz.coder.davomatapp.presentation.fragment.HomeFragmentDirections
+import uz.coder.davomatapp.presentation.fragment.StudentFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,7 +30,8 @@ class MainActivity : AppCompatActivity() {
                             return true
                         }
                         R.id.student -> {
-                            navController.navigate(R.id.studentFragment)
+                            navController.navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(
+                                StudentFragment.ADD,Student(name = "", surname = "", phone = "")))
                             return true
                         }
 
