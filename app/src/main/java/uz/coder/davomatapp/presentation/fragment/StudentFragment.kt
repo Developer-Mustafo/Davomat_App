@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
+import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 
 
@@ -113,14 +114,14 @@ class StudentFragment : Fragment() {
     private fun launchEdit() {
         binding.apply {
             val student = args.student
-            name.setText(student.name)
-            surname.setText(student.surname)
-            phone.setText(student.phone)
+            name.setText(student?.name)
+            surname.setText(student?.surname)
+            phone.setText(student?.phone)
             save.setOnClickListener {
                         val inputName = name.text.toString()
                         val inputSurName = surname.text.toString()
                         val inputPhone = phone.text.toString()
-                        viewModel.editStudent(inputName,inputSurName,inputPhone)
+                        viewModel.editStudent(Student(name=inputName, surname = inputSurName, phone = inputPhone))
                 }
         }
     }

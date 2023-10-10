@@ -34,13 +34,13 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
             finishWork()
         }
     }
-    fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?){
-        val name = parseString(inputName)
-        val surName = parseString(inputSurName)
-        val phone = parseString(inputPhone)
+    fun editStudent(student: Student){
+        val name = parseString(student.name)
+        val surName = parseString(student.surname)
+        val phone = parseString(student.phone)
         val validateInput = validateInput(name, surName, phone)
         if (validateInput){
-            val item = Student(name = name, surname = surName, phone = phone)
+            val item = student.copy(name = name, surname = surName, phone = phone)
             editStudentUseCase(item)
             finishWork()
         }

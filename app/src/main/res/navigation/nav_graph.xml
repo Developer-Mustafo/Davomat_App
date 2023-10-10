@@ -30,7 +30,8 @@
             app:destination="@id/settingFragment" />
         <argument
             android:name="student"
-            app:argType="uz.coder.davomatapp.domain.student.Student" />
+            app:argType="uz.coder.davomatapp.domain.student.Student"
+            app:nullable="true"/>
     </fragment>
     <fragment
         android:id="@+id/settingFragment"

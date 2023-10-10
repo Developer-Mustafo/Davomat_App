@@ -24,26 +24,19 @@ class MainActivity : AppCompatActivity() {
             NavigationUI.setupWithNavController(binding.bottomNavigation,navController)
             bottomNavigation.setOnItemSelectedListener(object :NavigationBarView.OnItemSelectedListener{
                 override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                    when (item.itemId) {
-                        R.id.home -> {
+                    val id= item.itemId
+                        if(id == R.id.homeFragment){
                             navController.navigate(R.id.homeFragment)
                             return true
                         }
-                        R.id.student -> {
-                            navController.navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(
-                                StudentFragment.ADD,Student(name = "", surname = "", phone = "")))
-                            return true
-                        }
-
-                        R.id.setting -> {
-                            navController.navigate(R.id.settingFragment)
-                            return true
-                        }
-
-                        else -> {
-                            return false
-                        }
+                    if (id == R.id.studentFragment){
+                        navController.navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.ADD,null))
+                        return true
                     }
+                    if (id == R.id.settingFragment){
+                        navController.navigate(R.id.settingFragment)
+                    }
+                    return false
                 }
             })
         }
