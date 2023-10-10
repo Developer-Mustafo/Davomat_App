@@ -1,6 +1,8 @@
 package uz.coder.davomatapp.data.student
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import uz.coder.davomatapp.data.db.MyDatabase
 import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.domain.student.StudentRepository
@@ -19,10 +21,14 @@ class StudentRepositoryImpl(private val application: Application) : StudentRepos
         db.delete(id)
     }
 
-    override fun getAllStudentList(): List<Student> {
-        return db.getAllStudentList()
+    override fun getAllStudentList(): LiveData<List<Student>> {
+        return MediatorLiveData<List<Student>>().apply {
+            addSource(db.getAllStudentList()){
+                value = it
+            }
+        }
     }
-    override fun getByStudentId(id: Int): Student {
+    override fun getByStudentId(id: Int): Student? {
         return db.getByStudentId(id)
     }
 }

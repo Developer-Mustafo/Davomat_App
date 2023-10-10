@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                             return true
                         }
                     if (id == R.id.studentFragment){
-                        navController.navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.ADD,null))
+                        navController.navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.ADD,0))
                         return true
                     }
                     if (id == R.id.settingFragment){

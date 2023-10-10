@@ -1,5 +1,6 @@
 package uz.coder.davomatapp.domain.student
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -17,7 +18,7 @@ interface StudentDao {
     fun delete(id: Int)
 
     @Query("select * from student")
-    fun getAllStudentList():List<Student>
-    @Query("select * from student where id = :id")
-    fun getByStudentId(id: Int):Student
+    fun getAllStudentList():LiveData<List<Student>>
+    @Query("select * from student where id = :id LIMIT 1")
+    fun getByStudentId(id: Int):Student?
 }

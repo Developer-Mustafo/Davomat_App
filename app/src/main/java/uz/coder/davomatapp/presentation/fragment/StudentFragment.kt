@@ -3,6 +3,7 @@ package uz.coder.davomatapp.presentation.fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 
 
+@Suppress("UNUSED_EXPRESSION")
 class StudentFragment : Fragment() {
     private var _binding:FragmentStudentBinding? = null
     private lateinit var viewModel: StudentParamViewModel
@@ -112,16 +114,20 @@ class StudentFragment : Fragment() {
     }
 
     private fun launchEdit() {
+        var ID = -1
         binding.apply {
-            val student = args.student
-            name.setText(student?.name)
-            surname.setText(student?.surname)
-            phone.setText(student?.phone)
+            ID = args.id
+            Log.d("launchEdit", "launchEdit: $ID")
+            viewModel.getItemById(ID)
+//            viewModel.student.observe(viewLifecycleOwner){
+//                val student = it
+//
+//            }
             save.setOnClickListener {
                         val inputName = name.text.toString()
                         val inputSurName = surname.text.toString()
                         val inputPhone = phone.text.toString()
-                        viewModel.editStudent(Student(name=inputName, surname = inputSurName, phone = inputPhone))
+                        viewModel.editStudent(inputName,inputSurName,inputPhone)
                 }
         }
     }

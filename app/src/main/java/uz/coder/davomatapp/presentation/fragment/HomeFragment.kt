@@ -39,13 +39,18 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[StudentViewModel::class.java]
         adapter = AdapterStudent({position->
-            val student: Student = viewModel.list[position]
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentAboutFragment(student))
-        },{position->
-            val student = viewModel.list[position]
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.EDIT,student))
+            viewModel.list.observe(viewLifecycleOwner){
+                val id = it[position].id
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentAboutFragment(id))
+            }
+        },{id->
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.EDIT,
+                id?:0
+            ))
         })
-        adapter.submitList(viewModel.list)
+        viewModel.list.observe(viewLifecycleOwner){
+            adapter.submitList(it)
+        }
         val itemHelper = object :ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
             override fun onMove(
                 recyclerView: RecyclerView,

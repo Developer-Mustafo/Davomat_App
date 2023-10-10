@@ -18,7 +18,7 @@ class AdapterStudent(private val onclick:(Int)->Unit, private val update:(Int)->
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.binding.name.text = getItem(position).name
         holder.binding.surname.text = getItem(position).surname
-        holder.binding.edit.setOnClickListener { update.invoke(position) }
+        holder.binding.edit.setOnClickListener { update.invoke(getItem(position).id) }
         holder.itemView.setOnClickListener{onclick.invoke(position)}
     }
 

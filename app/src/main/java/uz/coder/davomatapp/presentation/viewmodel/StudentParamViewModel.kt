@@ -4,15 +4,19 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.student.AddStudentUseCase
 import uz.coder.davomatapp.domain.student.EditStudentUseCase
+import uz.coder.davomatapp.domain.student.GetStudentByIdUseCase
 import uz.coder.davomatapp.domain.student.Student
 
 class StudentParamViewModel(application: Application):AndroidViewModel(application) {
     private val repository = StudentRepositoryImpl(application)
     private val addStudentUseCase = AddStudentUseCase(repository)
     private val editStudentUseCase = EditStudentUseCase(repository)
+    private val getStudentByIdUseCase = GetStudentByIdUseCase(repository)
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName:LiveData<Boolean>
         get() = _errorInputName
@@ -25,6 +29,9 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val _finish = MutableLiveData<Unit>()
     val finish:LiveData<Unit>
         get() = _finish
+    private val _student = MutableLiveData<Student>()
+    val student:LiveData<Student>
+        get() = _student
     fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?){
         val name = parseString(inputName)
         val surName = parseString(inputSurName)
@@ -34,15 +41,17 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
             finishWork()
         }
     }
-    fun editStudent(student: Student){
-        val name = parseString(student.name)
-        val surName = parseString(student.surname)
-        val phone = parseString(student.phone)
+    fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?){
+        val name = parseString(inputName)
+        val surName = parseString(inputSurName)
+        val phone = parseString(inputPhone)
         val validateInput = validateInput(name, surName, phone)
         if (validateInput){
-            val item = student.copy(name = name, surname = surName, phone = phone)
-            editStudentUseCase(item)
-            finishWork()
+            _student.value?.let {
+                val item = it.copy(name = name, surname = surName, phone = phone)
+                editStudentUseCase(item)
+                finishWork()
+            }
         }
     }
 
@@ -78,6 +87,12 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     }
     fun resetInputPhone(){
         _errorInputPhone.value = false
+    }
+    fun getItemById(id:Int){
+         viewModelScope.launch {
+             val student = getStudentByIdUseCase(id)
+             _student.value = student!!
+         }
     }
 
 }
