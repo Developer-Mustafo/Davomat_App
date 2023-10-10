@@ -22,4 +22,7 @@ class StudentRepositoryImpl(private val application: Application) : StudentRepos
     override fun getAllStudentList(): List<Student> {
         return db.getAllStudentList()
     }
+    override fun getByStudentId(id: Int): Student {
+        return db.getByStudentId(id)
+    }
 }

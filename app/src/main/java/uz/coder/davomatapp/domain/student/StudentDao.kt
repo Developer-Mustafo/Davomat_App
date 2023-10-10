@@ -18,4 +18,6 @@ interface StudentDao {
 
     @Query("select * from student")
     fun getAllStudentList():List<Student>
+    @Query("select * from student where id = :id")
+    fun getByStudentId(id: Int):Student
 }

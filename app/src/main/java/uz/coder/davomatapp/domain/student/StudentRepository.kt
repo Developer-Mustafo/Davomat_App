@@ -6,4 +6,5 @@ interface StudentRepository {
     fun update(student: Student)
     fun delete(id: Int)
     fun getAllStudentList():List<Student>
+    fun getByStudentId(id: Int):Student
 }
