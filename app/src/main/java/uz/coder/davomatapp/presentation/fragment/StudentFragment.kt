@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
-import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 
 
@@ -114,15 +113,12 @@ class StudentFragment : Fragment() {
     }
 
     private fun launchEdit() {
-        var ID = -1
+        var id = 0
         binding.apply {
-            ID = args.id
-            Log.d("launchEdit", "launchEdit: $ID")
-            viewModel.getItemById(ID)
-//            viewModel.student.observe(viewLifecycleOwner){
-//                val student = it
-//
-//            }
+            id = args.id
+            Log.d("launchEdit", "launchEdit: $id")
+            viewModel.getItemById(id)
+
             save.setOnClickListener {
                         val inputName = name.text.toString()
                         val inputSurName = surname.text.toString()

@@ -5,10 +5,6 @@
     android:title="@string/home"
     android:icon="@drawable/home_1_svgrepo_com"
     app:showAsAction="ifRoom"/>
-    <item android:id="@+id/studentFragment"
-    android:title="@string/student"
-    android:icon="@drawable/user_svgrepo_com"
-    app:showAsAction="ifRoom"/>
     <item android:id="@+id/settingFragment"
     android:title="@string/setting"
     android:icon="@drawable/settings_svgrepo_com"

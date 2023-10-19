@@ -67,6 +67,9 @@ class HomeFragment : Fragment() {
         with(binding){
             rec.adapter = adapter
             rec.layoutManager = LinearLayoutManager(requireContext())
+            fab.setOnClickListener {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.ADD,0))
+            }
         }
     }
 }
