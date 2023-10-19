@@ -1,25 +1,32 @@
 package uz.coder.davomatapp.data.db
 
-import android.content.Context
+import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import uz.coder.davomatapp.domain.student.Student
-import uz.coder.davomatapp.domain.student.StudentDao
+import uz.coder.davomatapp.data.student.StudentDao
+import uz.coder.davomatapp.data.student.StudentDbModel
 
-@Database(entities = [Student::class], version = 1)
+@Database(entities = [StudentDbModel::class], version = 1)
 abstract class MyDatabase: RoomDatabase() {
     abstract fun studentDao(): StudentDao
     companion object{
         private var myDatabase: MyDatabase? = null
-        fun getInstanse(context: Context): MyDatabase {
-            if (myDatabase == null){
-                myDatabase = Room.databaseBuilder(context, MyDatabase::class.java,"my_db")
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build()
+        private val LOCK = Any()
+        private const val name = "my_Student.db"
+        fun myDatabase(application: Application): MyDatabase {
+            myDatabase?.let {
+                return it
             }
-            return myDatabase!!
+            synchronized(LOCK){
+                myDatabase?.let {
+                    return it
+                }
+            }
+            val db = Room.databaseBuilder(application,MyDatabase::class.java, name).fallbackToDestructiveMigration().build()
+            myDatabase = db
+            return db
         }
     }
 }

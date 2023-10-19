@@ -59,7 +59,8 @@ class HomeFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.delete(adapter.currentList[viewHolder.adapterPosition].id)
+                val item = adapter.currentList[viewHolder.adapterPosition]
+                viewModel.delete(item)
             }
         }
         val itemTouchHelper = ItemTouchHelper(itemHelper)

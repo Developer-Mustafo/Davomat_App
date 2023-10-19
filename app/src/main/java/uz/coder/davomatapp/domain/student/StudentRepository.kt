@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 
 
 interface StudentRepository {
-    fun add(student: Student)
-    fun update(student: Student)
-    fun delete(id: Int)
+    suspend fun add(student: Student)
+    suspend fun update(student: Student)
+    suspend fun delete(student: Student)
     fun getAllStudentList():LiveData<List<Student>>
-    fun getByStudentId(id: Int):Student?
+    suspend fun getByStudentId(id: Int):Student?
 }

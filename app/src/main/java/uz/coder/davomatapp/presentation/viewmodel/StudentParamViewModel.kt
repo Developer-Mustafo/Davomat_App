@@ -5,6 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.student.AddStudentUseCase
@@ -32,26 +35,31 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val _student = MutableLiveData<Student>()
     val student:LiveData<Student>
         get() = _student
+    private val scope = CoroutineScope(Dispatchers.IO)
     fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?){
-        val name = parseString(inputName)
-        val surName = parseString(inputSurName)
-        val phone = parseString(inputPhone)
-        if (validateInput(name,surName,phone)){
-            addStudentUseCase(Student(name=name, surname = surName, phone = phone))
-            finishWork()
+        scope.launch {
+            val name = parseString(inputName)
+            val surName = parseString(inputSurName)
+            val phone = parseString(inputPhone)
+            if (validateInput(name, surName, phone)) {
+                addStudentUseCase(Student(name = name, surname = surName, phone = phone))
+                finishWork()
+            }
         }
     }
     fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?){
+        scope.launch {
         val name = parseString(inputName)
         val surName = parseString(inputSurName)
         val phone = parseString(inputPhone)
         val validateInput = validateInput(name, surName, phone)
-        if (validateInput){
+        if (validateInput) {
             _student.value?.let {
                 val item = it.copy(name = name, surname = surName, phone = phone)
                 editStudentUseCase(item)
                 finishWork()
             }
+        }
         }
     }
 
@@ -95,4 +103,8 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
          }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        scope.cancel()
+    }
 }
