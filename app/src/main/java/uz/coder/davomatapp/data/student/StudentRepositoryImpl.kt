@@ -12,11 +12,11 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
     private val db = MyDatabase.myDatabase(application).studentDao()
     private val mapper = MyMapper()
     override suspend fun add(student: Student) {
-        db.add(mapper.getStudentToStudentDbModel(student))
+        db.add(mapper.getStudentToStudentDbModelAdd(student))
     }
 
     override suspend fun update(student: Student) {
-        db.add(mapper.getStudentToStudentDbModel(student))
+        db.edit(mapper.getStudentToStudentDbModelEdit(student))
     }
 
     override suspend fun delete(student: Student) {

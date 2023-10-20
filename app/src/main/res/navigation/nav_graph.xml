@@ -22,12 +22,10 @@
         android:name="uz.coder.davomatapp.presentation.fragment.StudentFragment"
         android:label="fragment_student"
         tools:layout="@layout/fragment_student" >
+
         <argument
             android:name="status"
             app:argType="string" />
-        <action
-            android:id="@+id/action_studentFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
         <argument
             android:name="id"
             app:argType="integer" />

@@ -18,7 +18,7 @@ class StudentViewModel(application: Application) :AndroidViewModel(application) 
     private val getStudentAllListUseCase = GetStudentAllListUseCase(repository)
     val list: LiveData<List<Student>>
         get() = getStudentAllListUseCase()
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     fun delete(student: Student){
         scope.launch {

@@ -16,11 +16,10 @@ import uz.coder.davomatapp.databinding.FragmentStudentBinding
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 
 
-@Suppress("UNUSED_EXPRESSION")
 class StudentFragment : Fragment() {
+    private val args by navArgs<StudentFragmentArgs>()
     private var _binding:FragmentStudentBinding? = null
     private lateinit var viewModel: StudentParamViewModel
-    private val args by navArgs<StudentFragmentArgs>()
     private val binding:FragmentStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
     override fun onCreateView(
@@ -29,18 +28,17 @@ class StudentFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentStudentBinding.inflate(inflater, container, false)
-        when(args.status){
-            ADD->launchAdd()
-            EDIT->launchEdit()
-            else->throw RuntimeException("status not found ${args.status}")
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
-
+        when(args.status){
+            ADD->launchAdd()
+            EDIT->launchEdit()
+            else->throw RuntimeException("status not found ${args.status}")
+        }
         viewModel.finish.observe(viewLifecycleOwner){
             findNavController().navigate(R.id.homeFragment)
         }
@@ -113,12 +111,16 @@ class StudentFragment : Fragment() {
     }
 
     private fun launchEdit() {
-        var id = 0
         binding.apply {
-            id = args.id
-            Log.d("launchEdit", "launchEdit: $id")
-            viewModel.getItemById(id)
-
+            Log.d("aaa", "launchEdit: ${args.id}")
+            viewModel.getItemById(args.id)
+            viewModel.student.observe(viewLifecycleOwner){
+                val student = it
+                Log.d("aaa", "121: ${it.id}")
+                name.setText(student.name)
+                surname.setText(student.surname)
+                phone.setText(student.phone)
+            }
             save.setOnClickListener {
                         val inputName = name.text.toString()
                         val inputSurName = surname.text.toString()

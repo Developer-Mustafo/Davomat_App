@@ -4,8 +4,16 @@ import uz.coder.davomatapp.data.student.StudentDbModel
 import uz.coder.davomatapp.domain.student.Student
 
 class MyMapper {
-    fun getStudentToStudentDbModel(student: Student):StudentDbModel{
+    fun getStudentToStudentDbModelAdd(student: Student):StudentDbModel{
         return StudentDbModel(
+            name = student.name,
+            surname = student.surname,
+            phone = student.phone
+        )
+    }
+    fun getStudentToStudentDbModelEdit(student: Student):StudentDbModel{
+        return StudentDbModel(
+            id = student.id,
             name = student.name,
             surname = student.surname,
             phone = student.phone

@@ -12,4 +12,6 @@
     <string name="Name">Nomi xato yozilgan</string>
     <string name="SurName">Familiya xato yozilgan\n</string>
     <string name="Phone">Telefon xato yozilgan</string>
+    <string name="mustafo">Mustafo</string>
+    <string name="rahim">Rahim</string>
 </resources>

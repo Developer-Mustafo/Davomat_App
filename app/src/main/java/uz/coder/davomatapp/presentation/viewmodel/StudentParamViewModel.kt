@@ -35,31 +35,31 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val _student = MutableLiveData<Student>()
     val student:LiveData<Student>
         get() = _student
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.Default)
     fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?){
-        scope.launch {
             val name = parseString(inputName)
             val surName = parseString(inputSurName)
             val phone = parseString(inputPhone)
             if (validateInput(name, surName, phone)) {
+                scope.launch {
                 addStudentUseCase(Student(name = name, surname = surName, phone = phone))
+            }
                 finishWork()
             }
-        }
     }
     fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?){
-        scope.launch {
         val name = parseString(inputName)
         val surName = parseString(inputSurName)
         val phone = parseString(inputPhone)
         val validateInput = validateInput(name, surName, phone)
         if (validateInput) {
             _student.value?.let {
+                scope.launch {
                 val item = it.copy(name = name, surname = surName, phone = phone)
                 editStudentUseCase(item)
+            }
                 finishWork()
             }
-        }
         }
     }
 
@@ -99,7 +99,7 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     fun getItemById(id:Int){
          viewModelScope.launch {
              val student = getStudentByIdUseCase(id)
-             _student.value = student!!
+             _student.value = student
          }
     }
 

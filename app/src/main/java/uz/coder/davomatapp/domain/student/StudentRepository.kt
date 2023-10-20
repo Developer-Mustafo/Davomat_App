@@ -8,5 +8,5 @@ interface StudentRepository {
     suspend fun update(student: Student)
     suspend fun delete(student: Student)
     fun getAllStudentList():LiveData<List<Student>>
-    suspend fun getByStudentId(id: Int):Student?
+    suspend fun getByStudentId(id: Int):Student
 }
