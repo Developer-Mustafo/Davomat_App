@@ -20,7 +20,8 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
     }
 
     override suspend fun delete(student: Student) {
-        db.delete(mapper.getStudentToStudentDbModel(student))
+        val id = student.id
+        db.delete(id)
     }
 
     override fun getAllStudentList(): LiveData<List<Student>> {

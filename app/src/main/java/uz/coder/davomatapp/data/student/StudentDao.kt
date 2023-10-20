@@ -12,8 +12,8 @@ interface StudentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(student: StudentDbModel)
 
-    @Delete
-    suspend fun delete(student: StudentDbModel)
+    @Query("delete from student where id = :id")
+    suspend fun delete(id: Int)
 
     @Query("select * from student")
     fun getAllStudentList():LiveData<List<StudentDbModel>>
