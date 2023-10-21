@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_studentFragment"
+            app:destination="@id/studentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.StudentFragment"
+        android:label="fragment_student"
+        tools:layout="@layout/fragment_student" >
+        <argument
+            android:name="status"
+            app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+      </fragment>
+    <fragment
+        android:id="@+id/studentAboutFragment"
+        android:name="uz.coder.davomatapp.domain.student.StudentAboutFragment"
+        android:label="fragment_student_about"
+        tools:layout="@layout/fragment_student_about" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.CourseFragment"
+        android:label="fragment_course"
+        tools:layout="@layout/fragment_course" />
+    <fragment
+        android:id="@+id/studentListFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.StudentListFragment"
+        android:label="fragment_student_list"
+        tools:layout="@layout/fragment_student_list" >
+        <action
+            android:id="@+id/action_studentListFragment_to_studentAboutFragment"
+            app:destination="@id/studentAboutFragment" />
+        <action
+            android:id="@+id/action_studentListFragment_to_studentFragment"
+            app:destination="@id/studentFragment" />
+    </fragment>
+</navigation>

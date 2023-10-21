@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Davomat App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="student">Student</string>
+    <string name="setting">Setting</string>
+    <string name="student_name">Student name</string>
+    <string name="student_surname">Student surname</string>
+    <string name="saqlash">Saqlash</string>
+    <string name="student_phone">Student phone</string>
+    <string name="Name">Nomi xato yozilgan</string>
+    <string name="SurName">Familiya xato yozilgan\n</string>
+    <string name="Phone">Telefon xato yozilgan</string>
+    <string name="mustafo">Mustafo</string>
+    <string name="rahim">Rahim</string>
+    <string name="student_age">Student age</string>
+    <string name="Age">Yosh xato kiritildi</string>
+    <string name="rasm_tanlang">Rasm tanlang:</string>
+    <string name="rasmga_olish">Rasmga olish</string>
+    <string name="course">Course</string>
+    <string name="students">Students</string>
 </resources>
