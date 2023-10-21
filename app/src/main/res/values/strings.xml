@@ -16,4 +16,8 @@
     <string name="rahim">Rahim</string>
     <string name="student_age">Student age</string>
     <string name="Age">Yosh xato kiritildi</string>
+    <string name="rasm_tanlang">Rasm tanlang:</string>
+    <string name="rasmga_olish">Rasmga olish</string>
+    <string name="course">Course</string>
+    <string name="students">Students</string>
 </resources>

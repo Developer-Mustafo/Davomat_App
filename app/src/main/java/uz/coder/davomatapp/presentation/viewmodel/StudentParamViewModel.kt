@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import uz.coder.davomatapp.R
 import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.student.AddStudentUseCase
 import uz.coder.davomatapp.domain.student.EditStudentUseCase
@@ -39,15 +40,16 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     val errorInputAge:LiveData<Boolean>
         get() = _errorInputAge
     private val scope = CoroutineScope(Dispatchers.Default)
-    fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?){
+    fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputImage:String?){
             val name = parseString(inputName)
             val surName = parseString(inputSurName)
             val phone = parseString(inputPhone)
             val age = parseInt(inputAge)
+            val img = parseString(inputImage)
             val validateInput = validateInput(name, surName, phone,age)
             if (validateInput) {
                 scope.launch {
-                addStudentUseCase(Student(name = name, surname = surName,age=age, phone = phone))
+                addStudentUseCase(Student(name = name, surname = surName,age=age, phone = phone, img = img, course = ""))
             }
                 finishWork()
             }
@@ -63,16 +65,17 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
         }
     }
 
-    fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?){
+    fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputImage: String?){
         val name = parseString(inputName)
         val surName = parseString(inputSurName)
         val phone = parseString(inputPhone)
         val age = parseInt(inputAge)
+        val img = parseString(inputImage)
         val validateInput = validateInput(name, surName, phone,age)
         if (validateInput) {
             _student.value?.let {
                 scope.launch {
-                val item = it.copy(name = name, surname = surName,age = age, phone = phone)
+                val item = it.copy(name = name, surname = surName,age = age, phone = phone, img = img)
                 editStudentUseCase(item)
             }
                 finishWork()

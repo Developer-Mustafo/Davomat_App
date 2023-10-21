@@ -10,11 +10,8 @@ import androidx.room.Update
 
 @Dao
 interface StudentDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(student: StudentDbModel)
-
-    @Update
-    suspend fun edit(student: StudentDbModel)
 
     @Query("delete from student where id = :id")
     suspend fun delete(id: Int)

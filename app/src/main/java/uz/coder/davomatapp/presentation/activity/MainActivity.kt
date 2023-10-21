@@ -10,8 +10,6 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationBarView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityMainBinding
-import uz.coder.davomatapp.presentation.fragment.HomeFragmentDirections
-import uz.coder.davomatapp.presentation.fragment.StudentFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController:NavController
@@ -26,15 +24,23 @@ class MainActivity : AppCompatActivity() {
             NavigationUI.setupWithNavController(binding.bottomNavigation,navController)
             bottomNavigation.setOnItemSelectedListener(object :NavigationBarView.OnItemSelectedListener{
                 override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                    val id= item.itemId
-                        if(id == R.id.homeFragment){
+                        if(item.itemId == R.id.home){
                             navController.navigate(R.id.homeFragment)
                             return true
                         }
-                    if (id == R.id.settingFragment){
-                        navController.navigate(R.id.settingFragment)
-                    }
-                    return false
+                        if (item.itemId == R.id.studentList){
+                            navController.navigate(R.id.studentListFragment)
+                            return true
+                        }
+                        if (item.itemId == R.id.course){
+                            navController.navigate(R.id.courseFragment)
+                            return true
+                        }
+                        if (item.itemId == R.id.setting){
+                            navController.navigate(R.id.settingFragment)
+                            return true
+                        }
+                        return false
                 }
             })
         }
