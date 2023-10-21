@@ -10,6 +10,7 @@ class StudentDbModel(
     var id:Int = Student.UNDEFINE_ID,
     val name:String,
     val surname:String,
+    val age:Int,
     val phone:String
 
 )

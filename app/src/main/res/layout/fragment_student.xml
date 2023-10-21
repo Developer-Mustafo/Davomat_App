@@ -8,8 +8,8 @@
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.cardview.widget.CardView
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         app:cardUseCompatPadding="true"
         app:cardElevation="8dp"
         app:cardCornerRadius="25dp"
@@ -55,12 +55,28 @@
                     android:hint="@string/student_surname" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phone1"
+                android:id="@+id/age1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/surname1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/age"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/student_age" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phone1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/age1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phone"

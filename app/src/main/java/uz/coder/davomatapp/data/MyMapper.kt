@@ -8,7 +8,8 @@ class MyMapper {
         return StudentDbModel(
             name = student.name,
             surname = student.surname,
-            phone = student.phone
+            phone = student.phone,
+            age = student.age
         )
     }
     fun getStudentToStudentDbModelEdit(student: Student):StudentDbModel{
@@ -16,7 +17,8 @@ class MyMapper {
             id = student.id,
             name = student.name,
             surname = student.surname,
-            phone = student.phone
+            phone = student.phone,
+            age = student.age
         )
     }
     fun getStudentDbModelToStudent(studentDbModel: StudentDbModel):Student{
@@ -24,7 +26,8 @@ class MyMapper {
             id = studentDbModel.id,
             name = studentDbModel.name,
             surname = studentDbModel.surname,
-            phone = studentDbModel.phone
+            phone = studentDbModel.phone,
+            age = studentDbModel.age
         )
     }
 

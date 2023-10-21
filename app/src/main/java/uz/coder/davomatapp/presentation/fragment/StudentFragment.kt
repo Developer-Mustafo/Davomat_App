@@ -82,6 +82,20 @@ class StudentFragment : Fragment() {
 
                 }
             })
+            age.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    viewModel.resetInputAge()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+            })
             viewModel.errorInputName.observe(viewLifecycleOwner){
                 val massage = if (it){
                     getString(R.string.Name)
@@ -106,6 +120,14 @@ class StudentFragment : Fragment() {
                 }
                 phone1.error = massage
             }
+            viewModel.errorInputAge.observe(viewLifecycleOwner){
+                val massage = if (it){
+                    getString(R.string.Age)
+                }else{
+                    null
+                }
+                age1.error = massage
+            }
         }
 
     }
@@ -120,12 +142,14 @@ class StudentFragment : Fragment() {
                 name.setText(student.name)
                 surname.setText(student.surname)
                 phone.setText(student.phone)
+                age.setText(student.age.toString())
             }
             save.setOnClickListener {
-                        val inputName = name.text.toString()
-                        val inputSurName = surname.text.toString()
-                        val inputPhone = phone.text.toString()
-                        viewModel.editStudent(inputName,inputSurName,inputPhone)
+                        val inputName = name.text.toString().trim()
+                        val inputSurName = surname.text.toString().trim()
+                        val inputPhone = phone.text.toString().trim()
+                        val inputAge = age.text.toString().trim()
+                        viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge)
                 }
         }
     }
@@ -136,7 +160,8 @@ class StudentFragment : Fragment() {
                     val inputName = name.text.toString()
                     val inputSurName = surname.text.toString()
                     val inputPhone = phone.text.toString()
-                    viewModel.addStudent(inputName, inputSurName, inputPhone)
+                    val inputAge = age.text.toString().trim()
+                    viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge)
                 }
         }
     }

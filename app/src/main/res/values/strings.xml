@@ -14,4 +14,6 @@
     <string name="Phone">Telefon xato yozilgan</string>
     <string name="mustafo">Mustafo</string>
     <string name="rahim">Rahim</string>
+    <string name="student_age">Student age</string>
+    <string name="Age">Yosh xato kiritildi</string>
 </resources>
