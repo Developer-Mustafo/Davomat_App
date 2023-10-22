@@ -1,4 +1,4 @@
-package uz.coder.davomatapp.presentation.adapter
+package uz.coder.davomatapp.presentation.callback
 
 import androidx.recyclerview.widget.DiffUtil
 import uz.coder.davomatapp.domain.student.Student

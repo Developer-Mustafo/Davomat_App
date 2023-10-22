@@ -1,6 +1,5 @@
 package uz.coder.davomatapp.presentation.fragment
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContextWrapper
 import android.content.Intent
@@ -28,7 +27,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.BuildConfig
 import uz.coder.davomatapp.R
-import uz.coder.davomatapp.databinding.DialogBinding
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 import java.io.File
@@ -41,10 +39,9 @@ import java.util.Locale
 
 class StudentFragment : Fragment() {
     private val args by navArgs<StudentFragmentArgs>()
-    private var filePath:String? = null
+    private lateinit var filePath:String
     private var condition = 0
     private var _binding:FragmentStudentBinding? = null
-    private lateinit var dialogBinding: DialogBinding
     private lateinit var viewModel: StudentParamViewModel
     private val binding:FragmentStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
@@ -59,7 +56,6 @@ class StudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialogBinding = DialogBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
         when(args.status){
             ADD->launchAdd()
@@ -70,8 +66,24 @@ class StudentFragment : Fragment() {
             findNavController().navigate(R.id.homeFragment)
         }
         with(binding){
-            studentImg.setOnClickListener {
-                showAlertDialog()
+            camera.setOnClickListener {
+                if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    takePicture()
+                }else{
+                    permissionCameraAndFile()
+                }
+                //todo take picture method
+                takePicture()
+            }
+            galery.setOnClickListener {
+                if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                    intent.addCategory(Intent.CATEGORY_OPENABLE)
+                    intent.type = "*/*"
+                    startActivityForResult(intent, 1)
+                }else{
+                    permissionCameraAndFile()
+                }
             }
            name.addTextChangedListener(object :TextWatcher{
                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -162,28 +174,6 @@ class StudentFragment : Fragment() {
 
     }
 
-    @SuppressLint("InflateParams")
-    private fun showAlertDialog() {
-        val dialog = AlertDialog.Builder(requireContext()).create()
-        dialog.setView(dialogBinding.root)
-        dialogBinding.camera.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                takePicture()
-            }else{
-                permissionCameraAndFile()
-            }
-            takePicture()
-            dialog.dismiss()
-        }
-        dialogBinding.galery.setOnClickListener {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.type = "*/*"
-            startActivityForResult(intent, 1)
-            dialog.dismiss()
-        }
-        dialog.show()
-    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data == null) return
@@ -239,15 +229,14 @@ class StudentFragment : Fragment() {
             )
         }
     }
-    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && requestCode == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+        if ((requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) && (requestCode == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show()
         } else if (requestCode == 2) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(requireContext(), "Bu yerga 2 marta bossa tushadi", Toast.LENGTH_SHORT).show()
@@ -269,6 +258,7 @@ class StudentFragment : Fragment() {
         }
     }
     private fun launchEdit() {
+        //todo edit
         binding.apply {
             Log.d("aaa", "launchEdit: ${args.id}")
             viewModel.getItemById(args.id)
@@ -286,11 +276,13 @@ class StudentFragment : Fragment() {
                         val inputPhone = phone.text.toString().trim()
                         val inputAge = age.text.toString().trim()
                         viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,filePath)
-                }
+                Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun launchAdd() {
+        //todo add
         binding.apply {
                 save.setOnClickListener {
                     val inputName = name.text.toString()
@@ -298,6 +290,7 @@ class StudentFragment : Fragment() {
                     val inputPhone = phone.text.toString()
                     val inputAge = age.text.toString().trim()
                     viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,filePath)
+                    Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()
                 }
         }
     }
@@ -310,9 +303,18 @@ class StudentFragment : Fragment() {
         const val ADD = "add"
         const val EDIT = "edit"
     }
+    private val captureNewMethodResultLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) {
+        if (it) {
+            if (::filePath.isLateinit) {
+                    Toast.makeText(requireContext(), filePath, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     private fun takePicture(){
         val file = try {
-            createEmptyFile()
+            camera()
 
         } catch (e: Exception) {
             null
@@ -322,17 +324,10 @@ class StudentFragment : Fragment() {
         val uri = file?.let {
             FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID, it)
         }
-        takeCaptureNewMethodResultLauncher.launch(uri)
-    }
-    private val takeCaptureNewMethodResultLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()){
-        if (it){
-            if (filePath != null){
-                Toast.makeText(requireContext(), filePath.toString(), Toast.LENGTH_SHORT).show()
-            }
-        }
+        captureNewMethodResultLauncher.launch(uri)
     }
     @Throws(IOException::class)
-    private fun createEmptyFile(): File {
+    private fun camera(): File {
         val time = SimpleDateFormat("yyMMdd_HHmmss", Locale.US).format(Date())
         val fileStorage = ContextWrapper(requireContext()).getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val file = File.createTempFile(

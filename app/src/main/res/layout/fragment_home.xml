@@ -9,17 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/item_student_button"
-        android:src="@drawable/student"
+        android:scaleType="centerCrop"
+        android:background="@drawable/item_for_davomat_app"
+        android:src="@drawable/college_education_graduate_svgrepo_com"
         android:layout_margin="15dp"
         android:id="@+id/studentAdd"/>
     <androidx.appcompat.widget.AppCompatImageButton
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/item_student_button"
+        android:background="@drawable/item_for_davomat_app"
         android:scaleType="centerCrop"
-        android:src="@drawable/widget_add_svgrepo_com"
+        android:src="@drawable/online_education_elearning_training_video_course_laptop_svgrepo_com"
         android:layout_margin="15dp"
         android:id="@+id/courseAdd"/>
 </LinearLayout>

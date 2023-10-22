@@ -17,7 +17,7 @@ import uz.coder.davomatapp.presentation.viewmodel.StudentViewModel
 class StudentListFragment : Fragment() {
     private lateinit var adapter:AdapterStudent
     private val viewModel by lazy {
-        ViewModelProvider(this@StudentListFragment)[StudentViewModel::class.java]
+        ViewModelProvider(this)[StudentViewModel::class.java]
     }
     private var _binding: FragmentStudentListBinding? = null
     private val binding:FragmentStudentListBinding
