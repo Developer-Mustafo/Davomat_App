@@ -39,7 +39,7 @@ import java.util.Locale
 
 class StudentFragment : Fragment() {
     private val args by navArgs<StudentFragmentArgs>()
-    private lateinit var filePath:String
+    private var filePath:String = ""
     private var condition = 0
     private var _binding:FragmentStudentBinding? = null
     private lateinit var viewModel: StudentParamViewModel
@@ -307,7 +307,7 @@ class StudentFragment : Fragment() {
         ActivityResultContracts.TakePicture()
     ) {
         if (it) {
-            if (::filePath.isLateinit) {
+            if (filePath == "") {
                     Toast.makeText(requireContext(), filePath, Toast.LENGTH_SHORT).show()
             }
         }

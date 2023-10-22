@@ -75,9 +75,25 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
         if (validateInput) {
             _student.value?.let {
                 scope.launch {
-                val item = it.copy(name = name, surname = surName,age = age, phone = phone, img = img)
-                editStudentUseCase(item)
-            }
+                    val item = if (img==""){
+                        it.copy(
+                            name = name,
+                            surname = surName,
+                            age = age,
+                            phone = phone,
+                            img = it.img
+                        )
+                    }else {
+                        it.copy(
+                            name = name,
+                            surname = surName,
+                            age = age,
+                            phone = phone,
+                            img = img
+                        )
+                    }
+                    editStudentUseCase(item)
+                }
                 finishWork()
             }
         }
