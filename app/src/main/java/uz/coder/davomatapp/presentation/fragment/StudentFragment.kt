@@ -1,5 +1,6 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContextWrapper
 import android.content.Intent
@@ -25,7 +26,6 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import uz.coder.davomatapp.BuildConfig
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
@@ -312,6 +312,7 @@ class StudentFragment : Fragment() {
             }
         }
     }
+    @SuppressLint("QueryPermissionsNeeded")
     private fun takePicture(){
         val file = try {
             camera()
@@ -322,7 +323,7 @@ class StudentFragment : Fragment() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.resolveActivity(ContextWrapper(requireContext()).packageManager)
         val uri = file?.let {
-            FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID, it)
+            FileProvider.getUriForFile(requireContext(), "uz.coder.davomatapp", it)
         }
         captureNewMethodResultLauncher.launch(uri)
     }

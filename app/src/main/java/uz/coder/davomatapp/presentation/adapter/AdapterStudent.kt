@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ItemStudentBinding
 import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.callback.DiffCallBack
@@ -23,7 +24,11 @@ class AdapterStudent(private val onclick:(Int)->Unit, private val update:(Int)->
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.binding.name.text = getItem(position).name
         holder.binding.surname.text = getItem(position).surname
-        holder.binding.studentImg.setImageURI(Uri.fromFile(File(getItem(position).img)))
+        if (getItem(position).img == ""){
+            holder.binding.studentImg.setImageResource(R.drawable.college_education_graduate_svgrepo_com)
+        }else{
+            holder.binding.studentImg.setImageURI(Uri.fromFile(File(getItem(position).img)))
+        }
         holder.binding.edit.setOnClickListener { update.invoke(getItem(position).id) }
         holder.itemView.setOnClickListener{onclick.invoke(position)}
     }
