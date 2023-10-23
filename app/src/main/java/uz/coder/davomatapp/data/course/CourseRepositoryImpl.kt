@@ -24,7 +24,8 @@ class CourseRepositoryImpl(application: Application):CourseRepository {
     }
 
     override suspend fun getByIdCourse(id: Int): Course {
-        return mapper.getCourseDbModelToCourse(db.getByIdCourse(id))
+        val courseDbModel = db.getByIdCourse(id)
+        return mapper.getCourseDbModelToCourse(courseDbModel)
     }
 
     override fun getCourseList(): LiveData<List<Course>> {

@@ -21,4 +21,5 @@
     <string name="course">Course</string>
     <string name="students">Students</string>
     <string name="java">Java</string>
+    <string name="course_name">Course name</string>
 </resources>
