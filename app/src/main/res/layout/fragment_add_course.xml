@@ -24,7 +24,7 @@
             android:layout_margin="10dp"
             android:layout_marginTop="10dp"
             android:hint="@string/course_name"
-            android:inputType="phone" />
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton

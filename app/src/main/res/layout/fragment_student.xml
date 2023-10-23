@@ -6,60 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".presentation.fragment.StudentFragment">
 
-    <TextView
-        android:id="@+id/choose"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/select_image"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:id="@+id/l1"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/choose"
-    android:orientation="horizontal">
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/camera"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2.5dp"
-        android:background="@drawable/item_student_button"
-        android:drawableStart="@drawable/camera_minimalistic_svgrepo_com"
-        android:text="@string/rasmga_olish"
-        android:textColor="@color/white"
-        android:textSize="25sp"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/galery"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_marginStart="2.5dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/item_student_button"
-        android:drawableStart="@drawable/set_picture_galery_svgrepo_com"
-        android:text="@string/rasmga_olish"
-        android:textColor="@color/white"
-        android:textSize="25sp"/>
-
-</LinearLayout>
     <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name1"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="40dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/l1">
+                app:layout_constraintTop_toTopOf="parent">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
                     android:inputType="text"
@@ -127,6 +81,15 @@
             android:layout_marginTop="10dp"
             android:hint="@string/student_phone" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone1"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="16dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/save"

@@ -8,6 +8,5 @@ import uz.coder.davomatapp.domain.coure.Course
 data class CourseDbModel(
     @PrimaryKey(autoGenerate = true)
     val id:Int = Course.UNDEFINE_ID,
-    val img:Int,
     val name:String
 )

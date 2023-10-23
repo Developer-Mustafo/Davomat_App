@@ -24,11 +24,6 @@ class AdapterStudent(private val onclick:(Int)->Unit, private val update:(Int)->
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.binding.name.text = getItem(position).name
         holder.binding.surname.text = getItem(position).surname
-        if (getItem(position).img == ""){
-            holder.binding.studentImg.setImageResource(R.drawable.college_education_graduate_svgrepo_com)
-        }else{
-            holder.binding.studentImg.setImageURI(Uri.fromFile(File(getItem(position).img)))
-        }
         holder.binding.edit.setOnClickListener { update.invoke(getItem(position).id) }
         holder.itemView.setOnClickListener{onclick.invoke(position)}
     }

@@ -1,15 +1,7 @@
 package uz.coder.davomatapp.presentation.fragment
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.ContextWrapper
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
+
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -18,31 +10,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
+import uz.coder.davomatapp.presentation.adapter.SpinnerAdapter
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 class StudentFragment : Fragment() {
     private val args by navArgs<StudentFragmentArgs>()
-    private var filePath:String = ""
-    private var condition = 0
+    private var position:Int = 0
     private var _binding:FragmentStudentBinding? = null
     private lateinit var viewModel: StudentParamViewModel
+    private val listForGender = listOf("Erkak","Ayol")
     private val binding:FragmentStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
     override fun onCreateView(
@@ -66,25 +48,7 @@ class StudentFragment : Fragment() {
             findNavController().navigate(R.id.homeFragment)
         }
         with(binding){
-            camera.setOnClickListener {
-                if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    takePicture()
-                }else{
-                    permissionCameraAndFile()
-                }
-                //todo take picture method
-                takePicture()
-            }
-            galery.setOnClickListener {
-                if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                    intent.addCategory(Intent.CATEGORY_OPENABLE)
-                    intent.type = "*/*"
-                    startActivityForResult(intent, 1)
-                }else{
-                    permissionCameraAndFile()
-                }
-            }
+           spinner.adapter = SpinnerAdapter(listForGender)
            name.addTextChangedListener(object :TextWatcher{
                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -173,90 +137,6 @@ class StudentFragment : Fragment() {
         }
 
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (data == null) return
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            val uri = data.data ?: return
-            val inputStream = ContextWrapper(requireContext()).contentResolver?.openInputStream(uri)
-            val times: String = SimpleDateFormat("yyMMdd_HHmmss", Locale.US).format(Date())
-            val file = File(ContextWrapper(requireContext()).filesDir, times)
-            val outputStream = FileOutputStream(file)
-            inputStream?.copyTo(outputStream)
-            inputStream?.close()
-            outputStream.close()
-            filePath = file.absolutePath
-            Toast.makeText(requireContext(), filePath, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun permissionCameraAndFile() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                requireActivity(),
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) && ActivityCompat.shouldShowRequestPermissionRationale(
-                requireActivity(),
-                android.Manifest.permission.CAMERA
-            )){
-            Toast.makeText(requireContext(), "Dany qilishni bosdingiz", Toast.LENGTH_SHORT)
-                .show()
-            val alertDialog = AlertDialog.Builder(requireContext())
-            alertDialog.create()
-            alertDialog.setTitle("Ruxsat berasizmi ?")
-            alertDialog.setPositiveButton("Ha") { _, _ ->
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        android.Manifest.permission.CAMERA
-                    ),
-                    2
-                )
-            }
-            alertDialog.setNegativeButton("Yo'q") { dialog, _ ->
-                dialog.dismiss()
-            }
-            alertDialog.show()
-        }else{
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                    android.Manifest.permission.CAMERA
-                ),
-                1
-            )
-        }
-    }
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if ((requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) && (requestCode == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-            Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show()
-        } else if (requestCode == 2) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(requireContext(), "Bu yerga 2 marta bossa tushadi", Toast.LENGTH_SHORT).show()
-            } else {
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                val uri = Uri.fromParts("package", ContextWrapper(requireContext()).packageName, null)
-                intent.data = uri
-                startActivity(intent)
-
-                condition = 1
-            }
-        } else {
-            if (condition == 1) {
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                val uri = Uri.fromParts("package", ContextWrapper(requireContext()).packageName, null)
-                intent.data = uri
-                startActivity(intent)
-            }
-        }
-    }
     private fun launchEdit() {
         //todo edit
         binding.apply {
@@ -275,8 +155,9 @@ class StudentFragment : Fragment() {
                         val inputSurName = surname.text.toString().trim()
                         val inputPhone = phone.text.toString().trim()
                         val inputAge = age.text.toString().trim()
-                        viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,filePath)
-                Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
+                        val gender = listForGender[spinner.selectedItemPosition]
+                        viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,"aweeresdtfgy",gender)
+                        Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -289,7 +170,9 @@ class StudentFragment : Fragment() {
                     val inputSurName = surname.text.toString()
                     val inputPhone = phone.text.toString()
                     val inputAge = age.text.toString().trim()
-                    viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,filePath)
+                    val gender = listForGender[spinner.selectedItemPosition]
+                    position = spinner.selectedItemPosition
+                    viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,"dsd",gender)
                     Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()
                 }
         }
@@ -302,41 +185,5 @@ class StudentFragment : Fragment() {
     companion object{
         const val ADD = "add"
         const val EDIT = "edit"
-    }
-    private val captureNewMethodResultLauncher = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) {
-        if (it) {
-            if (filePath == "") {
-                    Toast.makeText(requireContext(), filePath, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-    @SuppressLint("QueryPermissionsNeeded")
-    private fun takePicture(){
-        val file = try {
-            camera()
-
-        } catch (e: Exception) {
-            null
-        }
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.resolveActivity(ContextWrapper(requireContext()).packageManager)
-        val uri = file?.let {
-            FileProvider.getUriForFile(requireContext(), "uz.coder.davomatapp", it)
-        }
-        captureNewMethodResultLauncher.launch(uri)
-    }
-    @Throws(IOException::class)
-    private fun camera(): File {
-        val time = SimpleDateFormat("yyMMdd_HHmmss", Locale.US).format(Date())
-        val fileStorage = ContextWrapper(requireContext()).getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val file = File.createTempFile(
-            "Image_${time}",
-            ".png",
-            fileStorage
-        )
-        filePath = file.absolutePath
-        return file
     }
 }

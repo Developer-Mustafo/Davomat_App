@@ -22,4 +22,6 @@
     <string name="students">Students</string>
     <string name="java">Java</string>
     <string name="course_name">Course name</string>
+    <string name="man">Man</string>
+    <string name="error_course">Course xato yozilgan</string>
 </resources>

@@ -12,7 +12,6 @@ class CourseAdapter(val editCourse:(Int)->Unit,val onClickCourse:(Int)->Unit):Li
     inner class VH(private val binding: ItemCourseBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(id:Int,course: Course){
             binding.apply {
-                courseImg.setImageResource(course.img)
                 name.text = course.name
                 edit.setOnClickListener {
                     editCourse.invoke(id)

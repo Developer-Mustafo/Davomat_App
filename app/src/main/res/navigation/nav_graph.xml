@@ -15,7 +15,8 @@
             app:destination="@id/studentFragment" />
         <action
             android:id="@+id/action_homeFragment_to_addCourseFragment2"
-            app:destination="@id/addCourseFragment2" />
+            app:destination="@id/addCourseFragment2"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/studentFragment"
@@ -61,6 +62,12 @@
         <action
             android:id="@+id/action_courseFragment_to_studentAboutFragment"
             app:destination="@id/studentAboutFragment" />
+        <action
+            android:id="@+id/action_courseFragment_to_courseAboutFragment"
+            app:destination="@id/courseAboutFragment" />
+        <action
+            android:id="@+id/action_courseFragment_to_addCourseFragment2"
+            app:destination="@id/addCourseFragment2" />
     </fragment>
     <fragment
         android:id="@+id/studentListFragment"
@@ -85,6 +92,15 @@
         <argument
             android:name="status"
             app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseAboutFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.CourseAboutFragment"
+        android:label="fragment_course_about"
+        tools:layout="@layout/fragment_course_about" >
         <argument
             android:name="id"
             app:argType="integer" />

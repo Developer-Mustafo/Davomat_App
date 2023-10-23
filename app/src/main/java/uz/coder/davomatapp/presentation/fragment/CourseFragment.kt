@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.databinding.FragmentCourseBinding
 import uz.coder.davomatapp.presentation.adapter.CourseAdapter
@@ -31,9 +33,9 @@ class CourseFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
         adapter = CourseAdapter({id->
-
+             findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToAddCourseFragment2(AddCourseFragment.Edit,id))
         },{id->
-
+            findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToCourseAboutFragment(id))
         })
         viewModel.list.observe(viewLifecycleOwner){
             adapter.submitList(it)
@@ -56,7 +58,7 @@ class CourseFragment:Fragment() {
 
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.rv)
-        with(binding){
+        binding.apply {
             rv.adapter = adapter
         }
     }

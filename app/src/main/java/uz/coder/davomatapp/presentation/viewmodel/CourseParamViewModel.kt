@@ -30,25 +30,23 @@ class CourseParamViewModel(application: Application):AndroidViewModel(applicatio
     val course:LiveData<Course>
         get() = _course
     private val scope = CoroutineScope(Dispatchers.Default)
-    fun addCourse(inputName:String?,inputImage:String?){
+    fun addCourse(inputName:String?,){
         val name = parseString(inputName)
-        val img = parseInt(inputImage)
         val validateInput = validateInput(name)
         if (validateInput) {
             scope.launch {
-                addCourseUseCase(Course(name = name, img = img))
+                addCourseUseCase(Course(name = name))
             }
             finishWork()
         }
     }
-    fun editCourse(inputName:String?,inputImage:String?){
+    fun editCourse(inputName:String?){
         val name = parseString(inputName)
-        val img = parseInt(inputImage)
         val validateInput = validateInput(name)
         if (validateInput) {
             scope.launch {
                 _course.value?.let {
-                    editCourseUseCase(it.copy(name = name, img = img))
+                    editCourseUseCase(it.copy(name = name))
                 }
             }
             finishWork()
@@ -70,6 +68,9 @@ class CourseParamViewModel(application: Application):AndroidViewModel(applicatio
     }
     private fun finishWork() {
         _finish.value = Unit
+    }
+    fun resetErrorName(){
+        _errorInputName.value = false
     }
 
     private fun parseString(str: String?): String {

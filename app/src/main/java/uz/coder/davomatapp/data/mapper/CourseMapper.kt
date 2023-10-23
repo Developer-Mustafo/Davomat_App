@@ -9,14 +9,12 @@ class CourseMapper {
     fun getCourseToCourseDbModel(course: Course): CourseDbModel {
         return CourseDbModel(
             id = course.id,
-            img = course.img,
             name = course.name
         )
     }
     fun getCourseDbModelToCourse(courseDbModel: CourseDbModel): Course {
         return Course(
             id = courseDbModel.id,
-            img = courseDbModel.img,
             name = courseDbModel.name
         )
     }
