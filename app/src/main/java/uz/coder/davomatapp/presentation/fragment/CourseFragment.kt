@@ -18,8 +18,10 @@ class CourseFragment:Fragment() {
     private var _binding:FragmentCourseBinding? = null
     private val binding:FragmentCourseBinding
         get() = _binding?:throw RuntimeException("binding not init")
-    private lateinit var viewModel: CourseViewModel
     private lateinit var adapter: CourseAdapter
+    private val viewModel: CourseViewModel by lazy {
+        ViewModelProvider(this)[CourseViewModel::class.java]
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +33,6 @@ class CourseFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
         adapter = CourseAdapter({id->
              findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToAddCourseFragment2(AddCourseFragment.Edit,id))
         },{id->
@@ -57,9 +58,10 @@ class CourseFragment:Fragment() {
         }
 
         val itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(binding.rv)
-        binding.apply {
-            rv.adapter = adapter
+        itemTouchHelper.attachToRecyclerView(binding.rec)
+        with(binding){
+            rec.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            rec.adapter = adapter
         }
     }
 

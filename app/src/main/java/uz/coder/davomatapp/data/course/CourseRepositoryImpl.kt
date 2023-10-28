@@ -8,7 +8,7 @@ import uz.coder.davomatapp.data.mapper.CourseMapper
 import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.domain.coure.CourseRepository
 
-class CourseRepositoryImpl(application: Application):CourseRepository {
+class CourseRepositoryImpl(application: Application) : CourseRepository {
     private val mapper = CourseMapper()
     private val db = MyDatabase.myDatabase(application).courseDao()
     override suspend fun addCourse(course: Course) {
@@ -28,11 +28,9 @@ class CourseRepositoryImpl(application: Application):CourseRepository {
         return mapper.getCourseDbModelToCourse(courseDbModel)
     }
 
-    override fun getCourseList(): LiveData<List<Course>> {
-        return MediatorLiveData<List<Course>>().apply {
-            addSource(db.getCourseList()){
-                mapper.getCourseList(it)
-            }
+    override fun getCourseList(): LiveData<List<Course>> = MediatorLiveData<List<Course>>().apply {
+        addSource(db.getCourseList()){
+            value = mapper.getCourseList(it)
         }
     }
 }

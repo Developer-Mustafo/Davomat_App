@@ -67,7 +67,9 @@ class CourseParamViewModel(application: Application):AndroidViewModel(applicatio
         return repo
     }
     private fun finishWork() {
-        _finish.value = Unit
+        viewModelScope.launch {
+            _finish.value = Unit
+        }
     }
     fun resetErrorName(){
         _errorInputName.value = false

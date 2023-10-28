@@ -86,7 +86,9 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     }
 
     private fun finishWork() {
-        _finish.value = Unit
+        viewModelScope.launch {
+            _finish.value = Unit
+        }
     }
 
     private fun parseString(str: String?): String {
