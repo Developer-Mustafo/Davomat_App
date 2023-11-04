@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.fragment.HomeFragment">
+
     <androidx.appcompat.widget.AppCompatImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:scaleType="centerCrop"
+        android:id="@+id/studentAdd"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:background="@drawable/item_for_davomat_app"
+        android:scaleType="fitXY"
         android:src="@drawable/college_education_graduate_svgrepo_com"
-        android:layout_margin="15dp"
-        android:id="@+id/studentAdd"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+
     <androidx.appcompat.widget.AppCompatImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:id="@+id/courseAdd"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:background="@drawable/item_for_davomat_app"
         android:scaleType="centerCrop"
         android:src="@drawable/online_education_elearning_training_video_course_laptop_svgrepo_com"
-        android:layout_margin="15dp"
-        android:id="@+id/courseAdd"/>
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+</androidx.constraintlayout.widget.ConstraintLayout>
