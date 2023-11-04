@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.ADD,0))
             }
             courseAdd.setOnClickListener {
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddCourseFragment2(AddCourseFragment.Add,0))
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddCourseFragment2(0))
             }
         }
     }

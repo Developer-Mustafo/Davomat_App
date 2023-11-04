@@ -15,7 +15,6 @@ import uz.coder.davomatapp.databinding.FragmentAddCourseBinding
 import uz.coder.davomatapp.presentation.viewmodel.CourseParamViewModel
 
 class AddCourseFragment : Fragment() {
-    private val args by navArgs<AddCourseFragmentArgs>()
     private var _binding:FragmentAddCourseBinding? = null
     private val binding:FragmentAddCourseBinding
         get() = _binding?:throw RuntimeException("binding not init")
@@ -32,11 +31,7 @@ class AddCourseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CourseParamViewModel::class.java]
-        when(args.status){
-            Add->launchAdd()
-            Edit->launchEdit()
-            else->throw RuntimeException("status not found ${args.status}")
-        }
+        launchAdd()
         with(binding){
             name.addTextChangedListener(object :TextWatcher{
                 override fun beforeTextChanged(
@@ -70,20 +65,6 @@ class AddCourseFragment : Fragment() {
         }
     }
 
-    private fun launchEdit() {
-        //todo editCourse
-        with(binding){
-            viewModel.getById(args.id)
-            viewModel.course.observe(viewLifecycleOwner){
-                name.setText(it.name)
-            }
-            save.setOnClickListener {
-                val inputName = name.text.toString()
-                viewModel.addCourse(inputName)
-            }
-        }
-    }
-
     private fun launchAdd() {
         //todo addCourse
         with(binding){
@@ -92,10 +73,5 @@ class AddCourseFragment : Fragment() {
                 viewModel.addCourse(inputName)
             }
         }
-    }
-
-    companion object {
-       const val Add = "add"
-       const val Edit = "edit"
     }
 }

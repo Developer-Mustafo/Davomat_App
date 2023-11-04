@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (navController.currentDestination?.id == R.id.homeFragment) {
+        if (navController.currentDestination!!.id == R.id.homeFragment) {
             super.onBackPressed()
         } else {
             navController.navigateUp()

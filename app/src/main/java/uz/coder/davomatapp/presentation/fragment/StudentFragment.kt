@@ -51,8 +51,9 @@ class StudentFragment : Fragment() {
         with(binding){
            spinner.adapter = SpinnerAdapter(listForGender)
             viewModel.list.observe(viewLifecycleOwner){
-                spinnerCourse.adapter = SpinnerAdapter(it)
-                listCourse = it
+                val list = try { it }catch (e:RuntimeException){ null }
+                listCourse = ArrayList(list?: listOf("Kurs Qo'shish"))
+                spinnerCourse.adapter = SpinnerAdapter(listCourse)
             }
            name.addTextChangedListener(object :TextWatcher{
                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

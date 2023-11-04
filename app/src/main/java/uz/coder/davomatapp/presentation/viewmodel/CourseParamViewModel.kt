@@ -11,15 +11,10 @@ import kotlinx.coroutines.launch
 import uz.coder.davomatapp.data.course.CourseRepositoryImpl
 import uz.coder.davomatapp.domain.coure.AddCourseUseCase
 import uz.coder.davomatapp.domain.coure.Course
-import uz.coder.davomatapp.domain.coure.EditCourseUseCase
-import uz.coder.davomatapp.domain.coure.GetCourseByIdUseCase
-import uz.coder.davomatapp.domain.student.Student
 
 class CourseParamViewModel(application: Application):AndroidViewModel(application) {
     private val repository = CourseRepositoryImpl(application)
     private val addCourseUseCase = AddCourseUseCase(repository)
-    private val editCourseUseCase = EditCourseUseCase(repository)
-    private val getCourseByIdUseCase = GetCourseByIdUseCase(repository)
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName:LiveData<Boolean>
         get() = _errorInputName
@@ -38,24 +33,6 @@ class CourseParamViewModel(application: Application):AndroidViewModel(applicatio
                 addCourseUseCase(Course(name = name))
             }
             finishWork()
-        }
-    }
-    fun editCourse(inputName:String?){
-        val name = parseString(inputName)
-        val validateInput = validateInput(name)
-        if (validateInput) {
-            scope.launch {
-                _course.value?.let {
-                    editCourseUseCase(it.copy(name = name))
-                }
-            }
-            finishWork()
-        }
-    }
-    fun getById(id:Int){
-        viewModelScope.launch {
-            val byIdUseCase = getCourseByIdUseCase(id)
-            _course.value = byIdUseCase
         }
     }
     private fun validateInput(name:String):Boolean{

@@ -90,9 +90,6 @@
         android:label="fragment_add_course"
         tools:layout="@layout/fragment_add_course" >
         <argument
-            android:name="status"
-            app:argType="string" />
-        <argument
             android:name="id"
             app:argType="integer" />
     </fragment>

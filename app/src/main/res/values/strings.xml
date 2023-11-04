@@ -24,4 +24,7 @@
     <string name="course_name">Course name</string>
     <string name="man">Man</string>
     <string name="error_course">Course xato yozilgan</string>
+    <string name="welcome_to_this_app">Welcome to this app</string>
+    <string name="student_qo_shish">Student qo\'shish</string>
+    <string name="kurs_qo_shish">Kurs qo\'shish</string>
 </resources>

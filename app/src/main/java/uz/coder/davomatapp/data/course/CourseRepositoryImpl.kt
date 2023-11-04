@@ -15,10 +15,6 @@ class CourseRepositoryImpl(application: Application) : CourseRepository {
         db.addCourse(mapper.getCourseToCourseDbModel(course))
     }
 
-    override suspend fun editCourse(course: Course) {
-        db.addCourse(mapper.getCourseToCourseDbModel(course))
-    }
-
     override suspend fun deleteCourse(id: Int) {
         db.deleteCourse(id)
     }
