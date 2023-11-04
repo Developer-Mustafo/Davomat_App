@@ -9,4 +9,5 @@ interface StudentRepository {
     suspend fun delete(student: Student)
     fun getAllStudentList():LiveData<List<Student>>
     suspend fun getByStudentId(id: Int):Student
+    fun getAllCourse():LiveData<List<String>>
 }

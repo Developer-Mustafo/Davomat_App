@@ -9,10 +9,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import uz.coder.davomatapp.R
 import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.student.AddStudentUseCase
 import uz.coder.davomatapp.domain.student.EditStudentUseCase
+import uz.coder.davomatapp.domain.student.GetCourseStringList
 import uz.coder.davomatapp.domain.student.GetStudentByIdUseCase
 import uz.coder.davomatapp.domain.student.Student
 
@@ -21,7 +21,9 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val addStudentUseCase = AddStudentUseCase(repository)
     private val editStudentUseCase = EditStudentUseCase(repository)
     private val getStudentByIdUseCase = GetStudentByIdUseCase(repository)
+    private val getCourseStringList = GetCourseStringList(repository)
     private val _errorInputName = MutableLiveData<Boolean>()
+    val list = getCourseStringList()
     val errorInputName:LiveData<Boolean>
         get() = _errorInputName
     private val _errorInputSurName = MutableLiveData<Boolean>()
@@ -84,7 +86,6 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
             }
         }
     }
-
     private fun finishWork() {
         viewModelScope.launch {
             _finish.value = Unit

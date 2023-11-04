@@ -10,6 +10,7 @@ import uz.coder.davomatapp.domain.student.StudentRepository
 
 class StudentRepositoryImpl(application: Application) : StudentRepository {
     private val db = MyDatabase.myDatabase(application).studentDao()
+    private val dbCourse = MyDatabase.myDatabase(application).courseDao()
     private val mapper = StudentMapper()
     override suspend fun add(student: Student) {
         db.add(mapper.getStudentToStudentDbModel(student))
@@ -33,5 +34,13 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
     }
     override suspend fun getByStudentId(id: Int): Student {
         return mapper.getStudentDbModelToStudent(db.getByStudentId(id))
+    }
+
+    override fun getAllCourse(): LiveData<List<String>> {
+        return MediatorLiveData<List<String>>().apply {
+            addSource(dbCourse.getCourseList()){
+                value = mapper.getCourseString(it)
+            }
+        }
     }
 }

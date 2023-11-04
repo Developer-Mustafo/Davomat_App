@@ -27,7 +27,7 @@ abstract class MyDatabase: RoomDatabase() {
                     return it
                 }
             }
-            val db = Room.databaseBuilder(application,MyDatabase::class.java, name).build()
+            val db = Room.databaseBuilder(application,MyDatabase::class.java, name).fallbackToDestructiveMigration().build()
             myDatabase = db
             return db
         }

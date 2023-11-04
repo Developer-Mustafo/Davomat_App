@@ -24,6 +24,7 @@ class StudentFragment : Fragment() {
     private var position:Int = 0
     private var _binding:FragmentStudentBinding? = null
     private lateinit var viewModel: StudentParamViewModel
+    private lateinit var listCourse:List<String>
     private val listForGender = listOf("Erkak","Ayol")
     private val binding:FragmentStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
@@ -49,6 +50,10 @@ class StudentFragment : Fragment() {
         }
         with(binding){
            spinner.adapter = SpinnerAdapter(listForGender)
+            viewModel.list.observe(viewLifecycleOwner){
+                spinnerCourse.adapter = SpinnerAdapter(it)
+                listCourse = it
+            }
            name.addTextChangedListener(object :TextWatcher{
                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -155,8 +160,9 @@ class StudentFragment : Fragment() {
                         val inputSurName = surname.text.toString().trim()
                         val inputPhone = phone.text.toString().trim()
                         val inputAge = age.text.toString().trim()
-                        val gender = listForGender[spinner.selectedItemPosition]
-                        viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,"aweeresdtfgy",gender)
+                        val gender = listForGender[spinner.selectedItemPosition].trim()
+                        val course = listCourse[spinnerCourse.selectedItemPosition].trim()
+                        viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,course,gender)
                         Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
             }
         }
@@ -166,13 +172,14 @@ class StudentFragment : Fragment() {
         //todo add
         binding.apply {
                 save.setOnClickListener {
-                    val inputName = name.text.toString()
-                    val inputSurName = surname.text.toString()
-                    val inputPhone = phone.text.toString()
+                    val inputName = name.text.toString().trim()
+                    val inputSurName = surname.text.toString().trim()
+                    val inputPhone = phone.text.toString().trim()
                     val inputAge = age.text.toString().trim()
-                    val gender = listForGender[spinner.selectedItemPosition]
+                    val gender = listForGender[spinner.selectedItemPosition].trim()
+                    val course = listCourse[spinnerCourse.selectedItemPosition].trim()
                     position = spinner.selectedItemPosition
-                    viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,"dsd",gender)
+                    viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,course,gender)
                     Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()
                 }
         }
