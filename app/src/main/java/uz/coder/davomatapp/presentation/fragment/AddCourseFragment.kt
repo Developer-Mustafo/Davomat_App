@@ -3,6 +3,7 @@ package uz.coder.davomatapp.presentation.fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ class AddCourseFragment : Fragment() {
     private val binding:FragmentAddCourseBinding
         get() = _binding?:throw RuntimeException("binding not init")
     private lateinit var viewModel: CourseParamViewModel
+    private val args by navArgs<AddCourseFragmentArgs>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,7 +33,10 @@ class AddCourseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CourseParamViewModel::class.java]
-        launchAdd()
+        when(args.status){
+            ADD->launchAdd()
+            EDIT->launchEdit()
+        }
         with(binding){
             name.addTextChangedListener(object :TextWatcher{
                 override fun beforeTextChanged(
@@ -65,6 +70,21 @@ class AddCourseFragment : Fragment() {
         }
     }
 
+    private fun launchEdit() {
+        //todo editCourse
+        with(binding) {
+            viewModel.getById(args.id)
+            Log.d("TAG1", "launchEdit: $id")
+            viewModel.course.observe(viewLifecycleOwner) {
+                name.setText(it.name)
+            }
+            save.setOnClickListener {
+                val inputName = name.text.toString()
+                viewModel.editCourse(inputName)
+            }
+        }
+    }
+
     private fun launchAdd() {
         //todo addCourse
         with(binding){
@@ -73,5 +93,9 @@ class AddCourseFragment : Fragment() {
                 viewModel.addCourse(inputName)
             }
         }
+    }
+    companion object{
+        const val ADD = "add"
+        const val EDIT = "edit"
     }
 }

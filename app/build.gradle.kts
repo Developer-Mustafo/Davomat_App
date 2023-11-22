@@ -8,14 +8,12 @@ plugins {
 android {
     namespace = "uz.coder.davomatapp"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "uz.coder.davomatapp"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

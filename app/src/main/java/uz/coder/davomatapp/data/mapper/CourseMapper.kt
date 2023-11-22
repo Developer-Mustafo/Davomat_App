@@ -1,9 +1,7 @@
 package uz.coder.davomatapp.data.mapper
 
 import uz.coder.davomatapp.data.course.CourseDbModel
-import uz.coder.davomatapp.data.student.StudentDbModel
 import uz.coder.davomatapp.domain.coure.Course
-import uz.coder.davomatapp.domain.student.Student
 
 class CourseMapper {
     fun getCourseToCourseDbModel(course: Course): CourseDbModel {

@@ -33,13 +33,9 @@ class CourseFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CourseAdapter { id ->
-            findNavController().navigate(
-                CourseFragmentDirections.actionCourseFragmentToCourseAboutFragment(
-                    id
-                )
-            )
-        }
+        adapter = CourseAdapter ({id->
+            findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToAddCourseFragment2(id,AddCourseFragment.EDIT))
+        })
         viewModel.list.observe(viewLifecycleOwner){
             adapter.submitList(it)
         }

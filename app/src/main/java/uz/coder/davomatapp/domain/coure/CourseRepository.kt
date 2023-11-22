@@ -7,4 +7,5 @@ interface CourseRepository {
     suspend fun deleteCourse(id:Int)
     suspend fun getByIdCourse(id: Int):Course
     fun getCourseList():LiveData<List<Course>>
+    suspend fun editCourse(course: Course)
 }

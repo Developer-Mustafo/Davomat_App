@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -41,7 +40,7 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val _errorInputAge = MutableLiveData<Boolean>()
     val errorInputAge:LiveData<Boolean>
         get() = _errorInputAge
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.IO)
     fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputCourse:String?,inputGender:String?){
             val name = parseString(inputName)
             val surName = parseString(inputSurName)
@@ -87,7 +86,7 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
         }
     }
     private fun finishWork() {
-        viewModelScope.launch {
+        scope.launch(Dispatchers.Main) {
             _finish.value = Unit
         }
     }
@@ -135,7 +134,7 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
         _errorInputPhone.value = false
     }
     fun getItemById(id:Int){
-         viewModelScope.launch {
+         scope.launch(Dispatchers.Main) {
              val student = getStudentByIdUseCase(id)
              _student.value = student
          }

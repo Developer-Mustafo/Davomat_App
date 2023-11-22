@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import uz.coder.davomatapp.domain.student.Student
 
 @Dao
 interface StudentDao {

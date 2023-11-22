@@ -27,4 +27,10 @@
     <string name="welcome_to_this_app">Welcome to this app</string>
     <string name="student_qo_shish">Student qo\'shish</string>
     <string name="kurs_qo_shish">Kurs qo\'shish</string>
+    <string name="ism">Ism</string>
+    <string name="familiya">Familiya</string>
+    <string name="telefon_raqami">Telefon raqami</string>
+    <string name="jinsi">Jinsi</string>
+    <string name="guruhi">Guruhi</string>
+    <string name="yosh">Yosh</string>
 </resources>

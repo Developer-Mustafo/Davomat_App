@@ -33,7 +33,11 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
         }
     }
     override suspend fun getByStudentId(id: Int): Student {
-        return mapper.getStudentDbModelToStudent(db.getByStudentId(id))
+        return try {
+            mapper.getStudentDbModelToStudent(db.getByStudentId(id))
+        }catch (e:Exception){
+            Student(name="", surname = "", age = 0, phone = "", gender = "", course = "")
+        }
     }
 
     override fun getAllCourse(): LiveData<List<String>> {

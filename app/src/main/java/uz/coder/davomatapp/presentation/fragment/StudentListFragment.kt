@@ -41,7 +41,7 @@ class StudentListFragment : Fragment() {
             }
         },{id->
             findNavController().navigate(StudentListFragmentDirections.actionStudentListFragmentToStudentFragment(StudentFragment.EDIT,
-                id?:0
+                id
             ))
         })
         viewModel.list.observe(viewLifecycleOwner){

@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.data.course.CourseRepositoryImpl
-import uz.coder.davomatapp.domain.coure.AddCourseUseCase
 import uz.coder.davomatapp.domain.coure.DeleteCourseUseCase
 import uz.coder.davomatapp.domain.coure.GetCourseListUseCase
 

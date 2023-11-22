@@ -51,8 +51,8 @@ class StudentFragment : Fragment() {
         with(binding){
            spinner.adapter = SpinnerAdapter(listForGender)
             viewModel.list.observe(viewLifecycleOwner){
-                val list = try { it }catch (e:RuntimeException){ null }
-                listCourse = ArrayList(list?: listOf("Kurs Qo'shish"))
+                val list = try { it }catch (e:RuntimeException){ listOf("Kurs Qo'shish kerak") }
+                listCourse = ArrayList(list?: listOf("Kurs Qo'shish kerak"))
                 spinnerCourse.adapter = SpinnerAdapter(listCourse)
             }
            name.addTextChangedListener(object :TextWatcher{
@@ -178,7 +178,11 @@ class StudentFragment : Fragment() {
                     val inputPhone = phone.text.toString().trim()
                     val inputAge = age.text.toString().trim()
                     val gender = listForGender[spinner.selectedItemPosition].trim()
-                    val course = listCourse[spinnerCourse.selectedItemPosition].trim()
+                    val course = try {
+                        listCourse[spinnerCourse.selectedItemPosition].trim()
+                    }catch (e:Exception){
+                        ""
+                    }
                     position = spinner.selectedItemPosition
                     viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,course,gender)
                     Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()

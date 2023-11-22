@@ -29,4 +29,8 @@ class CourseRepositoryImpl(application: Application) : CourseRepository {
             value = mapper.getCourseList(it)
         }
     }
+
+    override suspend fun editCourse(course: Course) {
+        db.addCourse(mapper.getCourseToCourseDbModel(course))
+    }
 }

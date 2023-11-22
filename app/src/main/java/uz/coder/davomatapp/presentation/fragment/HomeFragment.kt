@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -29,7 +28,7 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.ADD,0))
             }
             courseAdd.setOnClickListener {
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddCourseFragment2(0))
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddCourseFragment2(0,AddCourseFragment.ADD))
             }
         }
     }

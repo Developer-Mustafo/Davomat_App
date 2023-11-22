@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import uz.coder.davomatapp.data.course.CourseDao
 import uz.coder.davomatapp.data.course.CourseDbModel
-import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.data.student.StudentDao
 import uz.coder.davomatapp.data.student.StudentDbModel
 

@@ -1,6 +1,6 @@
 package uz.coder.davomatapp.presentation.adapter
 
-import android.net.Uri
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -9,7 +9,7 @@ import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ItemStudentBinding
 import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.callback.DiffCallBack
-import java.io.File
+
 
 class AdapterStudent(private val onclick:(Int)->Unit, private val update:(Int)->Unit):ListAdapter<Student,AdapterStudent.VH>(
     DiffCallBack()
@@ -22,6 +22,12 @@ class AdapterStudent(private val onclick:(Int)->Unit, private val update:(Int)->
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
+        val img = when(getItem(position).gender){
+            "Erkak"-> R.drawable.avatar_svgrepo_com
+            "Ayol"->   R.drawable.avatar_svgrepo_com__1_
+            else->R.drawable.avatar_svgrepo_com
+        }
+        holder.binding.avatar.setImageResource(img)
         holder.binding.name.text = getItem(position).name
         holder.binding.surname.text = getItem(position).surname
         holder.binding.edit.setOnClickListener { update.invoke(getItem(position).id) }

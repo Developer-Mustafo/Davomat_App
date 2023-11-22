@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (navController.currentDestination!!.id == R.id.homeFragment) {
             super.onBackPressed()
