@@ -24,12 +24,8 @@ class MainActivity : AppCompatActivity() {
             NavigationUI.setupWithNavController(binding.bottomNavigation,navController)
             bottomNavigation.setOnItemSelectedListener(object :NavigationBarView.OnItemSelectedListener{
                 override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                        if(item.itemId == R.id.home){
+                        if(item.itemId == R.id.home) {
                             navController.navigate(R.id.homeFragment)
-                            return true
-                        }
-                        if (item.itemId == R.id.studentList){
-                            navController.navigate(R.id.studentListFragment)
                             return true
                         }
                         if (item.itemId == R.id.course){

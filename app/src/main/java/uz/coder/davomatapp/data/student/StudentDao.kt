@@ -19,6 +19,8 @@ interface StudentDao {
 
     @Query("select * from student")
     fun getAllStudentList():LiveData<List<StudentDbModel>>
+    @Query("select * from student where courseId = :id")
+    fun getCourseByIdStudents(id:Int):LiveData<List<StudentDbModel>>
     @Query("select * from student where id = :id limit 1")
     suspend fun getByStudentId(id: Int): StudentDbModel
 }

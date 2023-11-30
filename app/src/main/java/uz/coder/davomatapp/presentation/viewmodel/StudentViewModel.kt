@@ -9,6 +9,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.student.DeleteStudentUseCase
+import uz.coder.davomatapp.domain.student.GetCourseByIdStudent
 import uz.coder.davomatapp.domain.student.GetStudentAllListUseCase
 import uz.coder.davomatapp.domain.student.Student
 
@@ -16,6 +17,7 @@ class StudentViewModel(application: Application) :AndroidViewModel(application) 
     private val repository = StudentRepositoryImpl(application)
     private val deleteStudentUseCase = DeleteStudentUseCase(repository)
     private val getStudentAllListUseCase = GetStudentAllListUseCase(repository)
+    private val getCourseByIdStudent = GetCourseByIdStudent(repository)
     val list: LiveData<List<Student>>
         get() = getStudentAllListUseCase()
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -25,6 +27,7 @@ class StudentViewModel(application: Application) :AndroidViewModel(application) 
             deleteStudentUseCase(student)
         }
     }
+    fun getCourseByIdStudents(id:Int) = getCourseByIdStudent(id)
 
     override fun onCleared() {
         super.onCleared()

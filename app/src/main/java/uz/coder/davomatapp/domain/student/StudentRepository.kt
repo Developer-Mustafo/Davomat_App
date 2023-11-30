@@ -1,6 +1,7 @@
 package uz.coder.davomatapp.domain.student
 
 import androidx.lifecycle.LiveData
+import uz.coder.davomatapp.domain.coure.Course
 
 
 interface StudentRepository {
@@ -9,5 +10,6 @@ interface StudentRepository {
     suspend fun delete(student: Student)
     fun getAllStudentList():LiveData<List<Student>>
     suspend fun getByStudentId(id: Int):Student
-    fun getAllCourse():LiveData<List<String>>
+    fun getAllCourse():LiveData<List<Course>>
+    fun getCourseByIdStudents(id: Int):LiveData<List<Student>>
 }

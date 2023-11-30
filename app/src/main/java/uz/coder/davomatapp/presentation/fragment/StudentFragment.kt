@@ -15,7 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
+import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.presentation.adapter.SpinnerAdapter
+import uz.coder.davomatapp.presentation.adapter.SpinnerStudentAdapter
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 
 
@@ -24,7 +26,7 @@ class StudentFragment : Fragment() {
     private var position:Int = 0
     private var _binding:FragmentStudentBinding? = null
     private lateinit var viewModel: StudentParamViewModel
-    private lateinit var listCourse:List<String>
+    private lateinit var listCourse:List<Course>
     private val listForGender = listOf("Erkak","Ayol")
     private val binding:FragmentStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
@@ -51,9 +53,9 @@ class StudentFragment : Fragment() {
         with(binding){
            spinner.adapter = SpinnerAdapter(listForGender)
             viewModel.list.observe(viewLifecycleOwner){
-                val list = try { it }catch (e:RuntimeException){ listOf("Kurs Qo'shish kerak") }
-                listCourse = ArrayList(list?: listOf("Kurs Qo'shish kerak"))
-                spinnerCourse.adapter = SpinnerAdapter(listCourse)
+                val list = try { it }catch (e:RuntimeException){ listOf(Course(1,"Kurse qo'shing")) } as List<Course>
+                listCourse = list
+                spinnerCourse.adapter = SpinnerStudentAdapter(listCourse)
             }
            name.addTextChangedListener(object :TextWatcher{
                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -162,8 +164,8 @@ class StudentFragment : Fragment() {
                         val inputPhone = phone.text.toString().trim()
                         val inputAge = age.text.toString().trim()
                         val gender = listForGender[spinner.selectedItemPosition].trim()
-                        val course = listCourse[spinnerCourse.selectedItemPosition].trim()
-                        viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,course,gender)
+                        val course = listCourse[spinnerCourse.selectedItemPosition]
+                        viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,course.name,gender,course.id.toString())
                         Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
             }
         }
@@ -179,12 +181,12 @@ class StudentFragment : Fragment() {
                     val inputAge = age.text.toString().trim()
                     val gender = listForGender[spinner.selectedItemPosition].trim()
                     val course = try {
-                        listCourse[spinnerCourse.selectedItemPosition].trim()
+                        listCourse[spinnerCourse.selectedItemPosition]
                     }catch (e:Exception){
-                        ""
+                        Course(1,"Kurs qo'shing")
                     }
                     position = spinner.selectedItemPosition
-                    viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,course,gender)
+                    viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,course.name,gender,course.id.toString())
                     Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()
                 }
         }

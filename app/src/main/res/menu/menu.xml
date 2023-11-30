@@ -5,10 +5,6 @@
     android:title="@string/home"
     android:icon="@drawable/home_1_svgrepo_com"
     app:showAsAction="ifRoom"/>
-    <item android:id="@+id/studentList"
-    android:title="@string/students"
-    android:icon="@drawable/students"
-    app:showAsAction="ifRoom"/>
     <item android:id="@+id/course"
     android:title="@string/course"
     android:icon="@drawable/course_tile_sort_svgrepo_com"

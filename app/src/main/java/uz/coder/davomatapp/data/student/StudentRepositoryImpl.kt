@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import uz.coder.davomatapp.data.mapper.StudentMapper
 import uz.coder.davomatapp.data.db.MyDatabase
+import uz.coder.davomatapp.data.mapper.CourseMapper
+import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.domain.student.StudentRepository
 
@@ -12,6 +14,7 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
     private val db = MyDatabase.myDatabase(application).studentDao()
     private val dbCourse = MyDatabase.myDatabase(application).courseDao()
     private val mapper = StudentMapper()
+    private val courseMapper = CourseMapper()
     override suspend fun add(student: Student) {
         db.add(mapper.getStudentToStudentDbModel(student))
     }
@@ -40,10 +43,18 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
         }
     }
 
-    override fun getAllCourse(): LiveData<List<String>> {
-        return MediatorLiveData<List<String>>().apply {
+    override fun getAllCourse(): LiveData<List<Course>> {
+        return MediatorLiveData<List<Course>>().apply {
             addSource(dbCourse.getCourseList()){
-                value = mapper.getCourseString(it)
+                value = courseMapper.getCourseList(it)
+            }
+        }
+    }
+
+    override fun getCourseByIdStudents(id: Int): LiveData<List<Student>> {
+        return MediatorLiveData<List<Student>>().apply {
+            addSource(db.getCourseByIdStudents(id)){
+                value = mapper.getStudentList(it)
             }
         }
     }

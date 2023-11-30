@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.student.AddStudentUseCase
 import uz.coder.davomatapp.domain.student.EditStudentUseCase
-import uz.coder.davomatapp.domain.student.GetCourseStringList
+import uz.coder.davomatapp.domain.student.GetCourseList
 import uz.coder.davomatapp.domain.student.GetStudentByIdUseCase
 import uz.coder.davomatapp.domain.student.Student
 
@@ -20,9 +20,9 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val addStudentUseCase = AddStudentUseCase(repository)
     private val editStudentUseCase = EditStudentUseCase(repository)
     private val getStudentByIdUseCase = GetStudentByIdUseCase(repository)
-    private val getCourseStringList = GetCourseStringList(repository)
+    private val getCourseList = GetCourseList(repository)
     private val _errorInputName = MutableLiveData<Boolean>()
-    val list = getCourseStringList()
+    val list = getCourseList()
     val errorInputName:LiveData<Boolean>
         get() = _errorInputName
     private val _errorInputSurName = MutableLiveData<Boolean>()
@@ -41,17 +41,18 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     val errorInputAge:LiveData<Boolean>
         get() = _errorInputAge
     private val scope = CoroutineScope(Dispatchers.IO)
-    fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputCourse:String?,inputGender:String?){
+    fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputCourse:String?,inputGender:String?,inputCourseId: String?){
             val name = parseString(inputName)
             val surName = parseString(inputSurName)
             val phone = parseString(inputPhone)
             val age = parseInt(inputAge)
             val course = parseString(inputCourse)
             val gender = parseString(inputGender)
-            val validateInput = validateInput(name, surName, phone,age,course, gender)
+            val courseId = parseInt(inputCourseId)
+            val validateInput = validateInput(name, surName, phone,age,course, gender,courseId)
             if (validateInput) {
                 scope.launch {
-                addStudentUseCase(Student(name = name, surname = surName,age=age, phone = phone, course = course,gender = gender))
+                addStudentUseCase(Student(name = name, surname = surName,age=age, phone = phone, course = course,gender = gender, courseId = courseId))
             }
                 finishWork()
             }
@@ -67,18 +68,19 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
         }
     }
 
-    fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputCourse:String?,inputGender:String?){
+    fun editStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputCourse:String?,inputGender:String?,inputCourseId: String?){
         val name = parseString(inputName)
         val surName = parseString(inputSurName)
         val phone = parseString(inputPhone)
         val age = parseInt(inputAge)
         val course = parseString(inputCourse)
         val gender = parseString(inputGender)
-        val validateInput = validateInput(name, surName, phone,age,course, gender)
+        val courseId = parseInt(inputCourseId)
+        val validateInput = validateInput(name, surName, phone,age,course, gender,courseId)
         if (validateInput) {
             scope.launch {
             _student.value?.let {
-                    val item = it.copy(name = name, surname = surName, phone = phone, age = age, course = course, gender = gender)
+                    val item = it.copy(name = name, surname = surName, phone = phone, age = age, course = course, gender = gender, courseId = courseId)
                     editStudentUseCase(item)
                 }
                 finishWork()
@@ -95,7 +97,7 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
         return str?.trim()?:""
     }
 
-    private fun validateInput(name: String, surName: String, phone: String,age:Int,course:String,gender:String): Boolean {
+    private fun validateInput(name: String, surName: String, phone: String,age:Int,course:String,gender:String,courseId:Int): Boolean {
         var repo = true
         if (name.isBlank()){
             repo = false
@@ -105,6 +107,9 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
             repo = false
         }
         if (gender.isBlank()){
+            repo = false
+        }
+        if (courseId <= 0){
             repo = false
         }
         if (age <=0){

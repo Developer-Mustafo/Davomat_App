@@ -35,6 +35,8 @@ class CourseFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = CourseAdapter ({id->
             findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToAddCourseFragment2(id,AddCourseFragment.EDIT))
+        },{id->
+            findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToCourseAboutFragment(id))
         })
         viewModel.list.observe(viewLifecycleOwner){
             adapter.submitList(it)

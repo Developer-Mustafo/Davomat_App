@@ -8,7 +8,7 @@ import uz.coder.davomatapp.databinding.ItemCourseBinding
 import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.presentation.callback.CourseDiffUtil
 
-class CourseAdapter(private val edit:(Int)->Unit):ListAdapter<Course,CourseAdapter.VH>(CourseDiffUtil()) {
+class CourseAdapter(private val edit:(Int)->Unit,private val onClick:(Int)->Unit):ListAdapter<Course,CourseAdapter.VH>(CourseDiffUtil()) {
     inner class VH(val binding: ItemCourseBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -19,6 +19,9 @@ class CourseAdapter(private val edit:(Int)->Unit):ListAdapter<Course,CourseAdapt
         holder.binding.name.text = getItem(position).name
         holder.binding.edit.setOnClickListener {
             edit.invoke(getItem(position).id)
+        }
+        holder.itemView.setOnClickListener {
+            onClick.invoke(getItem(position).id)
         }
     }
 }

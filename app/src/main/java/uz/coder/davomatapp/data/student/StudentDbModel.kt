@@ -13,5 +13,6 @@ class StudentDbModel(
     val age:Int,
     val phone:String,
     val gender:String,
-    val course:String
+    val course:String,
+    val courseId:Int = Student.UNDEFINE_ID
 )
