@@ -14,4 +14,6 @@ interface AdminDao {
     suspend fun deleteAdmin(id:Int)
     @Query("select * from admin where id = :id")
     suspend fun getAdminId(id: Int): AdminDbModel
+    @Query("select * from admin where password =:password and email =:email limit 1")
+    suspend fun getLoginOrSign(email:String,password:String):AdminDbModel
 }

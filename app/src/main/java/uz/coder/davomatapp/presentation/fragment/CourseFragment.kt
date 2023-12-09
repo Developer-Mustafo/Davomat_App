@@ -1,5 +1,6 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentCourseBinding
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.adapter.CourseAdapter
 import uz.coder.davomatapp.presentation.viewmodel.CourseViewModel
 
@@ -33,12 +36,13 @@ class CourseFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         adapter = CourseAdapter ({id->
             findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToAddCourseFragment2(id,AddCourseFragment.EDIT))
         },{id->
             findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToCourseAboutFragment(id))
         })
-        viewModel.list.observe(viewLifecycleOwner){
+        viewModel.list(sharedPreferences.getInt(ID,1)).observe(viewLifecycleOwner){
             adapter.submitList(it)
         }
         val callback = object :ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){

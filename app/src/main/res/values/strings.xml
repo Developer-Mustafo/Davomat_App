@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">Davomat App</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="student">Student</string>
     <string name="setting">Setting</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login_in">Login in</string>
     <string name="student_name">Student name</string>
     <string name="student_surname">Student surname</string>
     <string name="saqlash">Saqlash</string>
     <string name="student_phone">Student phone</string>
+    <string name="not_registered_registration">Not registered? registration</string>
     <string name="Name">Nomi xato yozilgan</string>
     <string name="SurName">Familiya xato yozilgan\n</string>
     <string name="Phone">Telefon xato yozilgan</string>
@@ -34,4 +35,16 @@
     <string name="guruhi">Guruhi</string>
     <string name="yosh">Yosh</string>
     <string name="settings">Settings</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="name">Name</string>
+    <string name="error_email">Email xato kiritilgan\n</string>
+    <string name="error_password">Parol xato kiritilgan</string>
+    <string name="error_name">Ism xato yozilgan</string>
+    <string name="haqida">Bu Davomat app ilovasi bo\'lib uning yordamida o\'quvchilarni davomat qilishingiz mumkun.\nBu ilovani Mustafo ishladi.\nYordamchilar: Abdulaziz, Lazizbek</string>
+    <string name="davomi">mustaforahimov30@gmail.com</string>
+    <string name="davomi2">Bu meni elektron pochtam 👆</string>
+    <string name="jinsingizni_tanlang">Jinsingizni tanlang:</string>
+    <string name="kursni_tanlang">Kursni tanlang:</string>
 </resources>

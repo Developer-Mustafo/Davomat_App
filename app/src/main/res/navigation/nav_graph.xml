@@ -41,6 +41,12 @@
         <action
             android:id="@+id/action_settingFragment_to_studentFragment"
             app:destination="@id/studentFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_haqidaFragment"
+            app:destination="@id/haqidaFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_editAdminFragment"
+            app:destination="@id/editAdminFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentAboutFragment"
@@ -95,5 +101,19 @@
         <action
             android:id="@+id/action_courseAboutFragment_to_studentFragment"
             app:destination="@id/studentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/haqidaFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.HaqidaFragment"
+        android:label="fragment_haqida"
+        tools:layout="@layout/fragment_haqida" />
+    <fragment
+        android:id="@+id/editAdminFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.EditAdminFragment"
+        android:label="fragment_edit_admin"
+        tools:layout="@layout/fragment_edit_admin" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 </navigation>

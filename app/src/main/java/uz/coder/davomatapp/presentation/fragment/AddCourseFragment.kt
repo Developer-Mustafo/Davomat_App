@@ -1,5 +1,7 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentAddCourseBinding
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.viewmodel.CourseParamViewModel
 
 class AddCourseFragment : Fragment() {
@@ -32,9 +35,10 @@ class AddCourseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
         viewModel = ViewModelProvider(this)[CourseParamViewModel::class.java]
         when(args.status){
-            ADD->launchAdd()
+            ADD->launchAdd(sharedPreferences)
             EDIT->launchEdit()
         }
         with(binding){
@@ -85,12 +89,12 @@ class AddCourseFragment : Fragment() {
         }
     }
 
-    private fun launchAdd() {
+    private fun launchAdd(sharedPreferences: SharedPreferences) {
         //todo addCourse
         with(binding){
             save.setOnClickListener {
                 val inputName = name.text.toString()
-                viewModel.addCourse(inputName)
+                viewModel.addCourse(inputName,sharedPreferences.getInt(ID,1).toString())
             }
         }
     }

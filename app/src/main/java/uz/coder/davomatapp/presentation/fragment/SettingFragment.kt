@@ -1,23 +1,30 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentSettingBinding
 import uz.coder.davomatapp.domain.admin.ItemSettingModel
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.adapter.SettingAdapter
+import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
 
 class SettingFragment : Fragment() {
-    private var id = 0
     private var _binding: FragmentSettingBinding? = null
     private val binding: FragmentSettingBinding
         get() = _binding?:throw RuntimeException("binding not init")
     private val list = mutableListOf<ItemSettingModel>()
     private lateinit var adapter: SettingAdapter
+    private lateinit var viewModel: AdminViewModel
+    private var adminId:Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,13 +34,38 @@ class SettingFragment : Fragment() {
         return binding.root
     }
 
+    private fun editSetting(sharedPreferences: SharedPreferences) {
+        findNavController().navigate(SettingFragmentDirections.actionSettingFragmentToEditAdminFragment(sharedPreferences.getInt(ID,1)))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
+        adminId = sharedPreferences.getInt(ID,1)
+        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
+        viewModel.getAdminById(adminId)
+        viewModel.admin.observe(viewLifecycleOwner){ it ->
+            binding.apply {
+                "Ismi: ${it.name}".also { name.text = it }
+                "Telefon raqami: ${it.phone}".also { phone.text = it }
+                "Paroli: ${it.password}".also { password.text = it }
+                "Emaili: ${it.email}".also { email.text = it }
+                val img = if(it.gender == "Ayol"){
+                    R.drawable.avatar_svgrepo_com__1_
+                }else{
+                    R.drawable.avatar_svgrepo_com
+                }
+                image.setImageResource(img)
+            }
+        }
         loadData()
         adapter = SettingAdapter {
-//            when(it){
-//
-//            }
+            when(it){
+                1->
+                    editSetting(sharedPreferences)
+                2->
+                    about()
+            }
         }
         adapter.submitList(list)
         with(binding){
@@ -42,8 +74,13 @@ class SettingFragment : Fragment() {
         }
     }
 
+    private fun about() {
+        findNavController().navigate(R.id.action_settingFragment_to_haqidaFragment)
+    }
+
     private fun loadData() {
-        list.add(ItemSettingModel(++id, R.drawable.settings_svgrepo_com,"Settings"))
+        list.add(ItemSettingModel(2, R.drawable.about_svgrepo_com,"Haqida"))
+        list.add(ItemSettingModel(1, R.drawable.settings_svgrepo_com,"Sozlamalar"))
     }
 
     override fun onDestroyView() {

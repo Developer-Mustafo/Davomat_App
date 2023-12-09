@@ -1,6 +1,11 @@
 package uz.coder.davomatapp.presentation.activity
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -14,10 +19,17 @@ import uz.coder.davomatapp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var navController:NavController
     private lateinit var binding: ActivityMainBinding
+    private lateinit var editor: SharedPreferences.Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+        val id = intent.getIntExtra(ID,1)
+        editor.putInt(ID,id)
+        editor.commit()
+        Log.d("TAG", "onCreate: $id")
         binding.apply {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
              navController = navHostFragment.navController
@@ -53,5 +65,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(this, R.id.fragmentContainerView).navigateUp()
+    }
+    companion object{
+        const val ID = "id"
+        fun newIntent(context:Context,id:Int):Intent{
+            return Intent(context,MainActivity::class.java).apply {
+                putExtra(ID,id)
+            }
+        }
     }
 }

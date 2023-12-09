@@ -13,15 +13,14 @@
         android:theme="@style/Theme.DavomatApp"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.activity.StudentActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.activity.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.activity.LoginActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".presentation.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -30,6 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.activity.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

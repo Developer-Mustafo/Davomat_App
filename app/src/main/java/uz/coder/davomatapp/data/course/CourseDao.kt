@@ -14,6 +14,6 @@ interface CourseDao {
     suspend fun deleteCourse(id:Int)
     @Query("select *from course where id = :id")
     suspend fun getByIdCourse(id: Int): CourseDbModel
-    @Query("select * from course")
-    fun getCourseList(): LiveData<List<CourseDbModel>>
+    @Query("select * from course where adminId =:id")
+    fun getCourseList(id:Int): LiveData<List<CourseDbModel>>
 }

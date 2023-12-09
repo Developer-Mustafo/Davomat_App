@@ -43,9 +43,9 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
         }
     }
 
-    override fun getAllCourse(): LiveData<List<Course>> {
+    override fun getAllCourse(id: Int): LiveData<List<Course>> {
         return MediatorLiveData<List<Course>>().apply {
-            addSource(dbCourse.getCourseList()){
+            addSource(dbCourse.getCourseList(id)){
                 value = courseMapper.getCourseList(it)
             }
         }

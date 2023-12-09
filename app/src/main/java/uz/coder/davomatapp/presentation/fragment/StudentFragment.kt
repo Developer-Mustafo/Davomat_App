@@ -1,6 +1,7 @@
 package uz.coder.davomatapp.presentation.fragment
 
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
 import uz.coder.davomatapp.domain.coure.Course
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.adapter.SpinnerAdapter
 import uz.coder.davomatapp.presentation.adapter.SpinnerStudentAdapter
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
@@ -41,6 +43,8 @@ class StudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),
+            Context.MODE_PRIVATE)
         viewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
         when(args.status){
             ADD->launchAdd()
@@ -52,8 +56,8 @@ class StudentFragment : Fragment() {
         }
         with(binding){
            spinner.adapter = SpinnerAdapter(listForGender)
-            viewModel.list.observe(viewLifecycleOwner){
-                val list = try { it }catch (e:RuntimeException){ listOf(Course(1,"Kurse qo'shing")) } as List<Course>
+            viewModel.list(sharedPreferences.getInt(ID,1)).observe(viewLifecycleOwner){
+                val list = try { it }catch (e:RuntimeException){ listOf(Course(id=1, name = "Kurs qo'shing")) } as List<Course>
                 listCourse = list
                 spinnerCourse.adapter = SpinnerStudentAdapter(listCourse)
             }
@@ -183,7 +187,7 @@ class StudentFragment : Fragment() {
                     val course = try {
                         listCourse[spinnerCourse.selectedItemPosition]
                     }catch (e:Exception){
-                        Course(1,"Kurs qo'shing")
+                        Course(id = 1, name = "Kurs qo'shing")
                     }
                     position = spinner.selectedItemPosition
                     viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,course.name,gender,course.id.toString())

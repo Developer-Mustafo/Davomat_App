@@ -7,13 +7,15 @@ class CourseMapper {
     fun getCourseToCourseDbModel(course: Course): CourseDbModel {
         return CourseDbModel(
             id = course.id,
-            name = course.name
+            name = course.name,
+            adminId = course.adminId
         )
     }
     fun getCourseDbModelToCourse(courseDbModel: CourseDbModel): Course {
         return Course(
             id = courseDbModel.id,
-            name = courseDbModel.name
+            name = courseDbModel.name,
+            adminId = courseDbModel.adminId
         )
     }
 

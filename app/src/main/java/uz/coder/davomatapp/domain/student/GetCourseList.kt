@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import uz.coder.davomatapp.domain.coure.Course
 
 class GetCourseList(private val repository: StudentRepository) {
-    operator fun invoke():LiveData<List<Course>>{
-        return repository.getAllCourse()
+    operator fun invoke(id:Int):LiveData<List<Course>>{
+        return repository.getAllCourse(id)
     }
 }

@@ -28,16 +28,26 @@ class CourseParamViewModel(application: Application):AndroidViewModel(applicatio
     val course:LiveData<Course>
         get() = _course
     private val scope = CoroutineScope(Dispatchers.IO)
-    fun addCourse(inputName:String?){
+    fun addCourse(inputName:String?,inputAdminId:String?){
         val name = parseString(inputName)
-        val validateInput = validateInput(name)
+        val id = parseInt(inputAdminId)
+        val validateInput = validateInput(id,name)
         if (validateInput) {
             scope.launch {
-                addCourseUseCase(Course(name = name))
+                addCourseUseCase(Course(name = name, adminId = id))
             }
             finishWork()
         }
     }
+
+    private fun parseInt(str: String?): Int {
+        return try {
+            str?.toInt()?:0
+        }catch (e:Exception){
+            0
+        }
+    }
+
     fun getById(id:Int){
         scope.launch(Dispatchers.Main) {
             val course = getCourseByIdUseCase(id)
@@ -56,6 +66,17 @@ class CourseParamViewModel(application: Application):AndroidViewModel(applicatio
             }
             finishWork()
         }
+    }
+    private fun validateInput(adminId:Int, name:String):Boolean{
+        var repo = true
+        if (name.isBlank()){
+            repo = false
+            _errorInputName.value = true
+        }
+        if (adminId <=0){
+            repo = false
+        }
+        return repo
     }
     private fun validateInput(name:String):Boolean{
         var repo = true

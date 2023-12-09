@@ -24,8 +24,8 @@ class CourseRepositoryImpl(application: Application) : CourseRepository {
         return mapper.getCourseDbModelToCourse(courseDbModel)
     }
 
-    override fun getCourseList(): LiveData<List<Course>> = MediatorLiveData<List<Course>>().apply {
-        addSource(db.getCourseList()){
+    override fun getCourseList(id: Int): LiveData<List<Course>> = MediatorLiveData<List<Course>>().apply {
+        addSource(db.getCourseList(id)){
             value = mapper.getCourseList(it)
         }
     }

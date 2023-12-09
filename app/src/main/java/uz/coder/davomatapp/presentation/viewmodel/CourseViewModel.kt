@@ -14,7 +14,7 @@ class CourseViewModel(application: Application):AndroidViewModel(application) {
     private val repository = CourseRepositoryImpl(application)
     private val getCourseListUseCase = GetCourseListUseCase(repository)
     private val deleteCourseUseCase = DeleteCourseUseCase(repository)
-    val list = getCourseListUseCase()
+    fun list(id: Int) = getCourseListUseCase(id)
     private val scope = CoroutineScope(Dispatchers.Default)
     fun deleteCourse(id:Int){
         scope.launch {

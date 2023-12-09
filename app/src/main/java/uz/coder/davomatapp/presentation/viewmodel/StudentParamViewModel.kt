@@ -21,8 +21,8 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val editStudentUseCase = EditStudentUseCase(repository)
     private val getStudentByIdUseCase = GetStudentByIdUseCase(repository)
     private val getCourseList = GetCourseList(repository)
+    fun list(id: Int) = getCourseList(id)
     private val _errorInputName = MutableLiveData<Boolean>()
-    val list = getCourseList()
     val errorInputName:LiveData<Boolean>
         get() = _errorInputName
     private val _errorInputSurName = MutableLiveData<Boolean>()

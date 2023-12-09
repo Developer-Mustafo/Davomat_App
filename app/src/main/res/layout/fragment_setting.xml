@@ -27,11 +27,12 @@
 
             <TextView
                 android:id="@+id/name"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font1"
                 android:text="@string/ism"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -39,12 +40,13 @@
                 app:layout_constraintTop_toBottomOf="@id/image" />
 
             <TextView
-                android:id="@+id/surname"
+                android:id="@+id/phone"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font1"
-                android:text="@string/familiya"
-                android:textAlignment="center"
+                android:text="@string/phone"
+                android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,30 +54,32 @@
                 app:layout_constraintTop_toBottomOf="@id/name" />
 
             <TextView
-                android:id="@+id/age"
+                android:id="@+id/email"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font1"
-                android:text="@string/yosh"
-                android:textAlignment="center"
+                android:text="@string/email"
+                android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/surname" />
+                app:layout_constraintTop_toBottomOf="@id/phone" />
 
             <TextView
-                android:id="@+id/phone"
+                android:id="@+id/password"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font1"
-                android:text="@string/telefon_raqami"
-                android:textAlignment="center"
+                android:text="@string/password"
+                android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/age" />
+                app:layout_constraintTop_toBottomOf="@id/email" />
 
             <ImageView
                 android:id="@+id/image"
