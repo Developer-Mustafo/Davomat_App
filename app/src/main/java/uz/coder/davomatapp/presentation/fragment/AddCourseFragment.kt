@@ -1,6 +1,6 @@
 package uz.coder.davomatapp.presentation.fragment
 
-import android.content.Context
+import  android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -61,7 +62,7 @@ class AddCourseFragment : Fragment() {
                 }
             })
             viewModel.finish.observe(viewLifecycleOwner){
-                findNavController().navigate(R.id.homeFragment)
+                findNavController().navigate(R.id.courseFragment)
             }
             viewModel.errorInputName.observe(viewLifecycleOwner){
                 val massage = if (it){
@@ -85,6 +86,7 @@ class AddCourseFragment : Fragment() {
             save.setOnClickListener {
                 val inputName = name.text.toString()
                 viewModel.editCourse(inputName)
+                Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -95,6 +97,7 @@ class AddCourseFragment : Fragment() {
             save.setOnClickListener {
                 val inputName = name.text.toString()
                 viewModel.addCourse(inputName,sharedPreferences.getInt(ID,1).toString())
+                Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()
             }
         }
     }

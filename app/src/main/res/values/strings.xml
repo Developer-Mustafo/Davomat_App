@@ -45,6 +45,10 @@
     <string name="haqida">Bu Davomat app ilovasi bo\'lib uning yordamida o\'quvchilarni davomat qilishingiz mumkun.\nBu ilovani Mustafo ishladi.\nYordamchilar: Abdulaziz, Lazizbek</string>
     <string name="davomi">mustaforahimov30@gmail.com</string>
     <string name="davomi2">Bu meni elektron pochtam 👆</string>
+    <string name="davomi3">Yoki telegramim 👇</string>
+    <string name="davomi4">https://t.me/mustafo_rahim_2009</string>
+    <string name="davomi5">Fikrlar yoki takliflarni kutib qolaman !!!</string>
     <string name="jinsingizni_tanlang">Jinsingizni tanlang:</string>
     <string name="kursni_tanlang">Kursni tanlang:</string>
+    <string name="edit">O\'zgartirish</string>
 </resources>

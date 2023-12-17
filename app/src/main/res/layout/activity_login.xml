@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="131dp"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/sign_up"
+        android:text="@string/login_in"
         android:textColor="@color/white"
         android:textSize="45sp"
         android:textStyle="italic"

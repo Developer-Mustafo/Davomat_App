@@ -1,60 +1,61 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import uz.coder.davomatapp.R
+import uz.coder.davomatapp.databinding.FragmentEditAdminBinding
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
+import uz.coder.davomatapp.presentation.adapter.SpinnerAdapter
+import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EditAdminFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EditAdminFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var viewModel: AdminViewModel
+    private val listForGender = listOf("Erkak","Ayol")
+    private var _binding:FragmentEditAdminBinding? = null
+    private val binding:FragmentEditAdminBinding
+        get() = _binding?:throw RuntimeException("binding not init")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_admin, container, false)
+        _binding = FragmentEditAdminBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditAdminFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditAdminFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
+        val id = sharedPreferences.getInt(ID, 1)
+        viewModel.getAdminById(id)
+        with(binding){
+        viewModel.admin.observe(viewLifecycleOwner){
+                name.setText(it.name)
+                email.setText(it.email)
+                password.setText(it.password)
+                phone.setText(it.phone)
+                spinner.adapter = SpinnerAdapter(listForGender)
             }
+            edit.setOnClickListener {
+                viewModel.editAdmin(name.text.toString(),email.text.toString(),phone.text.toString(),password.text.toString(),listForGender[spinner.selectedItemPosition])
+                Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
+            }
+        }
+        viewModel.finish.observe(viewLifecycleOwner){
+            findNavController().navigate(R.id.action_editAdminFragment_to_settingFragment)
+        }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

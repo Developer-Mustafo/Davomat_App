@@ -81,9 +81,8 @@ class LoginActivity : AppCompatActivity() {
             viewModel.finish.observe(this@LoginActivity){
                 viewModel.admin.observe(this@LoginActivity){
                     startActivity(MainActivity.newIntent(this@LoginActivity,it.id))
-                    finish()
                 }
-                Log.d("AAA", "onCreate: finish")
+                finish()
             }
         }
     }

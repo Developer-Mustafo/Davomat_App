@@ -21,7 +21,7 @@ class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding: FragmentSettingBinding
         get() = _binding?:throw RuntimeException("binding not init")
-    private val list = mutableListOf<ItemSettingModel>()
+    private val list = listOf(ItemSettingModel(2, R.drawable.about_svgrepo_com,"Haqida"),ItemSettingModel(1, R.drawable.settings_svgrepo_com,"Sozlamalar"))
     private lateinit var adapter: SettingAdapter
     private lateinit var viewModel: AdminViewModel
     private var adminId:Int = 0
@@ -58,7 +58,6 @@ class SettingFragment : Fragment() {
                 image.setImageResource(img)
             }
         }
-        loadData()
         adapter = SettingAdapter {
             when(it){
                 1->
@@ -76,11 +75,6 @@ class SettingFragment : Fragment() {
 
     private fun about() {
         findNavController().navigate(R.id.action_settingFragment_to_haqidaFragment)
-    }
-
-    private fun loadData() {
-        list.add(ItemSettingModel(2, R.drawable.about_svgrepo_com,"Haqida"))
-        list.add(ItemSettingModel(1, R.drawable.settings_svgrepo_com,"Sozlamalar"))
     }
 
     override fun onDestroyView() {

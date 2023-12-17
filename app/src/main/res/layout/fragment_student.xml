@@ -107,8 +107,7 @@
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="#E6E2E2"
+                android:layout_height="50dp"
                 app:layout_constraintBottom_toTopOf="@id/kurs"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -131,8 +130,7 @@
             <Spinner
                 android:id="@+id/spinnerCourse"
                 android:layout_width="match_parent"
-                android:background="#E6E2E2"
-                android:layout_height="80dp"
+                android:layout_height="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/kurs" />

@@ -9,27 +9,59 @@
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:textSize="25sp"
-            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:fontFamily="@font/font1"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/haqida" />
         <TextView
-            android:textSize="25sp"
-            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:fontFamily="@font/font1"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/davomi"
             android:textIsSelectable="true"/>
         <TextView
-            android:textSize="25sp"
-            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:fontFamily="@font/font1"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/davomi2"/>
+        <TextView
+            android:textSize="30sp"
+            android:fontFamily="@font/font1"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/davomi3"/>
+        <TextView
+            android:textSize="30sp"
+            android:fontFamily="@font/font1"
+            android:textStyle="bold"
+            android:textIsSelectable="true"
+            android:textColor="@android:color/holo_blue_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/davomi4"/>
+        <TextView
+            android:textSize="30sp"
+            android:fontFamily="@font/font1"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/davomi5"/>
+
 
     </LinearLayout>
 
