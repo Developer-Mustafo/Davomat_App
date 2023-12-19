@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentAddCourseBinding
 import uz.coder.davomatapp.databinding.FragmentCourseAboutBinding
@@ -41,7 +44,28 @@ class CourseAboutFragment : Fragment() {
         viewModel.getCourseByIdStudents(args.id).observe(viewLifecycleOwner){
             adapter.submitList(it)
         }
+        val callback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val id = adapter.currentList[position]
+                viewModel.delete(id)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(binding.rec)
         with(binding){
+            rec.layoutManager = LinearLayoutManager(requireContext(),
+                LinearLayoutManager.VERTICAL,false)
             rec.adapter = adapter
         }
     }

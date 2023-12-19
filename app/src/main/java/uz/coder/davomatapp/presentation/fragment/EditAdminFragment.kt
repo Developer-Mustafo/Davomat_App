@@ -17,7 +17,9 @@ import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
 
 class EditAdminFragment : Fragment() {
     private lateinit var viewModel: AdminViewModel
-    private val listForGender = listOf("Erkak","Ayol")
+    private val listForGenderMale = listOf("Erkak","Ayol")
+    private val listForGenderFaMale = listOf("Ayol","Erkak")
+    private lateinit var listForGender:MutableList<String>
     private var _binding:FragmentEditAdminBinding? = null
     private val binding:FragmentEditAdminBinding
         get() = _binding?:throw RuntimeException("binding not init")
@@ -42,15 +44,16 @@ class EditAdminFragment : Fragment() {
                 email.setText(it.email)
                 password.setText(it.password)
                 phone.setText(it.phone)
+                listForGender  =  (if (it.gender == "Erkak") listForGenderMale else listForGenderFaMale).toMutableList()
                 spinner.adapter = SpinnerAdapter(listForGender)
             }
             edit.setOnClickListener {
                 viewModel.editAdmin(name.text.toString(),email.text.toString(),phone.text.toString(),password.text.toString(),listForGender[spinner.selectedItemPosition])
-                Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
             }
         }
         viewModel.finish.observe(viewLifecycleOwner){
             findNavController().navigate(R.id.action_editAdminFragment_to_settingFragment)
+            Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
         }
     }
 

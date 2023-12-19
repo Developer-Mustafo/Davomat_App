@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityLoginBinding
+import uz.coder.davomatapp.domain.admin.Admin
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -80,6 +82,8 @@ class LoginActivity : AppCompatActivity() {
             //todo finish login
             viewModel.finish.observe(this@LoginActivity){
                 viewModel.admin.observe(this@LoginActivity){
+                    binding.email.setText("")
+                    binding.password.setText("")
                     startActivity(MainActivity.newIntent(this@LoginActivity,it.id))
                 }
                 finish()

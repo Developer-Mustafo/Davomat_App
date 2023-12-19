@@ -19,7 +19,7 @@ import uz.coder.davomatapp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var navController:NavController
     private lateinit var binding: ActivityMainBinding
-    private lateinit var editor: SharedPreferences.Editor
+    private lateinit var editor: Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

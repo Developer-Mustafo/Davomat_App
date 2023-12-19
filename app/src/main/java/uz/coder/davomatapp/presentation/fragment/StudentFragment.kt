@@ -26,10 +26,13 @@ import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 class StudentFragment : Fragment() {
     private val args by navArgs<StudentFragmentArgs>()
     private var position:Int = 0
+    private var text:String? = null
     private var _binding:FragmentStudentBinding? = null
     private lateinit var viewModel: StudentParamViewModel
     private lateinit var listCourse:List<Course>
-    private val listForGender = listOf("Erkak","Ayol")
+    private val listForGenderFaMale = listOf("Erkak","Ayol")
+    private val listForGenderMale = listOf("Ayol","Erkak")
+    private lateinit var listForGenderEdit:MutableList<String>
     private val binding:FragmentStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
     override fun onCreateView(
@@ -52,10 +55,10 @@ class StudentFragment : Fragment() {
             else->throw RuntimeException("status not found ${args.status}")
         }
         viewModel.finish.observe(viewLifecycleOwner){
+                Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.homeFragment)
         }
         with(binding){
-           spinner.adapter = SpinnerAdapter(listForGender)
             viewModel.list(sharedPreferences.getInt(ID,1)).observe(viewLifecycleOwner){
                 val list = try { it }catch (e:RuntimeException){ listOf(Course(id=1, name = "Kurs qo'shing")) } as List<Course>
                 listCourse = list
@@ -138,6 +141,14 @@ class StudentFragment : Fragment() {
                 }
                 phone1.error = massage
             }
+            viewModel.errorInputCourse.observe(viewLifecycleOwner){
+                val message = if (it){
+                    getString(R.string.error_couse)
+                }else{
+                    null
+                }
+                spinnerCourse1.error = message
+            }
             viewModel.errorInputAge.observe(viewLifecycleOwner){
                 val massage = if (it){
                     getString(R.string.Age)
@@ -161,16 +172,18 @@ class StudentFragment : Fragment() {
                 surname.setText(student.surname)
                 phone.setText(student.phone)
                 age.setText(student.age.toString())
+                listForGenderEdit = (if (it.gender == "Erkak") listForGenderFaMale else listForGenderMale).toMutableList()
+                spinner.adapter = SpinnerAdapter(listForGenderEdit)
             }
             save.setOnClickListener {
                         val inputName = name.text.toString().trim()
                         val inputSurName = surname.text.toString().trim()
                         val inputPhone = phone.text.toString().trim()
                         val inputAge = age.text.toString().trim()
-                        val gender = listForGender[spinner.selectedItemPosition].trim()
+                        val gender = listForGenderEdit[spinner.selectedItemPosition].trim()
                         val course = listCourse[spinnerCourse.selectedItemPosition]
                         viewModel.editStudent(inputName,inputSurName,inputPhone,inputAge,course.name,gender,course.id.toString())
-                        Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
+                text="O'zgardi"
             }
         }
     }
@@ -178,12 +191,13 @@ class StudentFragment : Fragment() {
     private fun launchAdd() {
         //todo add
         binding.apply {
+            spinner.adapter = SpinnerAdapter(listForGenderFaMale)
                 save.setOnClickListener {
                     val inputName = name.text.toString().trim()
                     val inputSurName = surname.text.toString().trim()
                     val inputPhone = phone.text.toString().trim()
                     val inputAge = age.text.toString().trim()
-                    val gender = listForGender[spinner.selectedItemPosition].trim()
+                    val gender = listForGenderEdit[spinner.selectedItemPosition].trim()
                     val course = try {
                         listCourse[spinnerCourse.selectedItemPosition]
                     }catch (e:Exception){
@@ -191,7 +205,7 @@ class StudentFragment : Fragment() {
                     }
                     position = spinner.selectedItemPosition
                     viewModel.addStudent(inputName, inputSurName, inputPhone,inputAge,course.name,gender,course.id.toString())
-                    Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()
+                    text="Saqlandi"
                 }
         }
     }

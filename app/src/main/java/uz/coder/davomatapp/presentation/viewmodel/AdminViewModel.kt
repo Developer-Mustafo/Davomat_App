@@ -47,7 +47,7 @@ class AdminViewModel(application: Application):AndroidViewModel(application),Cor
     val admin:LiveData<Admin>
         get() = _admin
 
-    fun deleteAdmin(id:Int){
+    fun deleteAdmin(id:Int) {
         launch { deleteAdminUseCase(id) }
     }
     fun getLoginSign(inputEmail:String?, inputPassword:String?){
@@ -58,12 +58,24 @@ class AdminViewModel(application: Application):AndroidViewModel(application),Cor
         launch(Dispatchers.Main) {
         if (validateInput){
             val admin = getLoginSignUseCase(email, password)
-                _admin.value = admin
+            _admin.value = admin
+            _admin.value?.let {
+                if (it == Admin(name = "aa", password = "aa", email = "aa", phone = "aa", gender = "aa")){
+                    validateInput()
+                }else{
+                    finishWork()
+                }
             }
-            finishWork()
+        }
         }
 
     }
+
+    private fun validateInput() {
+        _errorInputEmail.value = true
+        _errorInputPassword.value = true
+    }
+
     fun addAdmin(inputName:String?,inputEmail:String?,inputPhone:String?,inputPassword:String?,inputGender:String?){
         val name = parseString(inputName)
         val email = parseString(inputEmail)

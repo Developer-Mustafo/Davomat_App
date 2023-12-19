@@ -51,4 +51,6 @@
     <string name="jinsingizni_tanlang">Jinsingizni tanlang:</string>
     <string name="kursni_tanlang">Kursni tanlang:</string>
     <string name="edit">O\'zgartirish</string>
+    <string name="error_couse">Kurs qo\'shing\n</string>
+    <string name="chiqish">Chiqish</string>
 </resources>

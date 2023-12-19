@@ -27,6 +27,10 @@ class AdminRepositoryImpl(val application: Application):AdminRepository{
     }
 
     override suspend fun getLoginOrSign(email: String, password: String): Admin {
-        return mapper.getAdminDbModelToAdmin(database.getLoginOrSign(email, password))
+        return try{
+            mapper.getAdminDbModelToAdmin(database.getLoginOrSign(email, password))
+        }catch (e:Exception){
+            Admin(name = "aa", email = "aa", password = "aa", phone = "aa", gender = "aa")
+        }
     }
 }

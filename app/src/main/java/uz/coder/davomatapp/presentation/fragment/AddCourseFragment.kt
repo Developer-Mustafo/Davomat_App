@@ -21,6 +21,7 @@ import uz.coder.davomatapp.presentation.viewmodel.CourseParamViewModel
 
 class AddCourseFragment : Fragment() {
     private var _binding:FragmentAddCourseBinding? = null
+    private var text:String? = null
     private val binding:FragmentAddCourseBinding
         get() = _binding?:throw RuntimeException("binding not init")
     private lateinit var viewModel: CourseParamViewModel
@@ -62,7 +63,8 @@ class AddCourseFragment : Fragment() {
                 }
             })
             viewModel.finish.observe(viewLifecycleOwner){
-                findNavController().navigate(R.id.courseFragment)
+            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.homeFragment)
             }
             viewModel.errorInputName.observe(viewLifecycleOwner){
                 val massage = if (it){
@@ -86,7 +88,7 @@ class AddCourseFragment : Fragment() {
             save.setOnClickListener {
                 val inputName = name.text.toString()
                 viewModel.editCourse(inputName)
-                Toast.makeText(requireContext(), "o'zgardi", Toast.LENGTH_SHORT).show()
+            text="O'zgardi"
             }
         }
     }
@@ -97,7 +99,7 @@ class AddCourseFragment : Fragment() {
             save.setOnClickListener {
                 val inputName = name.text.toString()
                 viewModel.addCourse(inputName,sharedPreferences.getInt(ID,1).toString())
-                Toast.makeText(requireContext(), "Saqlandi", Toast.LENGTH_SHORT).show()
+                text="Saqlandi"
             }
         }
     }

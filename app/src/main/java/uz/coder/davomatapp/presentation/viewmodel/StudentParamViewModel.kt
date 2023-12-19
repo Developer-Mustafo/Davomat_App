@@ -40,6 +40,9 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
     private val _errorInputAge = MutableLiveData<Boolean>()
     val errorInputAge:LiveData<Boolean>
         get() = _errorInputAge
+    private val _errorInputCourse = MutableLiveData<Boolean>()
+    val errorInputCourse:LiveData<Boolean>
+        get() = _errorInputCourse
     private val scope = CoroutineScope(Dispatchers.IO)
     fun addStudent(inputName:String?,inputSurName: String?,inputPhone:String?,inputAge:String?,inputCourse:String?,inputGender:String?,inputCourseId: String?){
             val name = parseString(inputName)
@@ -105,6 +108,11 @@ class StudentParamViewModel(application: Application):AndroidViewModel(applicati
         }
         if (course.isBlank()){
             repo = false
+            _errorInputCourse.value = true
+        }
+        if (course == "Kurs qo'shing"){
+            repo = false
+            _errorInputCourse.value = true
         }
         if (gender.isBlank()){
             repo = false
