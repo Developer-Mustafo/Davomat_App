@@ -197,7 +197,7 @@ class StudentFragment : Fragment() {
                     val inputSurName = surname.text.toString().trim()
                     val inputPhone = phone.text.toString().trim()
                     val inputAge = age.text.toString().trim()
-                    val gender = listForGenderEdit[spinner.selectedItemPosition].trim()
+                    val gender = listForGenderFaMale[spinner.selectedItemPosition].trim()
                     val course = try {
                         listCourse[spinnerCourse.selectedItemPosition]
                     }catch (e:Exception){
