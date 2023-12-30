@@ -1,76 +1,109 @@
 package uz.coder.davomatapp.presentation.fragment
 
-import android.content.Context
+import  android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentCourseBinding
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
-import uz.coder.davomatapp.presentation.adapter.CourseAdapter
-import uz.coder.davomatapp.presentation.viewmodel.CourseViewModel
+import uz.coder.davomatapp.presentation.viewmodel.CourseParamViewModel
 
-class CourseFragment:Fragment() {
-    private var _binding:FragmentCourseBinding? = null
+class CourseFragment : Fragment() {
+    private var _binding: FragmentCourseBinding? = null
+    private var text:String? = null
     private val binding:FragmentCourseBinding
         get() = _binding?:throw RuntimeException("binding not init")
-    private lateinit var adapter: CourseAdapter
-    private val viewModel: CourseViewModel by lazy {
-        ViewModelProvider(this)[CourseViewModel::class.java]
-    }
+    private lateinit var viewModel: CourseParamViewModel
+    private val args by navArgs<CourseFragmentArgs>()
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCourseBinding.inflate(inflater,container,false)
+        _binding = FragmentCourseBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
-        adapter = CourseAdapter ({id->
-            findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToAddCourseFragment2(id,AddCourseFragment.EDIT))
-        },{id->
-            findNavController().navigate(CourseFragmentDirections.actionCourseFragmentToCourseAboutFragment(id))
-        })
-        viewModel.list(sharedPreferences.getInt(ID,1)).observe(viewLifecycleOwner){
-            adapter.submitList(it)
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+        viewModel = ViewModelProvider(this)[CourseParamViewModel::class.java]
+        when(args.status){
+            ADD->launchAdd(sharedPreferences)
+            EDIT->launchEdit()
         }
-        val callback = object :ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                val id = adapter.currentList[position].id
-                viewModel.deleteCourse(id)
-            }
-        }
-
-        val itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(binding.rec)
         with(binding){
-            rec.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-            rec.adapter = adapter
+            name.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    viewModel.resetErrorName()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+            })
+            viewModel.finish.observe(viewLifecycleOwner){
+            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.homeFragment)
+            }
+            viewModel.errorInputName.observe(viewLifecycleOwner){
+                val massage = if (it){
+                    getString(R.string.error_course)
+                }else{
+                    null
+                }
+                name1.error  = massage
+            }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun launchEdit() {
+        //todo editCourse
+        with(binding) {
+            viewModel.getById(args.id)
+            Log.d("TAG1", "launchEdit: $id")
+            viewModel.course.observe(viewLifecycleOwner) {
+                name.setText(it.name)
+            }
+            save.setOnClickListener {
+                val inputName = name.text.toString()
+                viewModel.editCourse(inputName)
+            text="O'zgardi"
+            }
+        }
+    }
+
+    private fun launchAdd(sharedPreferences: SharedPreferences) {
+        //todo addCourse
+        with(binding){
+            save.setOnClickListener {
+                val inputName = name.text.toString()
+                viewModel.addCourse(inputName,sharedPreferences.getInt(ID,1).toString())
+                text="Saqlandi"
+            }
+        }
+    }
+    companion object{
+        const val ADD = "add"
+        const val EDIT = "edit"
     }
 }

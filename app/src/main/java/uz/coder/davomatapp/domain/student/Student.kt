@@ -8,6 +8,7 @@ data class Student(
     val phone:String,
     val gender:String,
     val course:String,
+    val check:Boolean = false,
     val courseId:Int = UNDEFINE_ID
 ){
     companion object{

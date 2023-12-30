@@ -62,9 +62,9 @@
     </fragment>
     <fragment
         android:id="@+id/courseFragment"
-        android:name="uz.coder.davomatapp.presentation.fragment.CourseFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.CourseListFragment"
         android:label="fragment_course"
-        tools:layout="@layout/fragment_course" >
+        tools:layout="@layout/fragment_course_list" >
         <action
             android:id="@+id/action_courseFragment_to_studentAboutFragment"
             app:destination="@id/studentAboutFragment" />
@@ -77,9 +77,9 @@
     </fragment>
     <fragment
         android:id="@+id/addCourseFragment2"
-        android:name="uz.coder.davomatapp.presentation.fragment.AddCourseFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.CourseFragment"
         android:label="fragment_add_course"
-        tools:layout="@layout/fragment_add_course" >
+        tools:layout="@layout/fragment_course_list" >
         <argument
             android:name="id"
             app:argType="integer" />
@@ -101,6 +101,9 @@
         <action
             android:id="@+id/action_courseAboutFragment_to_studentFragment"
             app:destination="@id/studentFragment" />
+        <action
+            android:id="@+id/action_courseAboutFragment_to_davomatFragment2"
+            app:destination="@id/davomatFragment2" />
     </fragment>
     <fragment
         android:id="@+id/haqidaFragment"
@@ -118,5 +121,44 @@
         <action
             android:id="@+id/action_editAdminFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/davomatFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.DavomatCourseFragment"
+        android:label="fragment_davomat"
+        tools:layout="@layout/fragment_davomat_course" >
+        <action
+            android:id="@+id/action_davomatFragment_to_courseFragment"
+            app:destination="@id/courseFragment" />
+        <action
+            android:id="@+id/action_davomatFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_davomatFragment_to_davomatStudentFragment"
+            app:destination="@id/davomatStudentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/davomatStudentFragment"
+        android:name="uz.coder.davomatapp.presentation.fragment.DavomatStudentFragment"
+        android:label="fragment_davomat_student"
+        tools:layout="@layout/fragment_davomat_student" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_davomatStudentFragment_to_davomatFragment2"
+            app:destination="@id/davomatFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/davomatFragment2"
+        android:name="uz.coder.davomatapp.presentation.fragment.DavomatFragment"
+        android:label="fragment_davomat"
+        tools:layout="@layout/fragment_davomat" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_davomatFragment2_to_courseAboutFragment"
+            app:destination="@id/courseAboutFragment" />
     </fragment>
 </navigation>

@@ -43,19 +43,32 @@
                 android:textSize="25sp" />
 
         </LinearLayout>
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/edit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/baseline_edit_24"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ln2"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.47" />
+            app:layout_constraintVertical_bias="0.47">
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/edit"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ozgartirish" />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/delete"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/delete" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/avatar"
@@ -64,7 +77,7 @@
             android:padding="5dp"
             android:scaleType="centerCrop"
             android:layout_marginStart="10dp"
-            android:src="@drawable/avatar_svgrepo_com"
+            android:src="@drawable/erkak"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/ln1"
             app:layout_constraintHorizontal_bias="0.0"

@@ -2,6 +2,8 @@ package uz.coder.davomatapp.presentation.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +29,6 @@ class EditAdminFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentEditAdminBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,10 +47,115 @@ class EditAdminFragment : Fragment() {
                 phone.setText(it.phone)
                 listForGender  =  (if (it.gender == "Erkak") listForGenderMale else listForGenderFaMale).toMutableList()
                 spinner.adapter = SpinnerAdapter(listForGender)
+
             }
             edit.setOnClickListener {
                 viewModel.editAdmin(name.text.toString(),email.text.toString(),phone.text.toString(),password.text.toString(),listForGender[spinner.selectedItemPosition])
             }
+            viewModel.errorInputName.observe(viewLifecycleOwner){
+                val message = if (it){
+                    getString(R.string.admin_name)
+                }else{
+                    null
+                }
+                name1.error = message
+            }
+            viewModel.errorInputPhone.observe(viewLifecycleOwner){
+                val message = if (it){
+                    getString(R.string.admin_phone)
+                }else{
+                    null
+                }
+                phone1.error = message
+            }
+            viewModel.errorInputPassword.observe(viewLifecycleOwner){
+                val message = if (it){
+                    getString(R.string.admin_password)
+                }else{
+                    null
+                }
+                phone1.error = message
+            }
+            viewModel.errorInputEmail.observe(viewLifecycleOwner){
+                val message = if (it){
+                    getString(R.string.admin_email)
+                }else{
+                    null
+                }
+                phone1.error = message
+            }
+            name.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    viewModel.resetErrorName()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+            })
+            email.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    viewModel.resetErrorEmail()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+            })
+            phone.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    viewModel.resetErrorPhone()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+            })
+            password.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    viewModel.resetErrorPassword()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+            })
         }
         viewModel.finish.observe(viewLifecycleOwner){
             findNavController().navigate(R.id.action_editAdminFragment_to_settingFragment)

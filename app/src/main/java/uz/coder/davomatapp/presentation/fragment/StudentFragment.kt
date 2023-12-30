@@ -1,6 +1,7 @@
 package uz.coder.davomatapp.presentation.fragment
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -39,7 +40,6 @@ class StudentFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentStudentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -188,6 +188,7 @@ class StudentFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun launchAdd() {
         //todo add
         binding.apply {

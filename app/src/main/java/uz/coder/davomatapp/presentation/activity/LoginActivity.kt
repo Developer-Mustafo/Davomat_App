@@ -2,6 +2,7 @@ package uz.coder.davomatapp.presentation.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityLoginBinding
 import uz.coder.davomatapp.domain.admin.Admin
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.BOOLEAN
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
 
@@ -19,11 +21,16 @@ class LoginActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
+    private lateinit var sharedPreferences:SharedPreferences
     private lateinit var viewModel: AdminViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
+        val trueAdmin = sharedPreferences.getBoolean(BOOLEAN,false)
+        Log.d("TAG", "onCreate: $trueAdmin")
+        viewModel.toMainActivity(trueAdmin)
         binding.signup.setOnClickListener {someActivityResultLauncher.launch(Intent(this@LoginActivity,RegisterActivity::class.java))}
         binding.loginIn.setOnClickListener {
             val email = binding.email.text.toString().trim()
@@ -84,8 +91,13 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.admin.observe(this@LoginActivity){
                     binding.email.setText("")
                     binding.password.setText("")
-                    startActivity(MainActivity.newIntent(this@LoginActivity,it.id))
+                    startActivity(MainActivity.newIntent(this@LoginActivity,it.id,true))
                 }
+                finish()
+            }
+            //todo finish login using 1 time id
+            viewModel.finishWithOutID.observe(this@LoginActivity){
+                startActivity(MainActivity.newIntent(this@LoginActivity))
                 finish()
             }
         }

@@ -16,7 +16,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
        _binding = FragmentHomeBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -28,7 +27,7 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStudentFragment(StudentFragment.ADD,0))
             }
             courseAdd.setOnClickListener {
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddCourseFragment2(0,AddCourseFragment.ADD))
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddCourseFragment2(0,CourseFragment.ADD))
             }
         }
     }

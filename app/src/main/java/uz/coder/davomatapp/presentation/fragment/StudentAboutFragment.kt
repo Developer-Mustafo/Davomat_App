@@ -21,7 +21,6 @@ class StudentAboutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentStudentAboutBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -33,9 +32,9 @@ class StudentAboutFragment : Fragment() {
             viewModel.getItemById(args.id)
             viewModel.student.observe(viewLifecycleOwner) {
                 val img = when(it.gender){
-                    "Erkak"-> R.drawable.avatar_svgrepo_com
-                    "Ayol"->   R.drawable.avatar_svgrepo_com__1_
-                    else->R.drawable.avatar_svgrepo_com
+                    "Erkak"-> R.drawable.erkak
+                    "Ayol"->   R.drawable.ayol
+                    else->R.drawable.erkak
                 }
                 imageView.setImageResource(img)
                 val userName = "Ismi: "+it.name

@@ -23,8 +23,7 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
         db.add(mapper.getStudentToStudentDbModel(student))
     }
 
-    override suspend fun delete(student: Student) {
-        val id = student.id
+    override suspend fun delete(id: Int) {
         db.delete(id)
     }
 

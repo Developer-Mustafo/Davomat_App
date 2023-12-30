@@ -43,12 +43,23 @@ class AdminViewModel(application: Application):AndroidViewModel(application),Cor
     private val _finish = MutableLiveData<Unit>()
     val finish:LiveData<Unit>
         get() = _finish
+    private val _finishWithOutID = MutableLiveData<Unit>()
+    val finishWithOutID:LiveData<Unit>
+        get() = _finishWithOutID
     private val _admin = MutableLiveData<Admin>()
     val admin:LiveData<Admin>
         get() = _admin
 
     fun deleteAdmin(id:Int) {
         launch { deleteAdminUseCase(id) }
+    }
+    private fun finishWithOutId(){
+        _finishWithOutID.value = Unit
+    }
+    fun toMainActivity(b:Boolean){
+        if (b){
+            finishWithOutId()
+        }
     }
     fun getLoginSign(inputEmail:String?, inputPassword:String?){
         Log.d(TAG, "getLoginSign: $this")

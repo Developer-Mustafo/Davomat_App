@@ -17,8 +17,6 @@
     <string name="rahim">Rahim</string>
     <string name="student_age">Student age</string>
     <string name="Age">Yosh xato kiritildi</string>
-    <string name="select_image">Rasm turini tanlang:</string>
-    <string name="rasmga_olish">Rasmga olish</string>
     <string name="course">Course</string>
     <string name="students">Students</string>
     <string name="java">Java</string>
@@ -53,4 +51,12 @@
     <string name="edit">O\'zgartirish</string>
     <string name="error_couse">Kurs qo\'shing\n</string>
     <string name="chiqish">Chiqish</string>
+    <string name="admin_name">Nom xato yozilgan</string>
+    <string name="admin_phone">Raqam noto\'g\'ri terilgan</string>
+    <string name="admin_password">Parol xato kiritildi</string>
+    <string name="admin_email">Email xato yozilgan</string>
+    <string name="davomat">Davomat</string>
+    <string name="_29_12_2023">29.12.2023</string>
+    <string name="bor">Bor</string>
+    <string name="yoq">Yo\'q</string>
 </resources>

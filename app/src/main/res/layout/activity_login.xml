@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:startIconDrawable="@drawable/baseline_email_24">
+                app:startIconDrawable="@drawable/maktub">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:endIconMode="password_toggle"
-                app:startIconDrawable="@drawable/baseline_password_24">
+                app:startIconDrawable="@drawable/parol">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password"

@@ -14,5 +14,6 @@ class StudentDbModel(
     val phone:String,
     val gender:String,
     val course:String,
+    val check:Boolean = false,
     val courseId:Int = Student.UNDEFINE_ID
 )

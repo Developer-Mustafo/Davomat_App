@@ -1,12 +1,14 @@
 package uz.coder.davomatapp.presentation.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
@@ -15,8 +17,9 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationBarView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityMainBinding
+import uz.coder.davomatapp.presentation.fragment.SettingFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),SettingFragment.EditListener {
     private lateinit var navController:NavController
     private lateinit var binding: ActivityMainBinding
     private lateinit var editor: Editor
@@ -26,9 +29,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
-        val id = intent.getIntExtra(ID,1)
-        editor.putInt(ID,id)
-        editor.commit()
+        val id = intent.getIntExtra(ID,-1)
+        val trueAdmin = intent.getBooleanExtra(BOOLEAN,false)
+        if (id!=-1){
+            editor.putInt(ID,id)
+            editor.commit()
+        }
+        if (trueAdmin){
+            editor.putBoolean(BOOLEAN,trueAdmin)
+            editor.commit()
+        }
         Log.d("TAG", "onCreate: $id")
         binding.apply {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -44,6 +54,10 @@ class MainActivity : AppCompatActivity() {
                             navController.navigate(R.id.courseFragment)
                             return true
                         }
+                        if (item.itemId == R.id.davomat){
+                            navController.navigate(R.id.davomatFragment)
+                            return true
+                        }
                         if (item.itemId == R.id.setting){
                             navController.navigate(R.id.settingFragment)
                             return true
@@ -54,13 +68,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        if (1 !=1){
-            super.onBackPressed()
-        }
         if (navController.currentDestination!!.id == R.id.homeFragment) {
-            finish()
+            val dialog = AlertDialog.Builder(this@MainActivity).create()
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE,"Ha") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            dialog.setIcon(R.drawable.exit_icon)
+            dialog.setTitle("Chiqish")
+            dialog.setMessage("Chiqishni xoxlaysizmi ?")
+            dialog.show()
         } else {
             navController.navigateUp()
         }
@@ -71,10 +90,21 @@ class MainActivity : AppCompatActivity() {
     }
     companion object{
         const val ID = "id"
-        fun newIntent(context:Context,id:Int):Intent{
+        const val BOOLEAN = "boolean"
+        fun newIntent(context:Context,id:Int,b: Boolean):Intent{
             return Intent(context,MainActivity::class.java).apply {
                 putExtra(ID,id)
+                putExtra(BOOLEAN,b)
             }
         }
+        fun newIntent(context:Context):Intent{
+            return Intent(context,MainActivity::class.java)
+        }
+    }
+
+    override fun onEditListenerFinished() {
+        Toast.makeText(this@MainActivity, "Akkaunddan chiqdingiz", Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+        finish()
     }
 }

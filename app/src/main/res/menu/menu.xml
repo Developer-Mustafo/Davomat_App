@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item android:id="@+id/home"
     android:title="@string/home"
-    android:icon="@drawable/home_1_svgrepo_com"
+    android:icon="@drawable/uy"
     app:showAsAction="ifRoom"/>
     <item android:id="@+id/course"
     android:title="@string/course"
-    android:icon="@drawable/course_tile_sort_svgrepo_com"
+    android:icon="@drawable/kurs"
+    app:showAsAction="ifRoom"/>
+    <item android:id="@+id/davomat"
+    android:title="@string/davomat"
+    android:icon="@drawable/davomat"
     app:showAsAction="ifRoom"/>
     <item android:id="@+id/setting"
     android:title="@string/setting"
-    android:icon="@drawable/settings_svgrepo_com"
+    android:icon="@drawable/parametr"
     app:showAsAction="ifRoom"/>
 </menu>

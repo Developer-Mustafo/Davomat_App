@@ -22,9 +22,9 @@ class StudentViewModel(application: Application) :AndroidViewModel(application) 
         get() = getStudentAllListUseCase()
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    fun delete(student: Student){
+    fun delete(id: Int){
         scope.launch {
-            deleteStudentUseCase(student)
+            deleteStudentUseCase(id)
         }
     }
     fun getCourseByIdStudents(id:Int) = getCourseByIdStudent(id)

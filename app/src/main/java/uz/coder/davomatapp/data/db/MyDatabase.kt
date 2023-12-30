@@ -8,14 +8,17 @@ import uz.coder.davomatapp.data.admin.AdminDao
 import uz.coder.davomatapp.data.admin.AdminDbModel
 import uz.coder.davomatapp.data.course.CourseDao
 import uz.coder.davomatapp.data.course.CourseDbModel
+import uz.coder.davomatapp.data.davomat.DavomatDao
+import uz.coder.davomatapp.data.davomat.DavomatDbModel
 import uz.coder.davomatapp.data.student.StudentDao
 import uz.coder.davomatapp.data.student.StudentDbModel
 
-@Database(entities = [StudentDbModel::class,CourseDbModel::class,AdminDbModel::class], version = 1)
+@Database(entities = [StudentDbModel::class,CourseDbModel::class,AdminDbModel::class,DavomatDbModel::class], version = 1)
 abstract class MyDatabase: RoomDatabase() {
     abstract fun studentDao(): StudentDao
     abstract fun courseDao(): CourseDao
     abstract fun adminDao():AdminDao
+    abstract fun davomatDao():DavomatDao
     companion object{
         private var myDatabase: MyDatabase? = null
         private val LOCK = Any()
@@ -29,7 +32,7 @@ abstract class MyDatabase: RoomDatabase() {
                     return it
                 }
             }
-            val db = Room.databaseBuilder(application,MyDatabase::class.java, name).fallbackToDestructiveMigration().build()
+            val db = Room.databaseBuilder(application,MyDatabase::class.java, name).build()
             myDatabase = db
             return db
         }
