@@ -8,4 +8,5 @@ interface DavomatRepository {
     suspend fun delete(id:Int)
     suspend fun getDavomatById(id: Int):Davomat
     fun getDavomatListByStudentId(id: Int):LiveData<List<Davomat>>
+    suspend fun getDavomatOneTime(sId:Int,vaqt:String):Davomat
 }

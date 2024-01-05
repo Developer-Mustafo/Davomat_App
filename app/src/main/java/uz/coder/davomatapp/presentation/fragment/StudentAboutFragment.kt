@@ -1,5 +1,7 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +15,7 @@ import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 
 class StudentAboutFragment : Fragment() {
     private var _binding: FragmentStudentAboutBinding? = null
+    private lateinit var tel:String
     private val binding: FragmentStudentAboutBinding
         get() = _binding?:throw RuntimeException("binding not init")
     private val args by navArgs<StudentAboutFragmentArgs>()
@@ -29,6 +32,11 @@ class StudentAboutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
         with(binding) {
+            callPhone.setOnClickListener {
+                startActivity(Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:${tel}")
+                })
+            }
             viewModel.getItemById(args.id)
             viewModel.student.observe(viewLifecycleOwner) {
                 val img = when(it.gender){
@@ -36,6 +44,7 @@ class StudentAboutFragment : Fragment() {
                     "Ayol"->   R.drawable.ayol
                     else->R.drawable.erkak
                 }
+                tel = it.phone
                 imageView.setImageResource(img)
                 val userName = "Ismi: "+it.name
                 val userSurname = "Familiyasi: "+it.surname

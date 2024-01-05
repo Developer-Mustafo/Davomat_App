@@ -14,14 +14,16 @@ import uz.coder.davomatapp.domain.student.EditStudentUseCase
 import uz.coder.davomatapp.domain.student.GetCourseList
 import uz.coder.davomatapp.domain.student.GetStudentByIdUseCase
 import uz.coder.davomatapp.domain.student.Student
+import java.io.Serializable
 
-class StudentParamViewModel(application: Application):AndroidViewModel(application) {
+class StudentParamViewModel(application: Application):AndroidViewModel(application),Serializable {
     private val repository = StudentRepositoryImpl(application)
     private val addStudentUseCase = AddStudentUseCase(repository)
     private val editStudentUseCase = EditStudentUseCase(repository)
     private val getStudentByIdUseCase = GetStudentByIdUseCase(repository)
     private val getCourseList = GetCourseList(repository)
     fun list(id: Int) = getCourseList(id)
+
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName:LiveData<Boolean>
         get() = _errorInputName

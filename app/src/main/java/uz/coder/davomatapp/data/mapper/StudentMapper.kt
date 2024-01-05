@@ -13,15 +13,13 @@ class StudentMapper {
             age = student.age,
             course = student.course,
             gender = student.gender,
-            courseId = student.courseId,
-            check = student.check
+            courseId = student.courseId
         )
     }
     fun getStudentDbModelToStudent(studentDbModel: StudentDbModel):Student{
         return Student(
             id = studentDbModel.id,
             name = studentDbModel.name,
-            check = studentDbModel.check,
             surname = studentDbModel.surname,
             phone = studentDbModel.phone,
             age = studentDbModel.age,

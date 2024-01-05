@@ -1,6 +1,7 @@
 package uz.coder.davomatapp.presentation.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +28,12 @@ class CourseAboutFragment : Fragment() {
     private val binding: FragmentCourseAboutBinding
         get() = _binding?:throw RuntimeException("binding not init")
     private lateinit var adapter:StudentAdapter
-    private lateinit var viewModel: StudentViewModel
-    private lateinit var davomatViewModel: DavomatViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(this)[StudentViewModel::class.java]
+    }
+    private val davomatViewModel by lazy {
+        ViewModelProvider(this)[DavomatViewModel::class.java]
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,8 +44,6 @@ class CourseAboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[StudentViewModel::class.java]
-        davomatViewModel = ViewModelProvider(this)[DavomatViewModel::class.java]
         adapter = StudentAdapter({ id->
             findNavController().navigate(CourseAboutFragmentDirections.actionCourseAboutFragmentToStudentAboutFragment(id))
         },{id->
@@ -62,25 +65,25 @@ class CourseAboutFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                davomatViewModel.message.observe(viewLifecycleOwner){
+                    Log.d("TAGA", "onSwiped: $it")
+                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                }
                 //right 8
                 //left 4
                 val position = viewHolder.adapterPosition
                 val student = adapter.currentList[position]
-                if (!student.check){
-                    when(direction){
-                        8->{
-                            davomat("Bor",student, position)
+                        adapter.notifyItemChanged(position)
+                        when(direction){
+                            8->{
+                                davomat("Bor",student, position)
+                            }
+                            4->{
+                                davomat("Yo'q",student,position)
+                            }
+                            else->{throw RuntimeException("xato yerga burildi")}
                         }
-                        4->{
-                            davomat("Yo'q",student,position)
-                        }
-                        else->{throw RuntimeException("xato yerga burildi")}
-                    }
-                }else{
-                        Toast.makeText(requireContext(), "Davomat qilingan", Toast.LENGTH_SHORT).show()
-                    adapter.notifyItemChanged(position)
-                }
-            }
+           }
         }
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.rec)
@@ -91,9 +94,8 @@ class CourseAboutFragment : Fragment() {
         }
     }
     private fun davomat(string: String,student:Student,position:Int){
-        davomatViewModel.addDavomat(student.name,student.surname,string,SimpleDateFormat("dd/MM/yy", Locale.US).format(Date()),student.id.toString(),student.gender)
-        adapter.notifyItemMoved(position,position)
-        Toast.makeText(requireContext(), string, Toast.LENGTH_SHORT).show()
+        davomatViewModel.addDavomat(student.name,student.surname,string,SimpleDateFormat("dd/MM/yyyy", Locale.US).format(Date()),student.id.toString(),student.gender)
+        adapter.notifyItemChanged(position)
     }
 
     override fun onDestroyView() {

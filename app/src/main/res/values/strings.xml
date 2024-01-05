@@ -55,8 +55,9 @@
     <string name="admin_phone">Raqam noto\'g\'ri terilgan</string>
     <string name="admin_password">Parol xato kiritildi</string>
     <string name="admin_email">Email xato yozilgan</string>
-    <string name="davomat">Davomat</string>
+    <string name="davomat">Attendance</string>
     <string name="_29_12_2023">29.12.2023</string>
     <string name="bor">Bor</string>
     <string name="yoq">Yo\'q</string>
+    <string name="telefon_urish">Telefon urish</string>
 </resources>

@@ -33,4 +33,12 @@ class DavomatRepositoryImpl(application: Application):DavomatRepository {
                 value = mapper.getDavomatList(it)
             }
         }
+
+    override suspend fun getDavomatOneTime(sId: Int, vaqt: String): Davomat {
+        return try {
+            mapper.getDavomatDbModelToDavomat(db.getDavomatOneTime(sId, vaqt))
+        }catch (e:Exception){
+            Davomat(name = "aa", surname = "aa", gender = "aa", davomat = "aa", vaqt = "aa")
+        }
+    }
 }

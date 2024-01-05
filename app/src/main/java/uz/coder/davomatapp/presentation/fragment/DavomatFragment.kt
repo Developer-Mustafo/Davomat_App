@@ -1,14 +1,19 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentDavomatBinding
 import uz.coder.davomatapp.presentation.adapter.DavomatAdapter
 import uz.coder.davomatapp.presentation.viewmodel.DavomatViewModel
@@ -43,7 +48,6 @@ class DavomatFragment : Fragment() {
             rec.recycledViewPool.setMaxRecycledViews(DavomatAdapter.DISABLED,DavomatAdapter.POOL_SIZE)
         }
     }
-
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

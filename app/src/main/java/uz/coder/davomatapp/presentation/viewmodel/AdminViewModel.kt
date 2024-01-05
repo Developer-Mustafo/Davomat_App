@@ -36,7 +36,6 @@ class AdminViewModel(application: Application):AndroidViewModel(application),Cor
     private val _errorInputPassword = MutableLiveData<Boolean>()
     val errorInputPassword: LiveData<Boolean>
         get() = _errorInputPassword
-    private val testAdmin = MutableLiveData<Admin>()
     private val _errorInputPhone = MutableLiveData<Boolean>()
     val errorInputPhone:LiveData<Boolean>
         get() = _errorInputPhone

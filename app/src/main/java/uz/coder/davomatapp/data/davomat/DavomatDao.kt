@@ -17,6 +17,6 @@ interface DavomatDao{
     suspend fun getDavomatById(id: Int): DavomatDbModel
     @Query("select * from davomat where studentId = :id")
     fun getDavomatListByStudentId(id: Int):LiveData<List<DavomatDbModel>>
-    @Query("select * from davomat")
-    fun getDavomatList(): List<DavomatDbModel>
+    @Query("select * from davomat where studentId =:sId and vaqt =:vaqt")
+    suspend fun getDavomatOneTime(sId:Int,vaqt:String):DavomatDbModel
 }

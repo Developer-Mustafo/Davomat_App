@@ -18,6 +18,7 @@ import uz.coder.davomatapp.domain.davomat.Davomat
 import uz.coder.davomatapp.domain.davomat.EditDavomatUseCase
 import uz.coder.davomatapp.domain.davomat.GetDavomatByIdUseCase
 import uz.coder.davomatapp.domain.davomat.GetDavomatListByStudentIdUseCase
+import uz.coder.davomatapp.domain.davomat.GetDavomatOneTimeUseCase
 import uz.coder.davomatapp.domain.student.EditStudentUseCase
 import uz.coder.davomatapp.domain.student.GetStudentByIdUseCase
 import kotlin.coroutines.CoroutineContext
@@ -26,6 +27,7 @@ class DavomatViewModel(application: Application):AndroidViewModel(application),C
     private val repository = DavomatRepositoryImpl(application)
     private val repositoryStudent = StudentRepositoryImpl(application)
     private val addDavomatUseCase = AddDavomatUseCase(repository)
+    private val getDavomatOneTimeUseCase = GetDavomatOneTimeUseCase(repository)
     private val editDavomatUseCase = EditDavomatUseCase(repository)
     private val getDavomatListByStudentIdUseCase = GetDavomatListByStudentIdUseCase(repository)
     private val getDavomatByIdUseCase = GetDavomatByIdUseCase(repository)
@@ -50,10 +52,10 @@ class DavomatViewModel(application: Application):AndroidViewModel(application),C
     private val _finish = MutableLiveData<Unit>()
     val finish:LiveData<Unit>
         get() = _finish
-    fun list(id:Int)  = getDavomatListByStudentIdUseCase(id)
     private val _message = MutableLiveData<String>()
     val message:LiveData<String>
         get() = _message
+    fun list(id:Int)  = getDavomatListByStudentIdUseCase(id)
     fun getById(id:Int) {
         launch(Dispatchers.Main) {
             val davomat = withContext(Dispatchers.IO) { getDavomatByIdUseCase(id) }
@@ -95,7 +97,7 @@ class DavomatViewModel(application: Application):AndroidViewModel(application),C
         return repo
     }
 
-    fun addDavomat(inputName:String?, inputSurname:String?, inputDavomat: String?, inputVaqt:String?, inputStudentId:String?,inputGender:String?) {
+    fun addDavomat(inputName:String?, inputSurname:String?, inputDavomat: String?, inputVaqt:String? = "aa", inputStudentId:String? = "aa",inputGender:String?) {
         val studentId = parseInt(inputStudentId)
         val name = parseString(inputName)
         val surname = parseString(inputSurname)
@@ -103,11 +105,16 @@ class DavomatViewModel(application: Application):AndroidViewModel(application),C
         val davomat = parseString(inputDavomat)
         val gender = parseString(inputGender)
         launch {
+            val davomatClass = withContext(Dispatchers.IO){
+                getDavomatOneTimeUseCase(studentId,vaqt)
+            }
             val valiDateInput = valiDateInput(name,surname,vaqt,davomat,studentId,gender)
             if (valiDateInput){
-                val student = getStudentByIdUseCase(studentId)
-                Log.d("TAGA", "addDavomat: $student")
-                if (!student.check){
+                val davomatWrong = Davomat(name = "aa", surname = "aa", gender = "aa", davomat = "aa", vaqt = "aa")
+                Log.d("TAGA", "addDavomat: $davomatWrong")
+                Log.d("TAGA", "addDavomat: $davomatClass")
+                if (davomatClass == davomatWrong){
+                    Log.d("TAGA", "addDavomat: teng")
                     addDavomatUseCase(
                         Davomat(
                             name = name,
@@ -118,9 +125,14 @@ class DavomatViewModel(application: Application):AndroidViewModel(application),C
                             gender = gender
                         )
                     )
-                    val studentEdit = getStudentByIdUseCase(studentId).copy(check = true)
-                    editStudentUseCase(studentEdit)
-                    Log.d("TAGA", "addDavomat: $studentEdit")
+                    launch(Dispatchers.Main) {
+                        _message.value = davomat
+                    }
+                }else{
+                    Log.d("TAGA", "addDavomat: teng emas")
+                    launch(Dispatchers.Main) {
+                        _message.value = "Davomat qilingan"
+                    }
                 }
                 finishWork()
             }

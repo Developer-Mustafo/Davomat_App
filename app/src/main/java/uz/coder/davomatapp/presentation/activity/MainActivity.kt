@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -18,15 +19,18 @@ import com.google.android.material.navigation.NavigationBarView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityMainBinding
 import uz.coder.davomatapp.presentation.fragment.SettingFragment
+import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
 
 class MainActivity : AppCompatActivity(),SettingFragment.EditListener {
     private lateinit var navController:NavController
     private lateinit var binding: ActivityMainBinding
     private lateinit var editor: Editor
+    private lateinit var studentParamViewModel: StudentParamViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        studentParamViewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
         val sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
         val id = intent.getIntExtra(ID,-1)
@@ -39,40 +43,44 @@ class MainActivity : AppCompatActivity(),SettingFragment.EditListener {
             editor.putBoolean(BOOLEAN,trueAdmin)
             editor.commit()
         }
+
         Log.d("TAG", "onCreate: $id")
         binding.apply {
-            val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-             navController = navHostFragment.navController
-            NavigationUI.setupWithNavController(binding.bottomNavigation,navController)
-            bottomNavigation.setOnItemSelectedListener(object :NavigationBarView.OnItemSelectedListener{
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            navController = navHostFragment.navController
+            NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
+            bottomNavigation.setOnItemSelectedListener(object :
+                NavigationBarView.OnItemSelectedListener {
                 override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                        if(item.itemId == R.id.home) {
-                            navController.navigate(R.id.homeFragment)
-                            return true
-                        }
-                        if (item.itemId == R.id.course){
-                            navController.navigate(R.id.courseFragment)
-                            return true
-                        }
-                        if (item.itemId == R.id.davomat){
-                            navController.navigate(R.id.davomatFragment)
-                            return true
-                        }
-                        if (item.itemId == R.id.setting){
-                            navController.navigate(R.id.settingFragment)
-                            return true
-                        }
-                        return false
+                    if (item.itemId == R.id.home) {
+                        navController.navigate(R.id.homeFragment)
+                        return true
+                    }
+                    if (item.itemId == R.id.course) {
+                        navController.navigate(R.id.courseFragment)
+                        return true
+                    }
+                    if (item.itemId == R.id.davomat) {
+                        navController.navigate(R.id.davomatFragment)
+                        return true
+                    }
+                    if (item.itemId == R.id.setting) {
+                        navController.navigate(R.id.settingFragment)
+                        return true
+                    }
+                    return false
                 }
             })
         }
     }
 
     @SuppressLint("MissingSuperCall")
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (navController.currentDestination!!.id == R.id.homeFragment) {
             val dialog = AlertDialog.Builder(this@MainActivity).create()
-            dialog.setButton(AlertDialog.BUTTON_POSITIVE,"Ha") { dialog, _ ->
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE,"Ha") { _, _ ->
                 dialog.dismiss()
                 finish()
             }

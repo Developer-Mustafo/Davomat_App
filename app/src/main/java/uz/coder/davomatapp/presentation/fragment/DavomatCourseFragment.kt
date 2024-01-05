@@ -35,10 +35,10 @@ class DavomatCourseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),
             Context.MODE_PRIVATE)
-        adapter = DavomatAdapterCourse { id ->
+        adapter = DavomatAdapterCourse {
             findNavController().navigate(
                 DavomatCourseFragmentDirections.actionDavomatFragmentToDavomatStudentFragment(
-                    id
+                    it
                 )
             )
         }

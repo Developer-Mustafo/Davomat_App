@@ -26,14 +26,6 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
     override suspend fun delete(id: Int) {
         db.delete(id)
     }
-
-    override fun getAllStudentList(): LiveData<List<Student>> {
-        return MediatorLiveData<List<Student>>().apply {
-            addSource(db.getAllStudentList()){
-                value = mapper.getStudentList(it)
-            }
-        }
-    }
     override suspend fun getByStudentId(id: Int): Student {
         return try {
             mapper.getStudentDbModelToStudent(db.getByStudentId(id))
@@ -57,4 +49,5 @@ class StudentRepositoryImpl(application: Application) : StudentRepository {
             }
         }
     }
+
 }

@@ -1,9 +1,12 @@
 package uz.coder.davomatapp.presentation.activity
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,11 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityLoginBinding
-import uz.coder.davomatapp.domain.admin.Admin
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.BOOLEAN
-import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
-
 class LoginActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
@@ -103,10 +103,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+
     private var someActivityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
-            // There are no request codes
             val data: Intent? = it.data
             val email = data?.getStringExtra(EMAIL)
             val password = data?.getStringExtra(PASSWORD)
