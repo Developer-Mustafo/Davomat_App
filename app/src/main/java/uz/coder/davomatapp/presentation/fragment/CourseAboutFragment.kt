@@ -15,24 +15,32 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.databinding.FragmentCourseAboutBinding
 import uz.coder.davomatapp.domain.student.Student
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.adapter.StudentAdapter
 import uz.coder.davomatapp.presentation.viewmodel.DavomatViewModel
 import uz.coder.davomatapp.presentation.viewmodel.StudentViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import javax.inject.Inject
 
 class CourseAboutFragment : Fragment() {
     private var _binding: FragmentCourseAboutBinding? = null
     private val args by navArgs<CourseAboutFragmentArgs>()
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
+    }
     private val binding: FragmentCourseAboutBinding
         get() = _binding?:throw RuntimeException("binding not init")
     private lateinit var adapter:StudentAdapter
     private val viewModel by lazy {
-        ViewModelProvider(this)[StudentViewModel::class.java]
+        ViewModelProvider(this,viewModelFactory)[StudentViewModel::class.java]
     }
     private val davomatViewModel by lazy {
-        ViewModelProvider(this)[DavomatViewModel::class.java]
+        ViewModelProvider(this,viewModelFactory)[DavomatViewModel::class.java]
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +52,7 @@ class CourseAboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        component.inject(this)
         adapter = StudentAdapter({ id->
             findNavController().navigate(CourseAboutFragmentDirections.actionCourseAboutFragmentToStudentAboutFragment(id))
         },{id->

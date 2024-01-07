@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentCourseBinding
 import uz.coder.davomatapp.databinding.FragmentCourseListBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.adapter.CourseAdapter
 import uz.coder.davomatapp.presentation.viewmodel.CourseViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class CourseListFragment:Fragment() {
     private var _binding:FragmentCourseListBinding? = null
@@ -24,7 +27,12 @@ class CourseListFragment:Fragment() {
         get() = _binding?:throw RuntimeException("binding not init")
     private lateinit var adapter: CourseAdapter
     private val viewModel: CourseViewModel by lazy {
-        ViewModelProvider(this)[CourseViewModel::class.java]
+        ViewModelProvider(this,viewModelFactory)[CourseViewModel::class.java]
+    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +45,7 @@ class CourseListFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        component.inject(this)
         val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         adapter = CourseAdapter ({id->
             findNavController().navigate(CourseListFragmentDirections.actionCourseFragmentToAddCourseFragment2(id,CourseFragment.EDIT))

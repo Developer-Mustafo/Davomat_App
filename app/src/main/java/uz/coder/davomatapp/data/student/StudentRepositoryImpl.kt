@@ -9,8 +9,9 @@ import uz.coder.davomatapp.data.mapper.CourseMapper
 import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.domain.student.StudentRepository
+import javax.inject.Inject
 
-class StudentRepositoryImpl(application: Application) : StudentRepository {
+class StudentRepositoryImpl @Inject constructor(application: Application) : StudentRepository {
     private val db = MyDatabase.myDatabase(application).studentDao()
     private val dbCourse = MyDatabase.myDatabase(application).courseDao()
     private val mapper = StudentMapper()

@@ -7,12 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityRegisterBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.adapter.SpinnerAdapter
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class RegisterActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityRegisterBinding.inflate(layoutInflater)
+    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        (application as App).component
     }
     private val listForGender = listOf("Erkak","Ayol")
     private lateinit var viewModel: AdminViewModel
@@ -24,7 +32,8 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
+        component.inject(this)
+        viewModel = ViewModelProvider(this,viewModelFactory)[AdminViewModel::class.java]
         binding.spinner.adapter = SpinnerAdapter(listForGender)
         binding.signup.setOnClickListener {
            name = binding.name.text.toString().trim()

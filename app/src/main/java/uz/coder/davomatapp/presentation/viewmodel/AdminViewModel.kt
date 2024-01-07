@@ -1,31 +1,31 @@
 package uz.coder.davomatapp.presentation.viewmodel
 
-import android.app.Application
+
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import uz.coder.davomatapp.data.admin.AdminRepositoryImpl
 import uz.coder.davomatapp.domain.admin.AddAdminUseCase
 import uz.coder.davomatapp.domain.admin.Admin
 import uz.coder.davomatapp.domain.admin.DeleteAdminUseCase
 import uz.coder.davomatapp.domain.admin.EditAdminUseCase
 import uz.coder.davomatapp.domain.admin.GetAdminByIdUseCase
 import uz.coder.davomatapp.domain.admin.GetLoginSignUseCase
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class AdminViewModel(application: Application):AndroidViewModel(application),CoroutineScope {
-    private val repository = AdminRepositoryImpl(application)
-    private val addAdminUseCase = AddAdminUseCase(repository)
-    private val editAdminUseCase = EditAdminUseCase(repository)
-    private val deleteAdminUseCase = DeleteAdminUseCase(repository)
-    private val getAdminByIdUseCase = GetAdminByIdUseCase(repository)
-    private val getLoginSignUseCase = GetLoginSignUseCase(repository)
+class AdminViewModel @Inject constructor(
+    private val addAdminUseCase : AddAdminUseCase,
+    private val editAdminUseCase : EditAdminUseCase,
+    private val deleteAdminUseCase : DeleteAdminUseCase,
+    private val getAdminByIdUseCase : GetAdminByIdUseCase,
+    private val getLoginSignUseCase : GetLoginSignUseCase
+):ViewModel(),CoroutineScope {
     private val job = Job()
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>

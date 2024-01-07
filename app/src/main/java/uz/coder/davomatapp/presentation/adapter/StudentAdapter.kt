@@ -9,9 +9,10 @@ import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ItemStudentBinding
 import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.callback.DiffCallBack
+import javax.inject.Inject
 
 
-class StudentAdapter(private val onclick:(Int)->Unit, private val delete:(int: Int)->Unit, private val update:(Int)->Unit):ListAdapter<Student,StudentAdapter.VH>(
+class StudentAdapter @Inject constructor(private val onclick:(Int)->Unit, private val delete:(int: Int)->Unit, private val update:(Int)->Unit):ListAdapter<Student,StudentAdapter.VH>(
     DiffCallBack()
 ) {
 

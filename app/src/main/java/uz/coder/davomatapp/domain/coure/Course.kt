@@ -1,6 +1,8 @@
 package uz.coder.davomatapp.domain.coure
 
-data class Course(
+import javax.inject.Inject
+
+data class Course @Inject constructor(
     val adminId:Int = UNDEFINE_ID,
     val id:Int = UNDEFINE_ID,
     val name:String

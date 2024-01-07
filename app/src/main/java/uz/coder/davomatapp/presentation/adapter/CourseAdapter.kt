@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.databinding.ItemCourseBinding
 import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.presentation.callback.CourseDiffUtil
+import javax.inject.Inject
 
-class CourseAdapter(private val edit:(Int)->Unit,private val onClick:(Int)->Unit):ListAdapter<Course,CourseAdapter.VH>(CourseDiffUtil()) {
+class CourseAdapter @Inject constructor(private val edit:(Int)->Unit,private val onClick:(Int)->Unit):ListAdapter<Course,CourseAdapter.VH>(CourseDiffUtil()) {
     inner class VH(val binding: ItemCourseBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {

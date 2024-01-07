@@ -7,8 +7,9 @@ import uz.coder.davomatapp.data.db.MyDatabase
 import uz.coder.davomatapp.data.mapper.DavomatMapper
 import uz.coder.davomatapp.domain.davomat.Davomat
 import uz.coder.davomatapp.domain.davomat.DavomatRepository
+import javax.inject.Inject
 
-class DavomatRepositoryImpl(application: Application):DavomatRepository {
+class DavomatRepositoryImpl @Inject constructor(application: Application):DavomatRepository {
     private val db = MyDatabase.myDatabase(application).davomatDao()
     private val mapper = DavomatMapper()
     override suspend fun add(davomat: Davomat) {

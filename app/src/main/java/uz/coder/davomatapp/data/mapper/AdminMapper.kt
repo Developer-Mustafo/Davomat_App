@@ -2,8 +2,9 @@ package uz.coder.davomatapp.data.mapper
 
 import uz.coder.davomatapp.data.admin.AdminDbModel
 import uz.coder.davomatapp.domain.admin.Admin
+import javax.inject.Inject
 
-class AdminMapper {
+class AdminMapper @Inject constructor(){
     fun getAdminToAdminDbModel(admin: Admin): AdminDbModel {
         return AdminDbModel(
             id = admin.id,

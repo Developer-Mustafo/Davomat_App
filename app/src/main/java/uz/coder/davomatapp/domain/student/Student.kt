@@ -1,6 +1,8 @@
 package uz.coder.davomatapp.domain.student
 
-data class Student(
+import javax.inject.Inject
+
+data class Student @Inject constructor(
     var id:Int = UNDEFINE_ID,
     val name:String,
     val surname:String,

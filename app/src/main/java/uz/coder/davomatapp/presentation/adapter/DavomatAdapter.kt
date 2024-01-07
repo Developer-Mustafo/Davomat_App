@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.domain.davomat.Davomat
+import uz.coder.davomatapp.presentation.callback.DavomatDiff
+import javax.inject.Inject
 
-class DavomatAdapter:ListAdapter<Davomat,DavomatAdapter.VH>(DavomatDiff()) {
+class DavomatAdapter @Inject constructor():ListAdapter<Davomat,DavomatAdapter.VH>(DavomatDiff()) {
     inner class VH(view:View):RecyclerView.ViewHolder(view){
         val name: TextView = view.findViewById(R.id.name)
         val surname: TextView = view.findViewById(R.id.surname)

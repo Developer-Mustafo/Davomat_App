@@ -56,6 +56,7 @@
             app:layout_constraintVertical_bias="0.47">
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/edit"
+                android:scaleType="centerCrop"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="16dp"
@@ -63,6 +64,7 @@
                 android:src="@drawable/ozgartirish" />
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/delete"
+                android:scaleType="centerCrop"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="16dp"

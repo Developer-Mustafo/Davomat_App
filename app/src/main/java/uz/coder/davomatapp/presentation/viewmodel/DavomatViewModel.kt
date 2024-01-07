@@ -1,18 +1,16 @@
 package uz.coder.davomatapp.presentation.viewmodel
 
-import android.app.Application
+
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import uz.coder.davomatapp.data.davomat.DavomatRepositoryImpl
-import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.davomat.AddDavomatUseCase
 import uz.coder.davomatapp.domain.davomat.Davomat
 import uz.coder.davomatapp.domain.davomat.EditDavomatUseCase
@@ -21,18 +19,18 @@ import uz.coder.davomatapp.domain.davomat.GetDavomatListByStudentIdUseCase
 import uz.coder.davomatapp.domain.davomat.GetDavomatOneTimeUseCase
 import uz.coder.davomatapp.domain.student.EditStudentUseCase
 import uz.coder.davomatapp.domain.student.GetStudentByIdUseCase
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class DavomatViewModel(application: Application):AndroidViewModel(application),CoroutineScope {
-    private val repository = DavomatRepositoryImpl(application)
-    private val repositoryStudent = StudentRepositoryImpl(application)
-    private val addDavomatUseCase = AddDavomatUseCase(repository)
-    private val getDavomatOneTimeUseCase = GetDavomatOneTimeUseCase(repository)
-    private val editDavomatUseCase = EditDavomatUseCase(repository)
-    private val getDavomatListByStudentIdUseCase = GetDavomatListByStudentIdUseCase(repository)
-    private val getDavomatByIdUseCase = GetDavomatByIdUseCase(repository)
-    private val getStudentByIdUseCase = GetStudentByIdUseCase(repositoryStudent)
-    private val editStudentUseCase = EditStudentUseCase(repositoryStudent)
+class DavomatViewModel @Inject constructor(
+    private val addDavomatUseCase : AddDavomatUseCase,
+    private val getDavomatOneTimeUseCase : GetDavomatOneTimeUseCase,
+    private val editDavomatUseCase : EditDavomatUseCase,
+    private val getDavomatListByStudentIdUseCase : GetDavomatListByStudentIdUseCase,
+    private val getDavomatByIdUseCase : GetDavomatByIdUseCase,
+    private val getStudentByIdUseCase : GetStudentByIdUseCase,
+    private val editStudentUseCase : EditStudentUseCase
+): ViewModel(),CoroutineScope {
     private val job = Job()
     private val _davomat = MutableLiveData<Davomat>()
     val davomat:LiveData<Davomat>

@@ -11,7 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentAboutBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class StudentAboutFragment : Fragment() {
     private var _binding: FragmentStudentAboutBinding? = null
@@ -20,6 +23,11 @@ class StudentAboutFragment : Fragment() {
         get() = _binding?:throw RuntimeException("binding not init")
     private val args by navArgs<StudentAboutFragmentArgs>()
     private lateinit var viewModel: StudentParamViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,7 +38,8 @@ class StudentAboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
+        component.inject(this)
+        viewModel = ViewModelProvider(this,viewModelFactory)[StudentParamViewModel::class.java]
         with(binding) {
             callPhone.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_DIAL).apply {

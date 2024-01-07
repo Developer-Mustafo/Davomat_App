@@ -13,9 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentEditAdminBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.adapter.SpinnerAdapter
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class EditAdminFragment : Fragment() {
     private lateinit var viewModel: AdminViewModel
@@ -23,6 +26,11 @@ class EditAdminFragment : Fragment() {
     private val listForGenderFaMale = listOf("Ayol","Erkak")
     private lateinit var listForGender:MutableList<String>
     private var _binding:FragmentEditAdminBinding? = null
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
+    }
     private val binding:FragmentEditAdminBinding
         get() = _binding?:throw RuntimeException("binding not init")
     override fun onCreateView(
@@ -35,8 +43,9 @@ class EditAdminFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        component.inject(this)
         val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
-        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[AdminViewModel::class.java]
         val id = sharedPreferences.getInt(ID, 1)
         viewModel.getAdminById(id)
         with(binding){

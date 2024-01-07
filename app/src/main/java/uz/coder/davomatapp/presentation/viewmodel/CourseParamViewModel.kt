@@ -1,23 +1,23 @@
 package uz.coder.davomatapp.presentation.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import uz.coder.davomatapp.data.course.CourseRepositoryImpl
 import uz.coder.davomatapp.domain.coure.AddCourseUseCase
 import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.domain.coure.EditCourseUseCase
 import uz.coder.davomatapp.domain.coure.GetCourseByIdUseCase
+import javax.inject.Inject
 
-class CourseParamViewModel(application: Application):AndroidViewModel(application) {
-    private val repository = CourseRepositoryImpl(application)
-    private val addCourseUseCase = AddCourseUseCase(repository)
-    private val editCourseUseCase = EditCourseUseCase(repository)
-    private val getCourseByIdUseCase = GetCourseByIdUseCase(repository)
+class CourseParamViewModel @Inject constructor(
+    private val addCourseUseCase : AddCourseUseCase,
+    private val editCourseUseCase : EditCourseUseCase,
+    private val getCourseByIdUseCase : GetCourseByIdUseCase
+): ViewModel() {
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName:LiveData<Boolean>
         get() = _errorInputName

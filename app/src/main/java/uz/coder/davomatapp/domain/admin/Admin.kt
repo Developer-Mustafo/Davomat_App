@@ -1,6 +1,8 @@
 package uz.coder.davomatapp.domain.admin
 
-data class Admin(
+import javax.inject.Inject
+
+data class Admin @Inject constructor(
     var id:Int = UNDEFINE_ID,
     val name:String,
     val email:String,

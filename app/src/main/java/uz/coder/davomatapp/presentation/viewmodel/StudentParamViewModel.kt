@@ -1,27 +1,27 @@
 package uz.coder.davomatapp.presentation.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import uz.coder.davomatapp.data.student.StudentRepositoryImpl
 import uz.coder.davomatapp.domain.student.AddStudentUseCase
 import uz.coder.davomatapp.domain.student.EditStudentUseCase
 import uz.coder.davomatapp.domain.student.GetCourseList
 import uz.coder.davomatapp.domain.student.GetStudentByIdUseCase
 import uz.coder.davomatapp.domain.student.Student
-import java.io.Serializable
+import javax.inject.Inject
 
-class StudentParamViewModel(application: Application):AndroidViewModel(application),Serializable {
-    private val repository = StudentRepositoryImpl(application)
-    private val addStudentUseCase = AddStudentUseCase(repository)
-    private val editStudentUseCase = EditStudentUseCase(repository)
-    private val getStudentByIdUseCase = GetStudentByIdUseCase(repository)
-    private val getCourseList = GetCourseList(repository)
+class StudentParamViewModel @Inject constructor(
+    private val addStudentUseCase : AddStudentUseCase,
+    private val editStudentUseCase : EditStudentUseCase,
+    private val getStudentByIdUseCase : GetStudentByIdUseCase,
+    private val getCourseList : GetCourseList
+): ViewModel() {
+
     fun list(id: Int) = getCourseList(id)
 
     private val _errorInputName = MutableLiveData<Boolean>()

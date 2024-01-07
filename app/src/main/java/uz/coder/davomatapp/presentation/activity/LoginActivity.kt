@@ -1,12 +1,9 @@
 package uz.coder.davomatapp.presentation.activity
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,19 +12,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityLoginBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.BOOLEAN
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
+
 class LoginActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
+    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        (application as App).component
     }
     private lateinit var sharedPreferences:SharedPreferences
     private lateinit var viewModel: AdminViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        component.inject(this)
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
-        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[AdminViewModel::class.java]
         val trueAdmin = sharedPreferences.getBoolean(BOOLEAN,false)
         Log.d("TAG", "onCreate: $trueAdmin")
         viewModel.toMainActivity(trueAdmin)

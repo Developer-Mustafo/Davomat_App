@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.databinding.ItemSettingBinding
 import uz.coder.davomatapp.domain.admin.ItemSettingModel
 import uz.coder.davomatapp.presentation.callback.SettingDiffUtill
+import javax.inject.Inject
 
-class SettingAdapter(private val onClick:(Int)->Unit):ListAdapter<ItemSettingModel,SettingAdapter.VH>(SettingDiffUtill()){
+class SettingAdapter @Inject constructor(private val onClick:(Int)->Unit):ListAdapter<ItemSettingModel,SettingAdapter.VH>(SettingDiffUtill()){
     inner class VH(val binding: ItemSettingBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(position:Int){
             binding.icon.setImageResource(getItem(position).img)

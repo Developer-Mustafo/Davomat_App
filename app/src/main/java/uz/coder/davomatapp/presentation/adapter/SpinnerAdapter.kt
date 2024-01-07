@@ -5,8 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import uz.coder.davomatapp.databinding.ItemSpinnerBinding
+import javax.inject.Inject
 
-class SpinnerAdapter(val list:List<String>):BaseAdapter() {
+class SpinnerAdapter @Inject constructor(val list:List<String>):BaseAdapter() {
     override fun getCount(): Int {
         return list.size
     }

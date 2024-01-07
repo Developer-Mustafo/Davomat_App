@@ -14,16 +14,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentSettingBinding
 import uz.coder.davomatapp.domain.admin.ItemSettingModel
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.BOOLEAN
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.adapter.SettingAdapter
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class SettingFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
+    }
     private var _binding: FragmentSettingBinding? = null
     private val binding: FragmentSettingBinding
         get() = _binding?:throw RuntimeException("binding not init")
-    private val list = listOf(ItemSettingModel(2, R.drawable.haqida,"Haqida"),ItemSettingModel(1, R.drawable.parametr,"Sozlamalar"))
+    private val list = listOf(ItemSettingModel(2, R.drawable.haqida,"Haqida"),ItemSettingModel(1, R.drawable.ozgartirish,"O'zgartirish"))
     private lateinit var adapter: SettingAdapter
     private lateinit var viewModel: AdminViewModel
     private var adminId:Int = 0
@@ -52,16 +60,17 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        component.inject(this)
         val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         adminId = sharedPreferences.getInt(ID,1)
-        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[AdminViewModel::class.java]
         viewModel.getAdminById(adminId)
         viewModel.admin.observe(viewLifecycleOwner){ it ->
             binding.apply {
                 exit.setOnClickListener {
                     val dialog = AlertDialog.Builder(requireContext()).create()
-                    dialog.setButton(AlertDialog.BUTTON_POSITIVE,"Ha") { dialog, _ ->
+                    dialog.setButton(AlertDialog.BUTTON_POSITIVE,"Ha") { _, _ ->
                     editor.putBoolean(BOOLEAN,false)
                     editor.apply()
                     dialog.dismiss()

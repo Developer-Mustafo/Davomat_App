@@ -18,10 +18,13 @@ import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentStudentBinding
 import uz.coder.davomatapp.domain.coure.Course
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.adapter.SpinnerAdapter
 import uz.coder.davomatapp.presentation.adapter.SpinnerStudentAdapter
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 
 class StudentFragment : Fragment() {
@@ -34,6 +37,11 @@ class StudentFragment : Fragment() {
     private val listForGenderFaMale = listOf("Erkak","Ayol")
     private val listForGenderMale = listOf("Ayol","Erkak")
     private lateinit var listForGenderEdit:MutableList<String>
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
+    }
     private val binding:FragmentStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
     override fun onCreateView(
@@ -46,9 +54,10 @@ class StudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        component.inject(this)
         val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name),
             Context.MODE_PRIVATE)
-        viewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[StudentParamViewModel::class.java]
         when(args.status){
             ADD->launchAdd()
             EDIT->launchEdit()

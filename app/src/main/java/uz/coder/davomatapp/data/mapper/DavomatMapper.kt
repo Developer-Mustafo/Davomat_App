@@ -2,8 +2,9 @@ package uz.coder.davomatapp.data.mapper
 
 import uz.coder.davomatapp.data.davomat.DavomatDbModel
 import uz.coder.davomatapp.domain.davomat.Davomat
+import javax.inject.Inject
 
-class DavomatMapper {
+class DavomatMapper @Inject constructor(){
     fun getDavomatToDavomatDbModel(davomat: Davomat):DavomatDbModel{
         return DavomatDbModel(
             id = davomat.id,

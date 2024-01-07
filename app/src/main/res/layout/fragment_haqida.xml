@@ -6,7 +6,6 @@
     android:background="@drawable/img"
     tools:context=".presentation.fragment.HaqidaFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +14,7 @@
             android:textSize="30sp"
             android:fontFamily="@font/font1"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="#FF001E2C"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/haqida" />
@@ -23,7 +22,7 @@
             android:textSize="30sp"
             android:fontFamily="@font/font1"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="#FF001E2C"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/davomi"
@@ -32,7 +31,7 @@
             android:textSize="30sp"
             android:fontFamily="@font/font1"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="#FF001E2C"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/davomi2"/>
@@ -40,7 +39,7 @@
             android:textSize="30sp"
             android:fontFamily="@font/font1"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="#FF001E2C"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/davomi3"/>
@@ -49,7 +48,7 @@
             android:fontFamily="@font/font1"
             android:textStyle="bold"
             android:textIsSelectable="true"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="#FF001E2C"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/davomi4"/>
@@ -57,7 +56,7 @@
             android:textSize="30sp"
             android:fontFamily="@font/font1"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="#FF001E2C"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/davomi5"/>

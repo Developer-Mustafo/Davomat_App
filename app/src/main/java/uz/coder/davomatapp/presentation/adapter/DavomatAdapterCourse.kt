@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import uz.coder.davomatapp.databinding.ItemCourseBinding
 import uz.coder.davomatapp.databinding.ItemDavomatCourseBinding
 import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.presentation.callback.CourseDiffUtil
+import javax.inject.Inject
 
-class DavomatAdapterCourse(private val onClick:(Int)->Unit):ListAdapter<Course, DavomatAdapterCourse.VH>(CourseDiffUtil()) {
+class DavomatAdapterCourse @Inject constructor(private val onClick:(Int)->Unit):ListAdapter<Course, DavomatAdapterCourse.VH>(CourseDiffUtil()) {
     inner class VH(val binding: ItemDavomatCourseBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {

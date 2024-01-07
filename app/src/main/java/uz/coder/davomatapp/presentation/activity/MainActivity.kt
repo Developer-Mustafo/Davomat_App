@@ -18,19 +18,28 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationBarView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityMainBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.fragment.SettingFragment
 import uz.coder.davomatapp.presentation.viewmodel.StudentParamViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),SettingFragment.EditListener {
     private lateinit var navController:NavController
     private lateinit var binding: ActivityMainBinding
     private lateinit var editor: Editor
     private lateinit var studentParamViewModel: StudentParamViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        (application as App).component
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        studentParamViewModel = ViewModelProvider(this)[StudentParamViewModel::class.java]
+        component.inject(this)
+        studentParamViewModel = ViewModelProvider(this,viewModelFactory)[StudentParamViewModel::class.java]
         val sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
         val id = intent.getIntExtra(ID,-1)
@@ -40,7 +49,7 @@ class MainActivity : AppCompatActivity(),SettingFragment.EditListener {
             editor.commit()
         }
         if (trueAdmin){
-            editor.putBoolean(BOOLEAN,trueAdmin)
+            editor.putBoolean(BOOLEAN,true)
             editor.commit()
         }
 

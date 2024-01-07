@@ -16,8 +16,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentCourseBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.viewmodel.CourseParamViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class CourseFragment : Fragment() {
     private var _binding: FragmentCourseBinding? = null
@@ -26,6 +29,11 @@ class CourseFragment : Fragment() {
         get() = _binding?:throw RuntimeException("binding not init")
     private lateinit var viewModel: CourseParamViewModel
     private val args by navArgs<CourseFragmentArgs>()
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,8 +44,9 @@ class CourseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        component.inject(this)
         val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
-        viewModel = ViewModelProvider(this)[CourseParamViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[CourseParamViewModel::class.java]
         when(args.status){
             ADD->launchAdd(sharedPreferences)
             EDIT->launchEdit()

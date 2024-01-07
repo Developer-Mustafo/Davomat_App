@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ItemDavomatStudentBinding
-import uz.coder.davomatapp.databinding.ItemStudentBinding
 import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.presentation.callback.DiffCallBack
+import javax.inject.Inject
 
 
-class DavomatAdapterStudent(private val onclick:(Int)->Unit):ListAdapter<Student,DavomatAdapterStudent.VH>(
+class DavomatAdapterStudent @Inject constructor(private val onclick:(Int)->Unit):ListAdapter<Student,DavomatAdapterStudent.VH>(
     DiffCallBack()
 ) {
 

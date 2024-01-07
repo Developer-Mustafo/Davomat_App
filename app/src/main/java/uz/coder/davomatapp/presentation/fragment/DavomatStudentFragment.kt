@@ -12,11 +12,19 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import uz.coder.davomatapp.databinding.FragmentDavomatStudentBinding
+import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.adapter.DavomatAdapterStudent
 import uz.coder.davomatapp.presentation.viewmodel.StudentViewModel
+import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class DavomatStudentFragment : Fragment() {
     private var _binding:FragmentDavomatStudentBinding? = null
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        App().component
+    }
     private val binding:FragmentDavomatStudentBinding
         get() = _binding?:throw RuntimeException("binding not init")
     private val args by navArgs<DavomatStudentFragmentArgs>()
@@ -31,7 +39,8 @@ class DavomatStudentFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[StudentViewModel::class.java]
+        component.inject(this)
+        viewModel = ViewModelProvider(this,viewModelFactory)[StudentViewModel::class.java]
         adapter = DavomatAdapterStudent { id ->
             findNavController().navigate(DavomatStudentFragmentDirections.actionDavomatStudentFragmentToDavomatFragment2(id))
         }

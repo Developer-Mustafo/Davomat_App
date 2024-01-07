@@ -6,8 +6,9 @@ import uz.coder.davomatapp.data.db.MyDatabase
 import uz.coder.davomatapp.data.mapper.AdminMapper
 import uz.coder.davomatapp.domain.admin.Admin
 import uz.coder.davomatapp.domain.admin.AdminRepository
+import javax.inject.Inject
 
-class AdminRepositoryImpl(val application: Application):AdminRepository{
+class AdminRepositoryImpl @Inject constructor(val application: Application):AdminRepository{
     private val database = MyDatabase.myDatabase(application).adminDao()
     private val mapper = AdminMapper()
     override suspend fun addAdmin(admin: Admin) {

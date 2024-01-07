@@ -2,8 +2,9 @@ package uz.coder.davomatapp.data.mapper
 
 import uz.coder.davomatapp.data.student.StudentDbModel
 import uz.coder.davomatapp.domain.student.Student
+import javax.inject.Inject
 
-class StudentMapper {
+class StudentMapper @Inject constructor(){
     fun getStudentToStudentDbModel(student: Student):StudentDbModel{
         return StudentDbModel(
             id = student.id,
