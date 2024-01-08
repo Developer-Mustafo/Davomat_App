@@ -82,7 +82,7 @@ class CourseAboutFragment : Fragment() {
                 //left 4
                 val position = viewHolder.adapterPosition
                 val student = adapter.currentList[position]
-                        adapter.notifyItemChanged(position)
+                adapter.notifyItemChanged(position)
                         when(direction){
                             8->{
                                 davomat("Bor",student, position)
