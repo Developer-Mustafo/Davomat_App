@@ -3,6 +3,7 @@ package uz.coder.davomatapp.presentation.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityLoginBinding
+import uz.coder.davomatapp.domain.admin.Admin
 import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.BOOLEAN
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
@@ -29,12 +31,20 @@ class LoginActivity : AppCompatActivity() {
     }
     private lateinit var sharedPreferences:SharedPreferences
     private lateinit var viewModel: AdminViewModel
+    private lateinit var editor: Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         component.inject(this)
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
         viewModel = ViewModelProvider(this,viewModelFactory)[AdminViewModel::class.java]
+        val default = sharedPreferences.getBoolean("defaultAdmin",false)
+        if(!default){
+            val defaultAdmin = Admin(name="Mustafo", email = "mustaforahim45@gmail.com", password = "mustafo2009", phone = "+998905579765", gender = "Erkak")
+            viewModel.addAdmin(defaultAdmin.name,defaultAdmin.email,defaultAdmin.phone,defaultAdmin.password,defaultAdmin.gender)
+            editor.putBoolean(DEFAULT_ADMIN,true).apply()
+        }
         val trueAdmin = sharedPreferences.getBoolean(BOOLEAN,false)
         Log.d("TAG", "onCreate: $trueAdmin")
         viewModel.toMainActivity(trueAdmin)
@@ -126,6 +136,7 @@ class LoginActivity : AppCompatActivity() {
     companion object{
         private const val EMAIL = "email"
         private const val PASSWORD = "password"
+        private const val DEFAULT_ADMIN = "defaultAdmin"
         fun getIntent(context: Context,email:String,password:String):Intent{
             return Intent(context,LoginActivity::class.java).apply {
                 putExtra(EMAIL,email)
