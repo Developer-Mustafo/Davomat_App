@@ -39,7 +39,12 @@ class LoginActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
         viewModel = ViewModelProvider(this,viewModelFactory)[AdminViewModel::class.java]
-        val default = sharedPreferences.getBoolean("defaultAdmin",false)
+        val default = try{
+            sharedPreferences.getBoolean(DEFAULT_ADMIN,false)
+        }
+        catch(e:Exception){
+            false
+        }
         if(!default){
             val defaultAdmin = Admin(name="Mustafo", email = "mustaforahim45@gmail.com", password = "mustafo2009", phone = "+998905579765", gender = "Erkak")
             viewModel.addAdmin(defaultAdmin.name,defaultAdmin.email,defaultAdmin.phone,defaultAdmin.password,defaultAdmin.gender)
