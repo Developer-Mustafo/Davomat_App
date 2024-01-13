@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.domain.admin.AddAdminUseCase
 import uz.coder.davomatapp.domain.admin.Admin
+import uz.coder.davomatapp.domain.admin.DefaultAdminUseCase
 import uz.coder.davomatapp.domain.admin.DeleteAdminUseCase
 import uz.coder.davomatapp.domain.admin.EditAdminUseCase
 import uz.coder.davomatapp.domain.admin.GetAdminByIdUseCase
@@ -24,7 +26,8 @@ class AdminViewModel @Inject constructor(
     private val editAdminUseCase : EditAdminUseCase,
     private val deleteAdminUseCase : DeleteAdminUseCase,
     private val getAdminByIdUseCase : GetAdminByIdUseCase,
-    private val getLoginSignUseCase : GetLoginSignUseCase
+    private val getLoginSignUseCase : GetLoginSignUseCase,
+    private val defaultAdminUseCase: DefaultAdminUseCase
 ):ViewModel(),CoroutineScope {
     private val job = Job()
     private val _errorInputName = MutableLiveData<Boolean>()
@@ -51,6 +54,19 @@ class AdminViewModel @Inject constructor(
 
     fun deleteAdmin(id:Int) {
         launch { deleteAdminUseCase(id) }
+    }
+    fun defaultAdmin(){
+        launch {
+            val defaultAdmin = Admin(
+                id = 1,
+                name = "Mustafo",
+                email = "mustaforahim45@gmail.com",
+                password = "12345678",
+                phone = "+998905579765",
+                gender = "Erkak"
+            )
+            defaultAdminUseCase(defaultAdmin)
+        }
     }
     private fun finishWithOutId(){
         _finishWithOutID.value = Unit

@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.ActivityLoginBinding
-import uz.coder.davomatapp.domain.admin.Admin
 import uz.coder.davomatapp.presentation.App
 import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.BOOLEAN
+import uz.coder.davomatapp.presentation.activity.MainActivity.Companion.ID
 import uz.coder.davomatapp.presentation.viewmodel.AdminViewModel
 import uz.coder.davomatapp.presentation.viewmodel.ViewModelFactory
 import javax.inject.Inject
@@ -31,33 +31,21 @@ class LoginActivity : AppCompatActivity() {
     }
     private lateinit var sharedPreferences:SharedPreferences
     private lateinit var viewModel: AdminViewModel
-    private lateinit var editor: Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         component.inject(this)
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
         viewModel = ViewModelProvider(this,viewModelFactory)[AdminViewModel::class.java]
-        val default = try{
-            sharedPreferences.getBoolean(DEFAULT_ADMIN,false)
-        }
-        catch(e:Exception){
-            false
-        }
-        if(!default){
-            val defaultAdmin = Admin(name="Mustafo", email = "mustaforahim45@gmail.com", password = "mustafo2009", phone = "+998905579765", gender = "Erkak")
-            viewModel.addAdmin(defaultAdmin.name,defaultAdmin.email,defaultAdmin.phone,defaultAdmin.password,defaultAdmin.gender)
-            editor.putBoolean(DEFAULT_ADMIN,true).apply()
-        }
+        viewModel.defaultAdmin()
         val trueAdmin = sharedPreferences.getBoolean(BOOLEAN,false)
-        Log.d("TAG", "onCreate: $trueAdmin")
         viewModel.toMainActivity(trueAdmin)
         binding.signup.setOnClickListener {someActivityResultLauncher.launch(Intent(this@LoginActivity,RegisterActivity::class.java))}
         binding.loginIn.setOnClickListener {
             val email = binding.email.text.toString().trim()
             val password = binding.password.text.toString().trim()
             viewModel.getLoginSign(email,password)
+
         }
         binding.apply {
             email.addTextChangedListener(object :TextWatcher{
@@ -141,7 +129,6 @@ class LoginActivity : AppCompatActivity() {
     companion object{
         private const val EMAIL = "email"
         private const val PASSWORD = "password"
-        private const val DEFAULT_ADMIN = "defaultAdmin"
         fun getIntent(context: Context,email:String,password:String):Intent{
             return Intent(context,LoginActivity::class.java).apply {
                 putExtra(EMAIL,email)

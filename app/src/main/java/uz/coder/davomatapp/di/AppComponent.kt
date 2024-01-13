@@ -3,6 +3,7 @@ package uz.coder.davomatapp.di
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
+import kotlinx.coroutines.CoroutineScope
 import uz.coder.davomatapp.presentation.activity.LoginActivity
 import uz.coder.davomatapp.presentation.activity.MainActivity
 import uz.coder.davomatapp.presentation.activity.RegisterActivity

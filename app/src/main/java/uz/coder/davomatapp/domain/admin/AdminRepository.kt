@@ -6,4 +6,5 @@ interface AdminRepository {
     suspend fun deleteAdmin(id:Int)
     suspend fun getAdminId(id: Int):Admin
     suspend fun getLoginOrSign(email:String,password:String):Admin
+    suspend fun defaultAdmin(defaultAdmin: Admin)
 }
