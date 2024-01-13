@@ -9,9 +9,10 @@ import uz.coder.davomatapp.domain.coure.Course
 import uz.coder.davomatapp.domain.coure.CourseRepository
 import javax.inject.Inject
 
-class CourseRepositoryImpl @Inject constructor(application: Application) : CourseRepository {
-    private val mapper = CourseMapper()
-    private val db = MyDatabase.myDatabase(application).courseDao()
+class CourseRepositoryImpl @Inject constructor(
+    private val mapper:CourseMapper,
+    private val db :CourseDao
+) : CourseRepository {
     override suspend fun addCourse(course: Course) {
         db.addCourse(mapper.getCourseToCourseDbModel(course))
     }

@@ -3,6 +3,7 @@ package uz.coder.davomatapp.data.student
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import uz.coder.davomatapp.data.course.CourseDao
 import uz.coder.davomatapp.data.mapper.StudentMapper
 import uz.coder.davomatapp.data.db.MyDatabase
 import uz.coder.davomatapp.data.mapper.CourseMapper
@@ -11,11 +12,12 @@ import uz.coder.davomatapp.domain.student.Student
 import uz.coder.davomatapp.domain.student.StudentRepository
 import javax.inject.Inject
 
-class StudentRepositoryImpl @Inject constructor(application: Application) : StudentRepository {
-    private val db = MyDatabase.myDatabase(application).studentDao()
-    private val dbCourse = MyDatabase.myDatabase(application).courseDao()
-    private val mapper = StudentMapper()
-    private val courseMapper = CourseMapper()
+class StudentRepositoryImpl @Inject constructor(
+    private val db:StudentDao,
+            private val dbCourse:CourseDao,
+            private val mapper:StudentMapper,
+            private val courseMapper:CourseMapper
+) : StudentRepository {
     override suspend fun add(student: Student) {
         db.add(mapper.getStudentToStudentDbModel(student))
     }
