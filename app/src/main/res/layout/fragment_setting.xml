@@ -30,14 +30,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="180dp"
                 android:text="@string/chiqish"
-                android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textColor="#FF0000"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/image"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.061" />
+                app:layout_constraintVertical_bias="0.069" />
 
             <TextView
                 android:id="@+id/name"
