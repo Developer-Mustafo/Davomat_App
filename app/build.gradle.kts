@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs") version ("2.5.0")
+    id("androidx.navigation.safeargs")
     kotlin("kapt")
 }
 
@@ -13,8 +13,8 @@ android {
         applicationId = "uz.coder.davomatapp"
         minSdk = 23
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
