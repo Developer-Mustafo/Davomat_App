@@ -1,0 +1,33 @@
+package uz.coder.davomatapp.map
+
+import uz.coder.davomatapp.model.User
+import uz.coder.davomatapp.network.dto.LoginResponse
+import uz.coder.davomatapp.network.dto.RegisterRequest
+import uz.coder.davomatapp.network.dto.RegisterResponse
+import uz.coder.davomatapp.network.dto.UserRequest
+import uz.coder.davomatapp.network.dto.UserResponse
+import java.time.LocalDate
+
+class UserMap {
+    fun toUser(response: LoginResponse?) = User(id=response?.id?:0L, firstName=response?.firstName?: "", lastName=response?.lastName?: "", email=response?.email?: "", password=response?.password?: "", phoneNumber=response?.phoneNumber?: "", payedDate=response?.payedDate?: LocalDate.now(), role=response?.role?: "")
+    fun toRegisterRequest(
+        email: String,
+        firstName: String,
+        lastName: String,
+        password: String,
+        phoneNumber: String,
+        role: String
+    ) = RegisterRequest(email = email, firstName = firstName, lastName = lastName, password = password, phoneNumber = phoneNumber, role = role)
+
+    fun toUser(response: RegisterResponse?) = User(id=response?.id?:0L, firstName=response?.firstName?: "", lastName=response?.lastName?: "", email=response?.email?: "", password=response?.password?: "", phoneNumber=response?.phoneNumber?: "", payedDate=response?.payedDate?: LocalDate.now(), role=response?.role?: "")
+    fun toUser(response: UserResponse?) = User(id=response?.id?:0L, firstName=response?.firstName?: "", lastName=response?.lastName?: "", email=response?.email?: "", password=response?.password?: "", phoneNumber=response?.phoneNumber?: "", payedDate=response?.payedDate?: LocalDate.now(), role=response?.role?: "")
+    fun toUserRequest(
+        email: String,
+        firstName: String,
+        id: Long,
+        lastName: String,
+        password: String,
+        phoneNumber: String,
+        role: String
+    ) = UserRequest(email = email, id = id, firstName = firstName, lastName = lastName, password = password, phoneNumber = phoneNumber, role = role)
+}

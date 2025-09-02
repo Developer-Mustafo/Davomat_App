@@ -1,9 +1,13 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.DavomatApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/dark_yellow</item>
     </style>
-
+    <style name="Base.Theme.EditText" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="passwordToggleTint">@color/dark_yellow</item>
+        <item name="android:textColor">@color/dark_yellow</item>
+    </style>
+    <style name="Theme.EditText" parent="Base.Theme.EditText"/>
     <style name="Theme.DavomatApp" parent="Base.Theme.DavomatApp" />
 </resources>
