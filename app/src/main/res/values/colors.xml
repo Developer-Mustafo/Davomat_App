@@ -4,4 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_yellow">#FF9800</color>
     <color name="link_color">#2196F3</color>
+    <color name="dialog_background">#F7F4EA</color>
+    <color name="dialog_background_night">#37353E</color>
+    <color name="dialog_text">#000000</color>
+    <color name="dialog_text_night">#FFFFFF</color>
+    <color name="night_theme_background">#37353E</color>
+    <color name="normal_theme_background">#F7F4EA</color>
+    <color name="error_color">#9B0909</color>
+    <color name="verified_color">#0B8C10</color>
 </resources>

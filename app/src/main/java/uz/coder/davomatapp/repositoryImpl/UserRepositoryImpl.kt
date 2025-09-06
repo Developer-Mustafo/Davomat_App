@@ -2,32 +2,31 @@ package uz.coder.davomatapp.repositoryImpl
 
 import android.app.Application
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import uz.coder.davomatapp.R
+import uz.coder.davomatapp.db.AppDatabase
 import uz.coder.davomatapp.map.UserMap
+import uz.coder.davomatapp.model.User
 import uz.coder.davomatapp.network.ApiClient
 import uz.coder.davomatapp.network.ApiService
 import uz.coder.davomatapp.repository.UserRepository
-import uz.coder.davomatapp.todo.isConnected
 
-class UserRepositoryImpl(private val application: Application): UserRepository {
+class UserRepositoryImpl(application: Application): UserRepository {
     private val map = UserMap()
     private val apiService = ApiClient.getRetrofit().create(ApiService::class.java)
+    private val database = AppDatabase.getInstance(application)
     override fun loginUser(
         email: String,
         password: String
     ) = flow {
-        if(application.isConnected()){
-            val loginUser = withContext(Dispatchers.IO){apiService.loginUser(email, password)}
-            if(loginUser.code==200){
-                emit(map.toUser(loginUser.data))
-            }
-            else if(loginUser.code==500){
-                throw RuntimeException(loginUser.message)
-            }
-        }else{
-            throw RuntimeException(application.getString(R.string.internet_error))
+        val loginUser = withContext(Dispatchers.IO){apiService.loginUser(email, password)}
+        if(loginUser.code==200){
+            emit(map.toUser(loginUser.data))
+            database.userDao().insertUser(map.toUserEntity(loginUser.data))
+        }
+        else if(loginUser.code==500){
+            throw RuntimeException(loginUser.message)
         }
     }
 
@@ -39,62 +38,50 @@ class UserRepositoryImpl(private val application: Application): UserRepository {
         phoneNumber: String,
         role: String
     ) = flow {
-        if(application.isConnected()){
-            val response = withContext(Dispatchers.IO){apiService.registerUser(map.toRegisterRequest(email, firstName, lastName, password, phoneNumber, role))}
-            if(response.code==200){
-                emit(map.toUser(response.data))
-            }
-            else if(response.code==500){
-                throw RuntimeException(response.message)
-            }
+        val response = withContext(Dispatchers.IO){apiService.registerUser(map.toRegisterRequest(email, firstName, lastName, password, phoneNumber, role))}
+        if(response.code==200){
+            emit(map.toUser(response.data))
         }
-        else{
-            throw RuntimeException(application.getString(R.string.internet_error))
+        else if(response.code==500){
+            throw RuntimeException(response.message)
         }
     }
 
     override fun deleteUser(id: Long) = flow {
-        if(application.isConnected()){
-            val response = withContext(Dispatchers.IO){apiService.deleteUser(id)}
-            if(response.code==200){
-                emit(response.data?:0)
-            }
-            else if(response.code==500){
-                throw RuntimeException(response.message)
-            }
+        val response = withContext(Dispatchers.IO){apiService.deleteUser(id)}
+        if(response.code==200){
+            emit(response.data?:0)
+            database.userDao().deleteUserById(id)
         }
-        else{
-            throw RuntimeException(application.getString(R.string.internet_error))
+        else if(response.code==500){
+            throw RuntimeException(response.message)
         }
     }
 
     override fun getUser(id: Long) = flow {
-        if(application.isConnected()){
-            val response = withContext(Dispatchers.IO){apiService.getUser(id)}
-            if(response.code==200){
-                emit(map.toUser(response.data))
-            }
-            else if(response.code==500){
-                throw RuntimeException(response.message)
-            }
+        val response = withContext(Dispatchers.IO){apiService.getUser(id)}
+        if(response.code==200){
+            emit(map.toUser(response.data))
         }
-        else{
-            throw RuntimeException(application.getString(R.string.internet_error))
+        else if(response.code==500){
+            throw RuntimeException(response.message)
+        }
+    }
+
+    override fun getUserFromDatabase(id: Long) = flow {
+        val user = database.userDao().getUserById(id)
+        user.collect {
+            emit(map.toUser(it))
         }
     }
 
     override fun getUserByPhoneNumber(phoneNumber: String) = flow {
-        if(application.isConnected()){
-            val response = withContext(Dispatchers.IO){apiService.getUserByPhoneNumber(phoneNumber)}
-            if(response.code==200){
-                emit(map.toUser(response.data))
-            }
-            else if(response.code==500){
-                throw RuntimeException(response.message)
-            }
+        val response = withContext(Dispatchers.IO){apiService.getUserByPhoneNumber(phoneNumber)}
+        if(response.code==200){
+            emit(map.toUser(response.data))
         }
-        else{
-            throw RuntimeException(application.getString(R.string.internet_error))
+        else if(response.code==500){
+            throw RuntimeException(response.message)
         }
     }
 
@@ -107,18 +94,13 @@ class UserRepositoryImpl(private val application: Application): UserRepository {
         phoneNumber: String,
         role: String
     ) = flow {
-        if(application.isConnected()){
-            val response = withContext(Dispatchers.IO){apiService.updateUser(map.toUserRequest(email, firstName, id, lastName, password, phoneNumber, role))}
-            if(response.code==200){
-                emit(map.toUser(response.data))
-            }
-            else if(response.code==500){
-                throw RuntimeException(response.message)
-            }
+        val response = withContext(Dispatchers.IO){apiService.updateUser(map.toUserRequest(email, firstName, id, lastName, password, phoneNumber, role))}
+        if(response.code==200){
+            emit(map.toUser(response.data))
+            database.userDao().insertUser(map.toUserEntity(response.data))
         }
-        else{
-            throw RuntimeException(application.getString(R.string.internet_error))
+        else if(response.code==500){
+            throw RuntimeException(response.message)
         }
     }
-
 }

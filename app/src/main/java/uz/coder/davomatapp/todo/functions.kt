@@ -17,6 +17,13 @@ fun Context.isConnected(): Boolean {
 fun parseString(str:String?): String{
     return str?.trim() ?: ""
 }
+fun parseInt(str:String?): Int{
+    return try {
+        str?.trim()?.toInt()?:0
+    }catch (_:Exception){
+        0
+    }
+}
 
 fun String.isEmail():Int{
     if (this.isEmpty() || this.isBlank()) return EMPTY

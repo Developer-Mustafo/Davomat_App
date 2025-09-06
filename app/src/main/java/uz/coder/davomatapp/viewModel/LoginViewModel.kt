@@ -17,8 +17,11 @@ import uz.coder.davomatapp.todo.ERROR_EMAIL
 import uz.coder.davomatapp.todo.ERROR_PASSWORD
 import uz.coder.davomatapp.todo.OK
 import uz.coder.davomatapp.todo.SHORT
+import uz.coder.davomatapp.todo.userId
+import uz.coder.davomatapp.todo.isConnected
 import uz.coder.davomatapp.todo.isEmail
 import uz.coder.davomatapp.todo.isPassword
+import uz.coder.davomatapp.todo.role
 import uz.coder.davomatapp.usecase.LoginUseCase
 import uz.coder.davomatapp.viewModel.state.LoginState
 
@@ -32,14 +35,20 @@ class LoginViewModel(private val application: Application) : AndroidViewModel(ap
         viewModelScope.launch {
             _state.emit(LoginState.Loading)
             delay(1000)
-            val email = parseString(inputEmail)
-            val password = parseString(inputPassword)
-            if (isValidate(email, password)){
-                loginUseCase(email, password).catch {
-                    _state.emit(LoginState.Error(it.message.toString()))
-                }.collect {
-                    _state.emit(LoginState.Success(it))
+            if (application.isConnected()){
+                val email = parseString(inputEmail)
+                val password = parseString(inputPassword)
+                if (isValidate(email, password)){
+                    loginUseCase(email, password).catch {
+                        _state.emit(LoginState.Error(it.message.toString()))
+                    }.collect {
+                        _state.emit(LoginState.Success(it))
+                        userId = it.id
+                        role = it.role
+                    }
                 }
+            }else{
+                _state.emit(LoginState.Error(application.getString(R.string.internet_error)))
             }
         }
     }

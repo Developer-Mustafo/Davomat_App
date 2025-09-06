@@ -9,5 +9,30 @@
         android:id="@+id/login"
         android:name="uz.coder.davomatapp.fragment.Login"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/register" />
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/home" />
+        <action
+            android:id="@+id/action_login_to_homeStudent"
+            app:destination="@id/homeStudent" />
+    </fragment>
+    <fragment
+        android:id="@+id/register"
+        android:name="uz.coder.davomatapp.fragment.Register"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/home"
+        android:name="uz.coder.davomatapp.fragment.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/homeStudent"
+        android:name="uz.coder.davomatapp.fragment.HomeStudent"
+        android:label="fragment_home_student"
+        tools:layout="@layout/fragment_home_student" />
 </navigation>

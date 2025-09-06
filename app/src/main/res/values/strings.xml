@@ -13,4 +13,20 @@
     <string name="errorPassword"><![CDATA[Parolda \"@\", \"%\", \"&\" kabi belgilar bo\'lmasligi kerak]]></string>
     <string name="shortPassword">Parol qisqa</string>
     <string name="emptyPassword">Parol bo\'sh</string>
+    <string name="register">Ro\'yhatdan o\'tish</string>
+    <string name="first_name">Ism</string>
+    <string name="last_name">Familiya</string>
+    <string name="phone_number">Telefon raqam</string>
+    <string name="role_student">O\'quvchi</string>
+    <string name="role_teacher">O\'qituvchi</string>
+    <string name="emptyFirstName">Ism bo\'sh kelgan</string>
+    <string name="emptyLastName">Familiya bo\'sh</string>
+    <string name="emptyPhoneNumber">Telefon raqam bo\'sh</string>
+    <string name="choose">Tanlang</string>
+    <string name="choose_role">Ro\'lni tanlang</string>
+    <string name="error">Xatolik</string>
+    <string name="okay">OK</string>
+    <string name="successfully_verified">Muvvoffaqiyatli amalga oshdi</string>
+    <string name="cancel">Bekor qilish</string>
+    <string name="go_to_telegram_bot">Parolingiz esdan chiqgan bo\'lsa bizning telegram botdan bilib olishingiz mumkin. Parolni botdan oling.</string>
 </resources>

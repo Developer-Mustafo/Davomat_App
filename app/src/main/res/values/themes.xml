@@ -3,6 +3,7 @@
     <style name="Base.Theme.DavomatApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/dark_yellow</item>
+        <item name="backgroundColor">@color/normal_theme_background</item>
     </style>
     <style name="Base.Theme.EditText" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="passwordToggleTint">@color/dark_yellow</item>
@@ -10,4 +11,5 @@
     </style>
     <style name="Theme.EditText" parent="Base.Theme.EditText"/>
     <style name="Theme.DavomatApp" parent="Base.Theme.DavomatApp" />
+    <color name="theme_background">#F7F4EA</color>
 </resources>

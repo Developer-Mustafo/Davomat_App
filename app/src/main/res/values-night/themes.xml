@@ -3,10 +3,11 @@
     <style name="Base.Theme.DavomatApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/dark_yellow</item>
+        <item name="backgroundColor">@color/night_theme_background</item>
     </style>
     <style name="Theme.EditText" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="passwordToggleTint">@color/dark_yellow</item>
         <item name="android:textColor">@color/dark_yellow</item>
-
     </style>
+    <color name="theme_background">#37353E</color>
 </resources>
