@@ -14,5 +14,5 @@ data class UserDbModel(
     val role: String,
     val payedDate: LocalDate,
     @PrimaryKey(autoGenerate = true)
-    val id: Long = -1
+    val id: Long = 0
 )

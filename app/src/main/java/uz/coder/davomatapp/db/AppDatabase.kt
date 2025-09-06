@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import uz.coder.davomatapp.db.dao.UserDao
 import uz.coder.davomatapp.db.model.UserDbModel
 
 @Database(entities = [UserDbModel::class], version = 1)
+@TypeConverters(LocalDateConverter::class)
 abstract class AppDatabase: RoomDatabase(){
     abstract fun userDao(): UserDao
     companion object{

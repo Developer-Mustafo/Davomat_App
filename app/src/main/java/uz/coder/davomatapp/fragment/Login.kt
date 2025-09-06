@@ -26,6 +26,7 @@ import uz.coder.davomatapp.todo.role
 import uz.coder.davomatapp.todo.userId
 import uz.coder.davomatapp.ui.errorDialog
 import uz.coder.davomatapp.ui.infoDialog
+import uz.coder.davomatapp.ui.verifiedDialog
 import uz.coder.davomatapp.viewModel.LoginViewModel
 import uz.coder.davomatapp.viewModel.state.LoginState
 
@@ -59,20 +60,20 @@ class Login : Fragment() {
 
     private fun observeViewModel() {
         lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.state.collect { it ->
-                when(it){
+            viewModel.state.collect { state ->
+                when(state){
                     is LoginState.Error -> {
                         hideProgress()
-                        errorDialog(requireContext(), message = it.message?:"", onPositive = {
+                        errorDialog(requireContext(), message = state.message?:"", onPositive = {
                             it.dismiss()
                         }).show()
                     }
                     is LoginState.ErrorEmail -> {
-                        binding.email1.error = it.message
+                        binding.email1.error = state.message
                         hideProgress()
                     }
                     is LoginState.ErrorPassword -> {
-                        binding.password1.error = it.message
+                        binding.password1.error = state.message
                         hideProgress()
                     }
                     LoginState.Init -> {
@@ -85,7 +86,17 @@ class Login : Fragment() {
                     }
                     is LoginState.Success -> {
                         hideProgress()
-                        Toast.makeText(requireContext(), "O'xshadi", Toast.LENGTH_SHORT).show()
+                        verifiedDialog(requireContext()){
+                            when(state.data.role){
+                                ROLE_ADMIN, ROLE_TEACHER->{
+                                    findNavController().navigate(R.id.action_login_to_home)
+                                }
+                                ROLE_STUDENT->{
+                                    findNavController().navigate(R.id.action_login_to_homeStudent)
+                                }
+                            }
+                            it.dismiss()
+                        }.show()
                     }
                 }
             }

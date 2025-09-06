@@ -6,7 +6,7 @@ buildscript{
 }
 plugins {
     id("com.android.application") version "8.13.0" apply false
-    //noinspection NewerVersionAvailable
-    id("org.jetbrains.kotlin.android") version "2.2.0" apply false
+    id("org.jetbrains.kotlin.android") version "2.1.0" apply false
     id("com.android.library") version "8.13.0" apply false
+    id("com.google.devtools.ksp") version "2.1.10-1.0.30" apply false
 }
