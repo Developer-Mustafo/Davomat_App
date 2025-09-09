@@ -20,6 +20,7 @@ import uz.coder.davomatapp.databinding.FragmentRegisterBinding
 import uz.coder.davomatapp.todo.ROLE_STUDENT
 import uz.coder.davomatapp.todo.ROLE_TEACHER
 import uz.coder.davomatapp.ui.errorDialog
+import uz.coder.davomatapp.ui.internetErrorDialog
 import uz.coder.davomatapp.ui.verifiedDialog
 import uz.coder.davomatapp.viewModel.RegisterViewModel
 import uz.coder.davomatapp.viewModel.state.RegisterState
@@ -54,9 +55,7 @@ class Register : Fragment(){
                 when(it){
                     is RegisterState.Error -> {
                         hideProgress()
-                        errorDialog(requireContext(), message = it.message?:"", onPositive = {
-                            it.dismiss()
-                        }).show()
+                        errorDialog(requireContext(), message = it.message?:"").show()
                     }
                     is RegisterState.ErrorEmail -> {
                         hideProgress()
@@ -99,6 +98,15 @@ class Register : Fragment(){
                         verifiedDialog(requireContext()) {
                             it.dismiss()
                             updateUi()
+                        }.show()
+                    }
+
+                    RegisterState.InternetError -> {
+                        hideProgress()
+                        internetErrorDialog(requireContext()){
+                            binding.apply {
+                                viewModel.register(firstName.text.toString(), lastName.text.toString(), email.text.toString(), password.text.toString(), phoneNumber.text.toString().replace('+', ' '), roles[position].second)
+                            }
                         }.show()
                     }
                 }

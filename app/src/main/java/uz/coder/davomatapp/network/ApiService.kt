@@ -11,6 +11,7 @@ import uz.coder.davomatapp.network.dto.LoginResponse
 import uz.coder.davomatapp.network.dto.RegisterRequest
 import uz.coder.davomatapp.network.dto.RegisterResponse
 import uz.coder.davomatapp.network.dto.ResponseDTO
+import uz.coder.davomatapp.network.dto.StudentCoursesDTO
 import uz.coder.davomatapp.network.dto.UserRequest
 import uz.coder.davomatapp.network.dto.UserResponse
 
@@ -29,4 +30,9 @@ interface ApiService {
     @PUT("/api/user/update")
     suspend fun updateUser(@Body userRequest: UserRequest): ResponseDTO<UserResponse>
     /***----------------User----------------***/
+
+    /***-------------Student---------------***/
+    @GET("/api/student/seeCourses/{userId}")
+    suspend fun seeCourses(@Path("userId") userId: Long): ResponseDTO<List<StudentCoursesDTO>>
+    /***-------------Student---------------***/
 }

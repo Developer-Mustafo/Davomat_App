@@ -3,8 +3,6 @@ package uz.coder.davomatapp.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
-import uz.coder.davomatapp.todo.parseString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -17,12 +15,13 @@ import uz.coder.davomatapp.todo.ERROR_EMAIL
 import uz.coder.davomatapp.todo.ERROR_PASSWORD
 import uz.coder.davomatapp.todo.OK
 import uz.coder.davomatapp.todo.SHORT
-import uz.coder.davomatapp.todo.userId
 import uz.coder.davomatapp.todo.isConnected
 import uz.coder.davomatapp.todo.isEmail
 import uz.coder.davomatapp.todo.isPassword
+import uz.coder.davomatapp.todo.parseString
 import uz.coder.davomatapp.todo.role
-import uz.coder.davomatapp.usecase.LoginUseCase
+import uz.coder.davomatapp.todo.userId
+import uz.coder.davomatapp.usecase.user.LoginUseCase
 import uz.coder.davomatapp.viewModel.state.LoginState
 
 class LoginViewModel(private val application: Application) : AndroidViewModel(application) {
@@ -34,7 +33,6 @@ class LoginViewModel(private val application: Application) : AndroidViewModel(ap
     fun login(inputEmail: String?, inputPassword: String){
         viewModelScope.launch {
             _state.emit(LoginState.Loading)
-            delay(1000)
             if (application.isConnected()){
                 val email = parseString(inputEmail)
                 val password = parseString(inputPassword)
@@ -48,7 +46,7 @@ class LoginViewModel(private val application: Application) : AndroidViewModel(ap
                     }
                 }
             }else{
-                _state.emit(LoginState.Error(application.getString(R.string.internet_error)))
+                _state.emit(LoginState.InternetError)
             }
         }
     }

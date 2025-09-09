@@ -3,8 +3,6 @@ package uz.coder.davomatapp.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
-import uz.coder.davomatapp.todo.parseString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -20,7 +18,8 @@ import uz.coder.davomatapp.todo.SHORT
 import uz.coder.davomatapp.todo.isConnected
 import uz.coder.davomatapp.todo.isEmail
 import uz.coder.davomatapp.todo.isPassword
-import uz.coder.davomatapp.usecase.RegisterUseCase
+import uz.coder.davomatapp.todo.parseString
+import uz.coder.davomatapp.usecase.user.RegisterUseCase
 import uz.coder.davomatapp.viewModel.state.RegisterState
 
 class RegisterViewModel(private val application: Application) : AndroidViewModel(application) {
@@ -32,7 +31,6 @@ class RegisterViewModel(private val application: Application) : AndroidViewModel
     fun register(inputFirstName: String?, inputLastName: String?, inputEmail: String?, inputPassword: String, inputPhoneNumber: String?, inputRole: String?){
         viewModelScope.launch {
             _state.emit(RegisterState.Loading)
-            delay(1000)
             if (application.isConnected()){
                 val firstName = parseString(inputFirstName)
                 val lastName = parseString(inputLastName)
@@ -44,7 +42,7 @@ class RegisterViewModel(private val application: Application) : AndroidViewModel
                     registerUseCase(firstName, lastName, email, password, phoneNumber, role).catch {
                         _state.emit(RegisterState.Error(it.message.toString()))
                     }.collect {
-                        _state.emit(RegisterState.Success(it))
+                        _state.emit(RegisterState.InternetError)
                     }
                 }
             }else{

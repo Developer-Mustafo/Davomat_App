@@ -9,4 +9,5 @@ sealed class LoginState {
     data class ErrorEmail(val message:String? = null):LoginState()
     data class ErrorPassword(val message:String? = null):LoginState()
     data class Error(val message:String? = null):LoginState()
+    data object InternetError:LoginState()
 }

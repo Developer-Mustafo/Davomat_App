@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -26,6 +25,7 @@ import uz.coder.davomatapp.todo.role
 import uz.coder.davomatapp.todo.userId
 import uz.coder.davomatapp.ui.errorDialog
 import uz.coder.davomatapp.ui.infoDialog
+import uz.coder.davomatapp.ui.internetErrorDialog
 import uz.coder.davomatapp.ui.verifiedDialog
 import uz.coder.davomatapp.viewModel.LoginViewModel
 import uz.coder.davomatapp.viewModel.state.LoginState
@@ -64,9 +64,7 @@ class Login : Fragment() {
                 when(state){
                     is LoginState.Error -> {
                         hideProgress()
-                        errorDialog(requireContext(), message = state.message?:"", onPositive = {
-                            it.dismiss()
-                        }).show()
+                        errorDialog(requireContext(), message = state.message?:"").show()
                     }
                     is LoginState.ErrorEmail -> {
                         binding.email1.error = state.message
@@ -96,6 +94,13 @@ class Login : Fragment() {
                                 }
                             }
                             it.dismiss()
+                        }.show()
+                    }
+
+                    LoginState.InternetError -> {
+                        hideProgress()
+                        internetErrorDialog(requireContext()){
+                            viewModel.login(binding.email.text.toString(), binding.password.text.toString())
                         }.show()
                     }
                 }

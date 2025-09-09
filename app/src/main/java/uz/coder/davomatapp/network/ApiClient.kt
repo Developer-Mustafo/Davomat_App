@@ -1,8 +1,10 @@
 package uz.coder.davomatapp.network
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
 object ApiClient {
@@ -11,6 +13,9 @@ object ApiClient {
     }
     @JvmStatic
     external fun getApiBaseUrl(): String
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+        .create()
     fun getRetrofit(): Retrofit{
         val okhttp = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -20,7 +25,7 @@ object ApiClient {
             .build()
         val retrofit = Retrofit.Builder()
             .baseUrl(getApiBaseUrl())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okhttp)
             .build()
         return retrofit

@@ -2,12 +2,10 @@ package uz.coder.davomatapp.repositoryImpl
 
 import android.app.Application
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import uz.coder.davomatapp.db.AppDatabase
 import uz.coder.davomatapp.map.UserMap
-import uz.coder.davomatapp.model.User
 import uz.coder.davomatapp.network.ApiClient
 import uz.coder.davomatapp.network.ApiService
 import uz.coder.davomatapp.repository.UserRepository

@@ -29,4 +29,5 @@
     <string name="successfully_verified">Muvvoffaqiyatli amalga oshdi</string>
     <string name="cancel">Bekor qilish</string>
     <string name="go_to_telegram_bot">Parolingiz esdan chiqgan bo\'lsa bizning telegram botdan bilib olishingiz mumkin. Parolni botdan oling.</string>
+    <string name="reload">Qayta urinib ko\'ring</string>
 </resources>
