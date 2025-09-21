@@ -1,28 +1,68 @@
+@file:Suppress("DEPRECATION")
+
 package uz.coder.davomatapp.activity
 
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import uz.coder.davomatapp.R
+import uz.coder.davomatapp.broadcast.NetworkBroadcast
 import uz.coder.davomatapp.databinding.ActivityMainBinding
-import kotlin.getValue
+import uz.coder.davomatapp.fragment.Login
+import uz.coder.davomatapp.viewModel.NetworkViewModel
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var networkBroadcast: NetworkBroadcast
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+    private val viewModel:NetworkViewModel by viewModels()
     private val statusBarColor = 0xFFFF9800.toInt()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge(SystemBarStyle.dark(statusBarColor))
+        enableEdgeToEdge(SystemBarStyle.auto(statusBarColor, statusBarColor))
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        networkBroadcast = NetworkBroadcast{
+            viewModel.updateNetworkState(it)
+            Log.d(TAG, "onCreate: $it")
+        }
+        val filter = IntentFilter().apply {
+            addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        }
+        registerReceiver(networkBroadcast, filter)
+        val dispatcher = onBackPressedDispatcher
+        dispatcher.addCallback(object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                val fragment =
+                    supportFragmentManager.findFragmentById(binding.fragmentContainerView.id)
+                if (fragment is Login) {
+                    finish()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(networkBroadcast)
     }
 }
+
+private const val TAG = "MainActivity"

@@ -15,10 +15,14 @@
             app:destination="@id/register" />
         <action
             android:id="@+id/action_login_to_home"
-            app:destination="@id/home" />
+            app:destination="@id/home"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_login_to_homeStudent"
-            app:destination="@id/homeStudent" />
+            app:destination="@id/home_student"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/register"
@@ -29,10 +33,30 @@
         android:id="@+id/home"
         android:name="uz.coder.davomatapp.fragment.Home"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_profile"
+            app:destination="@id/profile" />
+    </fragment>
     <fragment
-        android:id="@+id/homeStudent"
+        android:id="@+id/home_student"
         android:name="uz.coder.davomatapp.fragment.HomeStudent"
         android:label="fragment_home_student"
-        tools:layout="@layout/fragment_home_student" />
+        tools:layout="@layout/fragment_home_student" >
+        <action
+            android:id="@+id/action_home_student_to_profile"
+            app:destination="@id/profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile"
+        android:name="uz.coder.davomatapp.fragment.Profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_to_login"
+            app:destination="@id/login"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

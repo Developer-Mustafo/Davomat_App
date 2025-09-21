@@ -31,22 +31,18 @@ class RegisterViewModel(private val application: Application) : AndroidViewModel
     fun register(inputFirstName: String?, inputLastName: String?, inputEmail: String?, inputPassword: String, inputPhoneNumber: String?, inputRole: String?){
         viewModelScope.launch {
             _state.emit(RegisterState.Loading)
-            if (application.isConnected()){
-                val firstName = parseString(inputFirstName)
-                val lastName = parseString(inputLastName)
-                val email = parseString(inputEmail)
-                val password = parseString(inputPassword)
-                val phoneNumber = parseString(inputPhoneNumber)
-                val role = parseString(inputRole)
-                if (isValidate(firstName, lastName, email, password, phoneNumber, role)) {
-                    registerUseCase(firstName, lastName, email, password, phoneNumber, role).catch {
-                        _state.emit(RegisterState.Error(it.message.toString()))
-                    }.collect {
-                        _state.emit(RegisterState.InternetError)
-                    }
+            val firstName = parseString(inputFirstName)
+            val lastName = parseString(inputLastName)
+            val email = parseString(inputEmail)
+            val password = parseString(inputPassword)
+            val phoneNumber = parseString(inputPhoneNumber)
+            val role = parseString(inputRole)
+            if (isValidate(firstName, lastName, email, password, phoneNumber, role)) {
+            registerUseCase(firstName, lastName, email, password, phoneNumber, role).catch {
+                    _state.emit(RegisterState.Error(it.message.toString()))
+                }.collect {
+                    _state.emit(RegisterState.Success(it))
                 }
-            }else{
-                _state.emit(RegisterState.Error(application.getString(R.string.internet_error)))
             }
         }
     }

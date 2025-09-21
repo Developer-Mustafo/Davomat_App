@@ -7,5 +7,5 @@ data class StudentCoursesDTO(
     @SerializedName("course")
     val courseDTO: CourseDTO? = null,
     @SerializedName("group")
-    val groupDTO: GroupDTO? = null
+    val groupDTO: List<GroupDTO>? = null
 )

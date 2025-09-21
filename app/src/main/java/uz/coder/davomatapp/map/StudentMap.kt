@@ -13,11 +13,13 @@ class StudentMap{
                 title = studentCoursesDTO?.courseDTO?.title?:"",
                 userId = studentCoursesDTO?.courseDTO?.userId?:0L
             ),
-            group = Group(
-                courseId = studentCoursesDTO?.groupDTO?.courseId?:0L,
-                id = studentCoursesDTO?.groupDTO?.id?:0L,
-                title = studentCoursesDTO?.groupDTO?.title?:""
-            )
+            group = studentCoursesDTO?.groupDTO?.map {
+                Group(
+                    courseId = it.courseId?:0L,
+                    id = it.id?:0L,
+                    title = it.title?:""
+                )
+            }?:emptyList()
         )
 
     fun toStudentCourses(data: List<StudentCoursesDTO>?) = data?.map { toStudentCourse(it) }?:emptyList()

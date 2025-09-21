@@ -7,5 +7,4 @@ sealed class HomeStudentState {
     data object Loading : HomeStudentState()
     data class Success(val data: List<StudentCourses>) : HomeStudentState()
     data class Error(val message: String) : HomeStudentState()
-    data object InternetError : HomeStudentState()
 }

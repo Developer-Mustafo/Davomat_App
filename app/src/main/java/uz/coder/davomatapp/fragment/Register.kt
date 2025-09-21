@@ -1,7 +1,6 @@
 package uz.coder.davomatapp.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,18 +20,19 @@ import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentRegisterBinding
 import uz.coder.davomatapp.todo.ROLE_STUDENT
 import uz.coder.davomatapp.todo.ROLE_TEACHER
-import uz.coder.davomatapp.ui.errorDialog
-import uz.coder.davomatapp.ui.internetErrorDialog
-import uz.coder.davomatapp.ui.verifiedDialog
+import uz.coder.davomatapp.ui.ErrorDialog
+import uz.coder.davomatapp.ui.InternetErrorDialog
+import uz.coder.davomatapp.ui.VerifiedDialog
+import uz.coder.davomatapp.viewModel.NetworkViewModel
 import uz.coder.davomatapp.viewModel.RegisterViewModel
 import uz.coder.davomatapp.viewModel.state.RegisterState
 
 @Suppress("DEPRECATION")
-class Register : Fragment(){
+class Register : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding?: throw RuntimeException("ActivityMainBinding? = null")
     private val viewModel by viewModels<RegisterViewModel>()
-
+    private val networkViewModel by activityViewModels<NetworkViewModel>()
     private val roles by lazy {
         listOf(
             Pair(requireContext().getString(R.string.choose), "0"),
@@ -45,8 +47,19 @@ class Register : Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        observeNetwork()
         observeViewModel()
         return binding.root
+    }
+
+    private fun observeNetwork() {
+        networkViewModel.networkState.observe(viewLifecycleOwner){ state->
+            state?.let {
+                if (!it){
+                    InternetErrorDialog.show(requireContext()).show()
+                }
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -55,7 +68,7 @@ class Register : Fragment(){
                 when(it){
                     is RegisterState.Error -> {
                         hideProgress()
-                        errorDialog(requireContext(), message = it.message?:"").show()
+                        ErrorDialog.show(requireContext(), message = it.message?:"").show()
                     }
                     is RegisterState.ErrorEmail -> {
                         hideProgress()
@@ -95,18 +108,9 @@ class Register : Fragment(){
                     }
                     is RegisterState.Success -> {
                         hideProgress()
-                        verifiedDialog(requireContext()) {
+                        VerifiedDialog.show(requireContext()) {
                             it.dismiss()
                             updateUi()
-                        }.show()
-                    }
-
-                    RegisterState.InternetError -> {
-                        hideProgress()
-                        internetErrorDialog(requireContext()){
-                            binding.apply {
-                                viewModel.register(firstName.text.toString(), lastName.text.toString(), email.text.toString(), password.text.toString(), phoneNumber.text.toString().replace('+', ' '), roles[position].second)
-                            }
                         }.show()
                     }
                 }
@@ -195,8 +199,12 @@ class Register : Fragment(){
 
     override fun onDestroyView() {
         super.onDestroyView()
+        ErrorDialog.dismiss()
+        InternetErrorDialog.dismiss()
+        VerifiedDialog.dismiss()
         _binding = null
     }
+
     companion object{
         const val EMAIL = "LOGIN_EMAIL"
         const val PASSWORD = "LOGIN_PASSWORD"

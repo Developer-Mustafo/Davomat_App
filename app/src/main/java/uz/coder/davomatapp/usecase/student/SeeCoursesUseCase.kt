@@ -1,4 +1,4 @@
-package uz.coder.davomatapp.usecase
+package uz.coder.davomatapp.usecase.student
 
 import uz.coder.davomatapp.repository.StudentRepository
 

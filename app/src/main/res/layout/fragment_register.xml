@@ -124,7 +124,9 @@
                     android:hint="@string/password">
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
+                        style="?attr/editTextStyle"
+                        android:paddingHorizontal="10dp"
                         android:id="@+id/role"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <androidx.appcompat.widget.AppCompatButton

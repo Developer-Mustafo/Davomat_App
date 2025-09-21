@@ -15,7 +15,6 @@ import uz.coder.davomatapp.todo.ERROR_EMAIL
 import uz.coder.davomatapp.todo.ERROR_PASSWORD
 import uz.coder.davomatapp.todo.OK
 import uz.coder.davomatapp.todo.SHORT
-import uz.coder.davomatapp.todo.isConnected
 import uz.coder.davomatapp.todo.isEmail
 import uz.coder.davomatapp.todo.isPassword
 import uz.coder.davomatapp.todo.parseString
@@ -33,24 +32,19 @@ class LoginViewModel(private val application: Application) : AndroidViewModel(ap
     fun login(inputEmail: String?, inputPassword: String){
         viewModelScope.launch {
             _state.emit(LoginState.Loading)
-            if (application.isConnected()){
-                val email = parseString(inputEmail)
-                val password = parseString(inputPassword)
-                if (isValidate(email, password)){
-                    loginUseCase(email, password).catch {
-                        _state.emit(LoginState.Error(it.message.toString()))
-                    }.collect {
-                        _state.emit(LoginState.Success(it))
-                        userId = it.id
-                        role = it.role
-                    }
+            val email = parseString(inputEmail)
+            val password = parseString(inputPassword)
+            if (isValidate(email, password)){
+                loginUseCase(email, password).catch {
+                    _state.emit(LoginState.Error(it.message.toString()))
+                }.collect {
+                    _state.emit(LoginState.Success(it))
+                    userId = it.id
+                    role = it.role
                 }
-            }else{
-                _state.emit(LoginState.InternetError)
             }
         }
     }
-
     private fun isValidate(email: String, password: String): Boolean {
         var result = true
         if (email.isEmail()== OK && password.isPassword()==OK) result = true

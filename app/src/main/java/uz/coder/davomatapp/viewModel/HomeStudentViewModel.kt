@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.repositoryImpl.StudentRepositoryImpl
 import uz.coder.davomatapp.todo.isConnected
-import uz.coder.davomatapp.usecase.SeeCoursesUseCase
+import uz.coder.davomatapp.usecase.student.SeeCoursesUseCase
 import uz.coder.davomatapp.viewModel.state.HomeStudentState
 
 class HomeStudentViewModel(private val application: Application): AndroidViewModel(application) {
@@ -21,14 +21,10 @@ class HomeStudentViewModel(private val application: Application): AndroidViewMod
     fun seeCourses(userId: Long){
         viewModelScope.launch {
             _state.emit(HomeStudentState.Loading)
-            if (application.isConnected()){
-                seeCoursesUseCase(userId).catch {
-                    _state.emit(HomeStudentState.Error(it.message.toString()))
-                }.collect{
-                    _state.emit(HomeStudentState.Success(it))
-                }
-            }else{
-                _state.emit(HomeStudentState.InternetError)
+            seeCoursesUseCase(userId).catch {
+                _state.emit(HomeStudentState.Error(it.message.toString()))
+            }.collect{
+                _state.emit(HomeStudentState.Success(it))
             }
         }
     }

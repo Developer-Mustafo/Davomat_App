@@ -13,5 +13,4 @@ sealed class RegisterState {
     data class ErrorPassword(val message: String? = null) : RegisterState()
     data class ErrorPhoneNumber(val message: String? = null) : RegisterState()
     data class ErrorRole(val message: String? = null) : RegisterState()
-    data object InternetError : RegisterState()
 }

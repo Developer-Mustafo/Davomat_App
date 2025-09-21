@@ -6,61 +6,80 @@
     app:cardCornerRadius="30dp"
     app:cardBackgroundColor="@android:color/transparent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/dialog_background">
-        <LinearLayout
-            android:id="@+id/topBar"
+        android:layout_height="wrap_content">
+
+        <!-- Main content card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mainCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"
-            android:background="@color/error_color"
-            app:layout_constraintBottom_toTopOf="@id/bottom">
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/dialog_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:paddingTop="50dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textSize="30sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:id="@+id/ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:textColor="@color/error_color"
+                    android:textAlignment="center"
+                    android:paddingHorizontal="32dp"
+                    android:paddingVertical="12dp"
+                    android:text="@string/okay"
+                    tools:ignore="RtlCompat" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Popped out error icon - centered at the top -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="35dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/error_color">
+
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_error"
                 android:background="@android:color/transparent" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/topBar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:orientation="vertical"
-            android:padding="13dp">
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="30sp"/>
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="20sp"/>
-            <TextView
-                android:id="@+id/ok"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:textColor="@color/error_color"
-                android:textAlignment="center"
-                android:layout_gravity="end"
-                android:layout_marginTop="22dp"
-                android:text="@string/okay"
-                tools:ignore="RtlCompat" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
 </androidx.cardview.widget.CardView>

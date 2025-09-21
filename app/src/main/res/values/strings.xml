@@ -27,7 +27,18 @@
     <string name="error">Xatolik</string>
     <string name="okay">OK</string>
     <string name="successfully_verified">Muvvoffaqiyatli amalga oshdi</string>
-    <string name="cancel">Bekor qilish</string>
+    <string name="alright">Tushunarli</string>
     <string name="go_to_telegram_bot">Parolingiz esdan chiqgan bo\'lsa bizning telegram botdan bilib olishingiz mumkin. Parolni botdan oling.</string>
     <string name="reload">Qayta urinib ko\'ring</string>
+    <string name="list_of_courses">Kurslar ro\'yhati</string>
+    <string name="settings">Sozlamalar</string>
+    <string name="full_name">%s %s</string>
+    <string name="role">%s</string>
+    <string name="limit">Limitingizning tugash sanasi: %s</string>
+    <string name="change_profile">Profilni sozlash</string>
+    <string name="buy_limit">Limit sotib olish</string>
+    <string name="chosen_language">Tanlangan til: %s</string>
+    <string name="leave_system">Lizimdan chiqish</string>
+    <string name="role_admin">Admin</string>
+    <string name="buy_limit_from_telegram_bot">Balansni bizning telegram bot orqali to\'ldirishingiz mumkin\nTelegram bot: @davomatAppBot\nro\'yhatdan o\'tgan raqamingizdagi telegramdan start bosing</string>
 </resources>

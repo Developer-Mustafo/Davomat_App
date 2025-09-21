@@ -45,4 +45,7 @@ public class SharedPref {
     public float getFloat(String key) {
         return sharedPreferences.getFloat(key, 0);
     }
+    public void clear(){
+        sharedPreferences.edit().clear().apply();
+    }
 }

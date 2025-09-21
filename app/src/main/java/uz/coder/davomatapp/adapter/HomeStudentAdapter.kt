@@ -9,20 +9,22 @@ import android.widget.TextView
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.model.Course
 import uz.coder.davomatapp.model.Group
+import uz.coder.davomatapp.model.StudentCourses
 
 class HomeStudentAdapter(
     context: Context,
-    private val courseList: List<Course>,
-    private val groupsMap: Map<Long, List<Group>>
+    private val courseGroups: List<StudentCourses>
 ) : BaseExpandableListAdapter() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    override fun getGroup(groupPosition: Int) = courseList[groupPosition]
+    override fun getGroup(groupPosition: Int): Course =
+        courseGroups[groupPosition].course
 
-    override fun getGroupCount(): Int = courseList.size
+    override fun getGroupCount(): Int = courseGroups.size
 
-    override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
+    override fun getGroupId(groupPosition: Int): Long =
+        courseGroups[groupPosition].course.id
 
     override fun getGroupView(
         groupPosition: Int,
@@ -47,13 +49,14 @@ class HomeStudentAdapter(
         return view
     }
 
-    override fun getChildrenCount(groupPosition: Int): Int {
-        return groupsMap[courseList[groupPosition].id]?.size ?: 0
-    }
+    override fun getChildrenCount(groupPosition: Int): Int =
+        courseGroups[groupPosition].group.size
 
-    override fun getChild(groupPosition: Int, childPosition: Int) = groupsMap[courseList[groupPosition].id]?.get(childPosition)
+    override fun getChild(groupPosition: Int, childPosition: Int): Group =
+        courseGroups[groupPosition].group[childPosition]
 
-    override fun getChildId(groupPosition: Int, childPosition: Int): Long = childPosition.toLong()
+    override fun getChildId(groupPosition: Int, childPosition: Int): Long =
+        getChild(groupPosition, childPosition).id
 
     override fun getChildView(
         groupPosition: Int,
@@ -64,8 +67,10 @@ class HomeStudentAdapter(
     ): View {
         val view = convertView ?: inflater.inflate(R.layout.item_group, parent, false)
         val group = getChild(groupPosition, childPosition)
+
         val titleView = view.findViewById<TextView>(R.id.textViewGroupTitle)
-        titleView.text = group?.title
+        titleView.text = group.title
+
         return view
     }
 
