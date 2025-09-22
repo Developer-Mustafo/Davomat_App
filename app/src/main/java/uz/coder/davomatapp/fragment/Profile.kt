@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,20 +22,34 @@ import uz.coder.davomatapp.viewModel.ProfileViewModel
 import uz.coder.davomatapp.viewModel.state.ProfileState
 import uz.coder.davomatapp.ui.ErrorDialog
 import uz.coder.davomatapp.ui.InfoDialog
+import uz.coder.davomatapp.ui.InternetErrorDialog
+import uz.coder.davomatapp.viewModel.NetworkViewModel
 
 class Profile : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding?:throw RuntimeException("ActivityMainBinding = null")
     private val viewModel by viewModels<ProfileViewModel>()
     private val roles = mapOf(ROLE_STUDENT to R.string.role_student, ROLE_TEACHER to R.string.role_teacher, ROLE_ADMIN to R.string.role_admin)
+    private val networkViewModel by activityViewModels<NetworkViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        observeNetwork()
         observeViewModel()
         return binding.root
+    }
+
+    private fun observeNetwork() {
+        networkViewModel.networkState.observe(viewLifecycleOwner){ state->
+            state?.let {
+                if (!it){
+                    InternetErrorDialog.show(requireContext()).show()
+                }
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -61,7 +76,7 @@ class Profile : Fragment() {
                             }else{
                                 limit.visibility = View.GONE
                             }
-                            roles.getValue(it.user.role)
+                            binding.role.setText(roles.getValue(it.user.role))
                         }
                     }
                 }
@@ -109,5 +124,6 @@ class Profile : Fragment() {
         _binding = null
         ErrorDialog.dismiss()
         InfoDialog.dismiss()
+        InternetErrorDialog.dismiss()
     }
 }

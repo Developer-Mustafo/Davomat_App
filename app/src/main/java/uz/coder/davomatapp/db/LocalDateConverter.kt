@@ -1,4 +1,4 @@
-package uz.coder.davomatapp.db// LocalDateConverter.kt
+package uz.coder.davomatapp.db
 import androidx.room.TypeConverter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

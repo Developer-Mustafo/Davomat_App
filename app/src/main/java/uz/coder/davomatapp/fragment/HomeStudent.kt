@@ -24,7 +24,7 @@ import uz.coder.davomatapp.viewModel.state.HomeStudentState
 import kotlin.getValue
 import uz.coder.davomatapp.ui.ErrorDialog
 
-class HomeStudent : Fragment() {
+class HomeStudent : Fragment(), HomeStudentAdapter.OnItemClicked {
     private var _binding: FragmentHomeStudentBinding? = null
     private val binding get() = _binding ?: throw RuntimeException("FragmentHomeStudentBinding == null")
     private val viewModel by viewModels<HomeStudentViewModel>()
@@ -105,14 +105,11 @@ class HomeStudent : Fragment() {
 
         adapter = HomeStudentAdapter(
             requireContext(),
-            list
+            list,
+            this
         )
         Log.d(TAG, "setupAdapter: ${list.map { it.course }} ${list.groupBy { it.course.id }.mapValues { entry -> entry.value.map { it.group } }}")
         binding.expandableListView.setAdapter(adapter)
-        binding.expandableListView.setOnGroupClickListener { _, _, _, _ -> false }
-        binding.expandableListView.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-            updateUi(adapter.getChild(groupPosition, childPosition))
-            true }
     }
 
     fun hideProgress() {
@@ -123,10 +120,10 @@ class HomeStudent : Fragment() {
     fun showProgress() {
         binding.loading.visibility = View.VISIBLE
     }
+    override fun groupClicked(group: Group) {
 
-    private fun updateUi(group: Group) {
-        Log.d(TAG, "updateUi: $group")
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

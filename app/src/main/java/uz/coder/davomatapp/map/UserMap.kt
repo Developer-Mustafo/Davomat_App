@@ -32,6 +32,6 @@ class UserMap {
         phoneNumber: String,
         role: String
     ) = UserRequest(email = email, id = id, firstName = firstName, lastName = lastName, password = password, phoneNumber = phoneNumber, role = role)
-    fun toUserEntity(data: LoginResponse?) = UserDbModel(email = data?.email?:"", firstName = data?.firstName?:"", lastName = data?.lastName?:"", password = data?.password?:"", phoneNumber = data?.phoneNumber?:"", role = data?.role?:"", payedDate = data?.payedDate?: LocalDate.now())
+    fun toUserEntity(data: LoginResponse?) = UserDbModel(email = data?.email?:"", firstName = data?.firstName?:"", lastName = data?.lastName?:"", password = data?.password?:"", phoneNumber = data?.phoneNumber?:"", role = data?.role?:"", payedDate = data?.payedDate?: LocalDate.now(), id = data?.id?:0L)
     fun toUserEntity(data: UserResponse?) = UserDbModel(email = data?.email?:"", id = data?.id?:0L, firstName = data?.firstName?:"", lastName = data?.lastName?:"", password = data?.password?:"", phoneNumber = data?.phoneNumber?:"", role = data?.role?:"", payedDate = data?.payedDate?: LocalDate.now())
 }

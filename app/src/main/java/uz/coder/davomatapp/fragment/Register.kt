@@ -199,10 +199,11 @@ class Register : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
         ErrorDialog.dismiss()
         InternetErrorDialog.dismiss()
         VerifiedDialog.dismiss()
-        _binding = null
+        InternetErrorDialog.dismiss()
     }
 
     companion object{

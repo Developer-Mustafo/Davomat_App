@@ -13,21 +13,20 @@ import uz.coder.davomatapp.db.model.UserDbModel
 abstract class AppDatabase: RoomDatabase(){
     abstract fun userDao(): UserDao
     companion object{
+        @Volatile
         private var instance: AppDatabase? = null
         private val LOCK = Any()
         private const val DB_NAME = "attendance.db"
         fun getInstance(context: Context): AppDatabase{
-            instance?.let {
-                return it
+            return instance?:synchronized(LOCK){
+                val db = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    DB_NAME
+                ).build()
+                instance = db
+                db
             }
-            synchronized(LOCK){
-                instance?.let {
-                    return it
-                }
-            }
-            val db = Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
-            instance = db
-            return db
         }
     }
 }

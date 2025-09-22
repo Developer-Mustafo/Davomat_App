@@ -3,7 +3,6 @@ package uz.coder.davomatapp.todo
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -38,10 +37,7 @@ fun String.isPassword(): Int{
     return OK
 }
 
-fun LocalDate.formatedDate(): String{
-    val result = this.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-    return result
-}
+fun LocalDate.formatedDate(): String = this.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 
 fun Context.logOut() {
     try {

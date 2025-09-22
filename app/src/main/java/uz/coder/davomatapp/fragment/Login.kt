@@ -44,9 +44,6 @@ class Login : Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        view?.post {
-            isLogin()
-        }
         observeNetwork()
         observeViewModel()
         return binding.root
@@ -142,6 +139,10 @@ class Login : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireView().post {
+            Log.d(TAG, "onCreateView: ✅ Ichiga tushdi.")
+            isLogin()
+        }
         with(binding){
             setFragmentResultListener(EMAIL){_, bundle->
                 val result = bundle.getString(EMAIL)

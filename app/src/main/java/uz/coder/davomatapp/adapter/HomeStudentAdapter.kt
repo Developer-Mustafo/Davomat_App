@@ -13,7 +13,8 @@ import uz.coder.davomatapp.model.StudentCourses
 
 class HomeStudentAdapter(
     context: Context,
-    private val courseGroups: List<StudentCourses>
+    private val courseGroups: List<StudentCourses>,
+    private val onItemClicked: OnItemClicked
 ) : BaseExpandableListAdapter() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -23,8 +24,8 @@ class HomeStudentAdapter(
 
     override fun getGroupCount(): Int = courseGroups.size
 
-    override fun getGroupId(groupPosition: Int): Long =
-        courseGroups[groupPosition].course.id
+    // ID larni position asosida qaytaramiz
+    override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
 
     override fun getGroupView(
         groupPosition: Int,
@@ -55,8 +56,8 @@ class HomeStudentAdapter(
     override fun getChild(groupPosition: Int, childPosition: Int): Group =
         courseGroups[groupPosition].group[childPosition]
 
-    override fun getChildId(groupPosition: Int, childPosition: Int): Long =
-        getChild(groupPosition, childPosition).id
+    // ID larni position asosida qaytaramiz
+    override fun getChildId(groupPosition: Int, childPosition: Int): Long = childPosition.toLong()
 
     override fun getChildView(
         groupPosition: Int,
@@ -71,9 +72,19 @@ class HomeStudentAdapter(
         val titleView = view.findViewById<TextView>(R.id.textViewGroupTitle)
         titleView.text = group.title
 
+        view.setOnClickListener {
+            onItemClicked.groupClicked(group)
+        }
+
         return view
     }
 
-    override fun hasStableIds(): Boolean = true
+    // Bu yerda false qilamiz → ExpandableListView IDlarni adapter ichida boshqaradi
+    override fun hasStableIds(): Boolean = false
+
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean = true
+
+    interface OnItemClicked {
+        fun groupClicked(group: Group)
+    }
 }
