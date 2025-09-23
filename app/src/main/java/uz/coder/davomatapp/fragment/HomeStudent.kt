@@ -12,23 +12,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.R
-import uz.coder.davomatapp.adapter.HomeStudentAdapter
+import uz.coder.davomatapp.adapter.GroupCourseAdapter
 import uz.coder.davomatapp.databinding.FragmentHomeStudentBinding
 import uz.coder.davomatapp.model.Group
 import uz.coder.davomatapp.model.StudentCourses
 import uz.coder.davomatapp.todo.userId
+import uz.coder.davomatapp.ui.ErrorDialog
 import uz.coder.davomatapp.ui.InternetErrorDialog
 import uz.coder.davomatapp.viewModel.HomeStudentViewModel
 import uz.coder.davomatapp.viewModel.NetworkViewModel
 import uz.coder.davomatapp.viewModel.state.HomeStudentState
-import kotlin.getValue
-import uz.coder.davomatapp.ui.ErrorDialog
 
-class HomeStudent : Fragment(), HomeStudentAdapter.OnItemClicked {
+class HomeStudent : Fragment() {
     private var _binding: FragmentHomeStudentBinding? = null
     private val binding get() = _binding ?: throw RuntimeException("FragmentHomeStudentBinding == null")
     private val viewModel by viewModels<HomeStudentViewModel>()
-    private lateinit var adapter: HomeStudentAdapter
+    private lateinit var adapter: GroupCourseAdapter
     private var list = listOf<StudentCourses>()
     private val networkViewModel by activityViewModels<NetworkViewModel>()
 
@@ -37,24 +36,20 @@ class HomeStudent : Fragment(), HomeStudentAdapter.OnItemClicked {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeStudentBinding.inflate(inflater, container, false)
-        viewModel.seeCourses(userId)
-        observeNetwork()
-        observeViewModel()
         return binding.root
-    }
-
-    private fun observeNetwork() {
-        networkViewModel.networkState.observe(viewLifecycleOwner){ state->
-            state?.let {
-                if (!it){
-                    InternetErrorDialog.show(requireContext()).show()
-                }
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupUI()
+        setupRecyclerView()
+        observeNetwork()
+        observeViewModel()
+        viewModel.seeCourses(userId)
+    }
+
+    private fun setupUI() {
         with(binding){
             swipeRefresh.setOnRefreshListener {
                 viewModel.seeCourses(userId)
@@ -66,6 +61,23 @@ class HomeStudent : Fragment(), HomeStudentAdapter.OnItemClicked {
                         true
                     }
                     else -> false
+                }
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        adapter = GroupCourseAdapter { list ->
+            clicked(list)
+        }
+        binding.recyclerView.adapter = adapter
+    }
+
+    private fun observeNetwork() {
+        networkViewModel.networkState.observe(viewLifecycleOwner){ state->
+            state?.let {
+                if (!it){
+                    InternetErrorDialog.show(requireContext()).show()
                 }
             }
         }
@@ -86,30 +98,19 @@ class HomeStudent : Fragment(), HomeStudentAdapter.OnItemClicked {
                         showProgress()
                     }
                     is HomeStudentState.Success -> {
-                        Log.d(TAG, "observeViewModel: ${state.data}")
+                        Log.d(TAG, "observeViewModel: Data received: ${state.data.size} courses")
                         hideProgress()
-                        binding.swipeRefresh.isRefreshing=false
+                        binding.swipeRefresh.isRefreshing = false
                         list = state.data
-                        setupAdapter()
+                        adapter.submitList(list)
                     }
                 }
             }
         }
     }
 
-    private fun setupAdapter() {
-        if (list.isEmpty()) {
-            binding.expandableListView.visibility = View.GONE
-            return
-        }
-
-        adapter = HomeStudentAdapter(
-            requireContext(),
-            list,
-            this
-        )
-        Log.d(TAG, "setupAdapter: ${list.map { it.course }} ${list.groupBy { it.course.id }.mapValues { entry -> entry.value.map { it.group } }}")
-        binding.expandableListView.setAdapter(adapter)
+    private fun clicked(list: List<Group>) {
+        Log.d(TAG, "onGroupClicked: $list")
     }
 
     fun hideProgress() {
@@ -119,9 +120,6 @@ class HomeStudent : Fragment(), HomeStudentAdapter.OnItemClicked {
 
     fun showProgress() {
         binding.loading.visibility = View.VISIBLE
-    }
-    override fun groupClicked(group: Group) {
-
     }
 
     override fun onDestroyView() {

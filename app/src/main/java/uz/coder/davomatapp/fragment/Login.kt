@@ -1,5 +1,6 @@
 package uz.coder.davomatapp.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,13 +26,13 @@ import uz.coder.davomatapp.todo.ROLE_STUDENT
 import uz.coder.davomatapp.todo.ROLE_TEACHER
 import uz.coder.davomatapp.todo.role
 import uz.coder.davomatapp.todo.userId
+import uz.coder.davomatapp.ui.ErrorDialog
+import uz.coder.davomatapp.ui.InfoDialog
 import uz.coder.davomatapp.ui.InternetErrorDialog
+import uz.coder.davomatapp.ui.VerifiedDialog
 import uz.coder.davomatapp.viewModel.LoginViewModel
 import uz.coder.davomatapp.viewModel.NetworkViewModel
 import uz.coder.davomatapp.viewModel.state.LoginState
-import uz.coder.davomatapp.ui.ErrorDialog
-import uz.coder.davomatapp.ui.InfoDialog
-import uz.coder.davomatapp.ui.VerifiedDialog
 
 class Login : Fragment(){
     private var _binding: FragmentLoginBinding? = null
@@ -78,6 +79,7 @@ class Login : Fragment(){
         }
     }
 
+    @SuppressLint("CommitTransaction")
     private fun observeViewModel() {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.state.collect { state ->
@@ -107,10 +109,16 @@ class Login : Fragment(){
                         VerifiedDialog.show(requireContext()){
                             when(state.data.role){
                                 ROLE_ADMIN, ROLE_TEACHER->{
-                                    findNavController().navigate(R.id.action_login_to_home)
+                                    parentFragmentManager.beginTransaction()
+                                        .replace(R.id.action_login_to_home, Home())
+                                        .addToBackStack(null)
+                                        .commit()
                                 }
                                 ROLE_STUDENT->{
-                                    findNavController().navigate(R.id.action_login_to_homeStudent)
+                                    parentFragmentManager.beginTransaction()
+                                        .replace(R.id.action_login_to_homeStudent, HomeStudent())
+                                        .addToBackStack(null)
+                                        .commit()
                                 }
                             }
                             it.dismiss()
@@ -140,8 +148,9 @@ class Login : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireView().post {
-            Log.d(TAG, "onCreateView: ✅ Ichiga tushdi.")
-            isLogin()
+            if (isAdded){
+                isLogin()
+            }
         }
         with(binding){
             setFragmentResultListener(EMAIL){_, bundle->

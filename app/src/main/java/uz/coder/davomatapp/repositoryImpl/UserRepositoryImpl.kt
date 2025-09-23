@@ -1,6 +1,7 @@
 package uz.coder.davomatapp.repositoryImpl
 
 import android.app.Application
+import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -10,10 +11,10 @@ import uz.coder.davomatapp.network.ApiClient
 import uz.coder.davomatapp.network.ApiService
 import uz.coder.davomatapp.repository.UserRepository
 
-class UserRepositoryImpl(application: Application): UserRepository {
+class UserRepositoryImpl(context: Context): UserRepository {
     private val map = UserMap()
     private val apiService = ApiClient.getRetrofit().create(ApiService::class.java)
-    private val database = AppDatabase.getInstance(application)
+    private val database = AppDatabase.getInstance(context)
     override fun loginUser(
         email: String,
         password: String
