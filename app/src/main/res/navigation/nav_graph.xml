@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_home_student_to_profile"
             app:destination="@id/profile" />
+        <action
+            android:id="@+id/action_home_student_to_homeStudentInfo"
+            app:destination="@id/homeStudentInfo" />
     </fragment>
     <fragment
         android:id="@+id/profile"
@@ -58,5 +61,14 @@
             app:launchSingleTop="false"
             app:popUpTo="@id/login"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeStudentInfo"
+        android:name="uz.coder.davomatapp.fragment.HomeStudentInfo"
+        android:label="fragment_home_info"
+        tools:layout="@layout/fragment_home_student_info">
+        <argument
+            android:name="text"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/dark_yellow</item>
         <item name="backgroundColor">@color/normal_theme_background</item>
+        <item name="android:statusBarColor">@color/dark_yellow</item>
     </style>
     <style name="Base.Theme.EditText" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="passwordToggleTint">@color/dark_yellow</item>

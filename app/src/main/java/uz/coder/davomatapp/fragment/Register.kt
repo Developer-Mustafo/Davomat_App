@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,55 +65,57 @@ class Register : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.state.collect { it ->
-                when(it){
-                    is RegisterState.Error -> {
-                        hideProgress()
-                        ErrorDialog.show(requireContext(), message = it.message?:"").show()
-                    }
-                    is RegisterState.ErrorEmail -> {
-                        hideProgress()
-                        binding.email1.error = it.message
-                    }
-                    is RegisterState.ErrorFirstName -> {
-                        hideProgress()
-                        binding.firstName1.error = it.message
-                    }
-                    is RegisterState.ErrorLastName -> {
-                        hideProgress()
-                        binding.lastName1.error = it.message
-                    }
-                    is RegisterState.ErrorPassword -> {
-                        hideProgress()
-                        binding.password1.error = it.message
-                    }
-                    is RegisterState.ErrorPhoneNumber -> {
-                        hideProgress()
-                        binding.phoneNumber1.error = it.message
-                    }
-                    is RegisterState.ErrorRole -> {
-                        hideProgress()
-                        binding.role1.error = it.message
-                    }
-                    RegisterState.Init -> {
-                        hideProgress()
-                        binding.firstName.text?.clear()
-                        binding.lastName.text?.clear()
-                        binding.email.text?.clear()
-                        binding.password.text?.clear()
-                        binding.phoneNumber.text?.clear()
-                        binding.role.setSelection(0)
-                    }
-                    RegisterState.Loading -> {
-                        showProgress()
-                    }
-                    is RegisterState.Success -> {
-                        hideProgress()
-                        VerifiedDialog.show(requireContext()) {
-                            it.dismiss()
-                            updateUi()
-                        }.show()
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.state.collect { it ->
+                    when(it){
+                        is RegisterState.Error -> {
+                            hideProgress()
+                            ErrorDialog.show(requireContext(), message = it.message?:"").show()
+                        }
+                        is RegisterState.ErrorEmail -> {
+                            hideProgress()
+                            binding.email1.error = it.message
+                        }
+                        is RegisterState.ErrorFirstName -> {
+                            hideProgress()
+                            binding.firstName1.error = it.message
+                        }
+                        is RegisterState.ErrorLastName -> {
+                            hideProgress()
+                            binding.lastName1.error = it.message
+                        }
+                        is RegisterState.ErrorPassword -> {
+                            hideProgress()
+                            binding.password1.error = it.message
+                        }
+                        is RegisterState.ErrorPhoneNumber -> {
+                            hideProgress()
+                            binding.phoneNumber1.error = it.message
+                        }
+                        is RegisterState.ErrorRole -> {
+                            hideProgress()
+                            binding.role1.error = it.message
+                        }
+                        RegisterState.Init -> {
+                            hideProgress()
+                            binding.firstName.text?.clear()
+                            binding.lastName.text?.clear()
+                            binding.email.text?.clear()
+                            binding.password.text?.clear()
+                            binding.phoneNumber.text?.clear()
+                            binding.role.setSelection(0)
+                        }
+                        RegisterState.Loading -> {
+                            showProgress()
+                        }
+                        is RegisterState.Success -> {
+                            hideProgress()
+                            VerifiedDialog.show(requireContext()) {
+                                it.dismiss()
+                                updateUi()
+                            }.show()
+                        }
                     }
                 }
             }

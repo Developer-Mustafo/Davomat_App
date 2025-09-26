@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         }
         networkBroadcast = NetworkBroadcast{
             viewModel.updateNetworkState(it)
-            Log.d(TAG, "onCreate: $it")
         }
         val filter = IntentFilter().apply {
             addAction(ConnectivityManager.CONNECTIVITY_ACTION)
@@ -48,5 +47,3 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(networkBroadcast)
     }
 }
-
-private const val TAG = "MainActivity"

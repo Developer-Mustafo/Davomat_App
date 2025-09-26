@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.R
@@ -53,30 +55,32 @@ class Profile : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.state.collect {
-                when(it){
-                    is ProfileState.Error -> {
-                        hideProgress()
-                        ErrorDialog.show(requireContext(), it.message).show()
-                    }
-                    ProfileState.Init -> {
-                        hideProgress()
-                    }
-                    ProfileState.Loading -> {
-                        showProgress()
-                    }
-                    is ProfileState.Success -> {
-                        hideProgress()
-                        with(binding){
-                            fullName.text = String.format(requireContext().getString(R.string.full_name), it.user.firstName, it.user.lastName)
-                            if (it.user.role == ROLE_STUDENT){
-                                limit.visibility = View.VISIBLE
-                                limit.text = String.format(requireContext().getString(R.string.limit), it.user.payedDate.formatedDate())
-                            }else{
-                                limit.visibility = View.GONE
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.state.collect {
+                    when(it){
+                        is ProfileState.Error -> {
+                            hideProgress()
+                            ErrorDialog.show(requireContext(), it.message).show()
+                        }
+                        ProfileState.Init -> {
+                            hideProgress()
+                        }
+                        ProfileState.Loading -> {
+                            showProgress()
+                        }
+                        is ProfileState.Success -> {
+                            hideProgress()
+                            with(binding){
+                                fullName.text = String.format(requireContext().getString(R.string.full_name), it.user.firstName, it.user.lastName)
+                                if (it.user.role == ROLE_STUDENT){
+                                    limit.visibility = View.VISIBLE
+                                    limit.text = String.format(requireContext().getString(R.string.limit), it.user.payedDate.formatedDate())
+                                }else{
+                                    limit.visibility = View.GONE
+                                }
+                                binding.role.setText(roles.getValue(it.user.role))
                             }
-                            binding.role.setText(roles.getValue(it.user.role))
                         }
                     }
                 }

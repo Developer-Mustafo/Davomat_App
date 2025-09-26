@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import uz.coder.davomatapp.model.Group
 import uz.coder.davomatapp.repositoryImpl.StudentRepositoryImpl
-import uz.coder.davomatapp.todo.isConnected
 import uz.coder.davomatapp.usecase.student.SeeCoursesUseCase
 import uz.coder.davomatapp.viewModel.state.HomeStudentState
 
-class HomeStudentViewModel(private val application: Application): AndroidViewModel(application) {
+class HomeStudentViewModel(application: Application): AndroidViewModel(application) {
     private val repository = StudentRepositoryImpl()
     private val seeCoursesUseCase = SeeCoursesUseCase(repository)
     private val _state = MutableStateFlow<HomeStudentState>(HomeStudentState.Init)
@@ -26,6 +26,12 @@ class HomeStudentViewModel(private val application: Application): AndroidViewMod
             }.collect{
                 _state.emit(HomeStudentState.Success(it))
             }
+        }
+    }
+
+    fun clicked(item: List<Group>) {
+        viewModelScope.launch{
+            _state.emit(HomeStudentState.GroupsClicked(item))
         }
     }
 }

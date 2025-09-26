@@ -13,7 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -81,48 +83,50 @@ class Login : Fragment(){
 
     @SuppressLint("CommitTransaction")
     private fun observeViewModel() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.state.collect { state ->
-                when(state){
-                    is LoginState.Error -> {
-                        hideProgress()
-                        ErrorDialog.show(requireContext(), message = state.message?:"").show()
-                    }
-                    is LoginState.ErrorEmail -> {
-                        binding.email1.error = state.message
-                        hideProgress()
-                    }
-                    is LoginState.ErrorPassword -> {
-                        binding.password1.error = state.message
-                        hideProgress()
-                    }
-                    LoginState.Init -> {
-                        hideProgress()
-                        binding.email.text?.clear()
-                        binding.password.text?.clear()
-                    }
-                    LoginState.Loading -> {
-                        showProgress()
-                    }
-                    is LoginState.Success -> {
-                        hideProgress()
-                        VerifiedDialog.show(requireContext()){
-                            when(state.data.role){
-                                ROLE_ADMIN, ROLE_TEACHER->{
-                                    parentFragmentManager.beginTransaction()
-                                        .replace(R.id.action_login_to_home, Home())
-                                        .addToBackStack(null)
-                                        .commit()
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.state.collect { state ->
+                    when(state){
+                        is LoginState.Error -> {
+                            hideProgress()
+                            ErrorDialog.show(requireContext(), message = state.message?:"").show()
+                        }
+                        is LoginState.ErrorEmail -> {
+                            binding.email1.error = state.message
+                            hideProgress()
+                        }
+                        is LoginState.ErrorPassword -> {
+                            binding.password1.error = state.message
+                            hideProgress()
+                        }
+                        LoginState.Init -> {
+                            hideProgress()
+                            binding.email.text?.clear()
+                            binding.password.text?.clear()
+                        }
+                        LoginState.Loading -> {
+                            showProgress()
+                        }
+                        is LoginState.Success -> {
+                            hideProgress()
+                            VerifiedDialog.show(requireContext()){
+                                when(state.data.role){
+                                    ROLE_ADMIN, ROLE_TEACHER->{
+                                        parentFragmentManager.beginTransaction()
+                                            .replace(R.id.action_login_to_home, Home())
+                                            .addToBackStack(null)
+                                            .commit()
+                                    }
+                                    ROLE_STUDENT->{
+                                        parentFragmentManager.beginTransaction()
+                                            .replace(R.id.action_login_to_homeStudent, HomeStudent())
+                                            .addToBackStack(null)
+                                            .commit()
+                                    }
                                 }
-                                ROLE_STUDENT->{
-                                    parentFragmentManager.beginTransaction()
-                                        .replace(R.id.action_login_to_homeStudent, HomeStudent())
-                                        .addToBackStack(null)
-                                        .commit()
-                                }
-                            }
-                            it.dismiss()
-                        }.show()
+                                it.dismiss()
+                            }.show()
+                        }
                     }
                 }
             }
@@ -148,9 +152,7 @@ class Login : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireView().post {
-            if (isAdded){
-                isLogin()
-            }
+            isLogin()
         }
         with(binding){
             setFragmentResultListener(EMAIL){_, bundle->
