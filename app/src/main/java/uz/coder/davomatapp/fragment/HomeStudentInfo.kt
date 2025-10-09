@@ -73,7 +73,9 @@ class HomeStudentInfo : Fragment() {
         Column(modifier.fillMaxSize().padding(paddingValues)) {
             LazyColumn(modifier.fillMaxSize()) {
                 itemsIndexed(list){_,item->
-                    GroupItem(item = item)
+                    GroupItem(item = item){
+                        findNavController().navigate(HomeStudentInfoDirections.actionHomeStudentInfoToAttendance(it.id))
+                    }
                 }
             }
         }

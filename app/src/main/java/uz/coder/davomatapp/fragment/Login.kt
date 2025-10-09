@@ -112,16 +112,10 @@ class Login : Fragment(){
                             VerifiedDialog.show(requireContext()){
                                 when(state.data.role){
                                     ROLE_ADMIN, ROLE_TEACHER->{
-                                        parentFragmentManager.beginTransaction()
-                                            .replace(R.id.action_login_to_home, Home())
-                                            .addToBackStack(null)
-                                            .commit()
+                                        findNavController().navigate(R.id.action_login_to_home)
                                     }
                                     ROLE_STUDENT->{
-                                        parentFragmentManager.beginTransaction()
-                                            .replace(R.id.action_login_to_homeStudent, HomeStudent())
-                                            .addToBackStack(null)
-                                            .commit()
+                                        findNavController().navigate(R.id.action_login_to_homeStudent)
                                     }
                                 }
                                 it.dismiss()

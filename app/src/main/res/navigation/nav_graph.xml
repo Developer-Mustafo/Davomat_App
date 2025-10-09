@@ -70,5 +70,17 @@
         <argument
             android:name="text"
             app:argType="string" />
+        <action
+            android:id="@+id/action_homeStudentInfo_to_attendance"
+            app:destination="@id/attendance" />
+    </fragment>
+    <fragment
+        android:id="@+id/attendance"
+        android:name="uz.coder.davomatapp.fragment.Attendance"
+        android:label="fragment_attendance"
+        tools:layout="@layout/fragment_attendance" >
+        <argument
+            android:name="groupId"
+            app:argType="long" />
     </fragment>
 </navigation>

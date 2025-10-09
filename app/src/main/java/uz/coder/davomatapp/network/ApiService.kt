@@ -7,11 +7,13 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import uz.coder.davomatapp.network.dto.AttendanceResponse
 import uz.coder.davomatapp.network.dto.LoginResponse
 import uz.coder.davomatapp.network.dto.RegisterRequest
 import uz.coder.davomatapp.network.dto.RegisterResponse
 import uz.coder.davomatapp.network.dto.ResponseDTO
 import uz.coder.davomatapp.network.dto.StudentCoursesDTO
+import uz.coder.davomatapp.network.dto.StudentResponse
 import uz.coder.davomatapp.network.dto.UserRequest
 import uz.coder.davomatapp.network.dto.UserResponse
 
@@ -34,5 +36,12 @@ interface ApiService {
     /***-------------Student---------------***/
     @GET("/api/student/seeCourses/{userId}")
     suspend fun seeCourses(@Path("userId") userId: Long): ResponseDTO<List<StudentCoursesDTO>>
+    @GET("/api/student/findByGroupIdAndUserId")
+    suspend fun findByGroupIdAndUserId(@Query("userId") userId: Long, @Query("groupId") groupId: Long): ResponseDTO<StudentResponse>
     /***-------------Student---------------***/
+
+    /***-------------Attendance---------------***/
+    @GET("/api/attendance/student/{studentId}")
+    suspend fun attendanceList(@Path("studentId") studentId: Long): ResponseDTO<List<AttendanceResponse>>
+    /***-------------Attendance---------------***/
 }
