@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/attendance"
-        android:name="uz.coder.davomatapp.fragment.Attendance"
+        android:name="uz.coder.davomatapp.fragment.AttendanceView"
         android:label="fragment_attendance"
         tools:layout="@layout/fragment_attendance" >
         <argument

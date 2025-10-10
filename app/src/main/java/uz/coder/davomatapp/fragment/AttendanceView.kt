@@ -1,6 +1,7 @@
 package uz.coder.davomatapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +21,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.databinding.FragmentAttendanceBinding
+import uz.coder.davomatapp.model.Attendance
 import uz.coder.davomatapp.model.Student
-import uz.coder.davomatapp.ui.AttendanceCalendarScreen
+import uz.coder.davomatapp.ui.AttendanceCalendarPager
 import uz.coder.davomatapp.ui.ErrorDialog
 import uz.coder.davomatapp.ui.InternetErrorDialog
 import uz.coder.davomatapp.ui.StudentProfile
@@ -30,14 +32,14 @@ import uz.coder.davomatapp.viewModel.NetworkViewModel
 import uz.coder.davomatapp.viewModel.state.AttendanceState
 import java.time.LocalDate
 
-class Attendance : Fragment() {
+class AttendanceView : Fragment() {
     private var _binding: FragmentAttendanceBinding? = null
     private val binding get() = _binding?:throw RuntimeException("binding is null")
-    private val args by navArgs<AttendanceArgs>()
+    private val args by navArgs<AttendanceViewArgs>()
     private val viewModel by viewModels<AttendanceViewModel>()
     private val networkViewModel by activityViewModels<NetworkViewModel>()
-    private var student by mutableStateOf(Student("",0,0,"",0, LocalDate.now()))
-    private var list by mutableStateOf<List<uz.coder.davomatapp.model.Attendance>>(emptyList())
+    private var student by mutableStateOf(Student("", 0, 0, "", 0, LocalDate.now()))
+    private var list by mutableStateOf<List<Attendance>>(emptyList())
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,11 +56,14 @@ class Attendance : Fragment() {
         binding.apply {
             composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             composeView.setContent {
-                Column(modifier = Modifier.fillMaxSize()) {
+                Column(modifier = Modifier.Companion.fillMaxSize()) {
                     println(student)
                     StudentProfile(student)
-                    AttendanceCalendarScreen(student, list)
+                    AttendanceCalendarPager(student, list)
                 }
+            }
+            swipeRefresh.setOnRefreshListener {
+                viewModel.studentProfile(args.groupId)
             }
         }
     }
@@ -92,6 +97,7 @@ class Attendance : Fragment() {
                             hideProgress()
                             student = it.student
                             list = it.data
+                            Log.d(TAG, "observeViewModel: $list")
                         }
                     }
                 }
@@ -115,3 +121,4 @@ class Attendance : Fragment() {
         _binding = null
     }
 }
+private const val TAG = "Attendance"

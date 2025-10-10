@@ -2,7 +2,7 @@
 
 package uz.coder.davomatapp.ui
 
-//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.model.Attendance
 import uz.coder.davomatapp.model.Group
@@ -65,84 +68,103 @@ fun AttendanceTopAppBar(modifier: Modifier = Modifier) {
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AttendanceCalendarScreen(
+fun AttendanceCalendarPager(
     student: Student,
     attendanceList: List<Attendance>
 ) {
     val today = LocalDate.now()
-    val startDate = student.createdDate
-    val currentMonth = YearMonth.now()
+    val startMonth = YearMonth.from(student.createdDate)
+    val currentMonth = YearMonth.from(today)
 
-    val allDays = remember {
-        (1..currentMonth.lengthOfMonth()).map { day ->
-            LocalDate.of(currentMonth.year, currentMonth.month, day)
-        }
+    // student.createdDate dan hozirgacha bo'lgan barcha oylar ro'yxati
+    val months = remember {
+        generateSequence(startMonth) { it.plusMonths(1) }
+            .takeWhile { it <= currentMonth }
+            .toList()
+    }
+
+    val pagerState = rememberPagerState(initialPage = months.size - 1){
+        months.size
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp)
     ) {
 
-        Text(
-            text = "${currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${currentMonth.year}",
-            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-        )
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.weight(1f)
+        ) { page ->
+            val month = months[page]
+            val daysInMonth = (1..month.lengthOfMonth()).map { day ->
+                LocalDate.of(month.year, month.month, day)
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "${month.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${month.year}",
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+                )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(7),
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            items(allDays) { date ->
-                val attendance = attendanceList.find { it.date == date }
-                val isBeforeJoin = date.isBefore(startDate)
-                val isFuture = date.isAfter(today)
+                Spacer(modifier = Modifier.height(16.dp))
 
-                val color = when {
-                    isBeforeJoin || isFuture -> Color.LightGray.copy(alpha = 0.5f)
-                    attendance?.status == "+" -> Color(0xFF4CAF50) // yashil
-                    attendance?.status == "-" -> Color(0xFFF44336) // qizil
-                    else -> Color.Gray
-                }
-
-                Box(
-                    modifier = Modifier
-                        .size(45.dp)
-                        .background(color, shape = MaterialTheme.shapes.medium),
-                    contentAlignment = Alignment.Center
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(7),
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(
-                        text = date.dayOfMonth.toString(),
-                        fontSize = 14.sp,
-                        color = Color.White
-                    )
+                    items(daysInMonth) { date ->
+                        val attendance = attendanceList.find { it.date == date }
+                        val isBeforeJoin = date.isBefore(student.createdDate)
+                        val isFuture = date.isAfter(today)
+
+                        val color = when {
+                            isBeforeJoin || isFuture -> Color.LightGray.copy(alpha = 0.5f)
+                            attendance?.status == "+" -> Color(0xFF4CAF50)
+                            attendance?.status == "-" -> Color(0xFFF44336)
+                            else -> Color.Gray
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(45.dp)
+                                .background(color, shape = MaterialTheme.shapes.medium),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = date.dayOfMonth.toString(),
+                                fontSize = 14.sp,
+                                color = Color.White
+                            )
+                        }
+                    }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = "Qo‘shilgan sana: ${student.createdDate}",
-            fontSize = 16.sp,
-            color = Color.Gray
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            pageCount = months.size,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
 }
+
+
 @Composable
 fun StudentProfile(
     student: Student
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
