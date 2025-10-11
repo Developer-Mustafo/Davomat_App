@@ -2,6 +2,7 @@
 
 package uz.coder.davomatapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -71,11 +72,11 @@ fun AttendanceTopAppBar(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AttendanceCalendarPager(
-    student: Student,
+    student: Student?,
     attendanceList: List<Attendance>
 ) {
     val today = LocalDate.now()
-    val startMonth = YearMonth.from(student.createdDate)
+    val startMonth = YearMonth.from(student?.createdDate?:return)
     val currentMonth = YearMonth.from(today)
 
     // student.createdDate dan hozirgacha bo'lgan barcha oylar ro'yxati
@@ -84,6 +85,7 @@ fun AttendanceCalendarPager(
             .takeWhile { it <= currentMonth }
             .toList()
     }
+    Log.d(TAG, "AttendanceCalendarPager: $months")
 
     val pagerState = rememberPagerState(initialPage = months.size - 1){
         months.size
@@ -146,21 +148,13 @@ fun AttendanceCalendarPager(
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            pageCount = months.size,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
     }
 }
 
 
 @Composable
 fun StudentProfile(
-    student: Student
+    student: Student?
 ) {
     Column(
         modifier = Modifier
@@ -177,7 +171,7 @@ fun StudentProfile(
                 .background(Color(0xFFBBDEFB)),
             contentAlignment = Alignment.Center
         ) {
-            val initial = student.fullName.firstOrNull()?.toString() ?: "?"
+            val initial = student?.fullName?.firstOrNull()?.toString() ?: "?"
             Text(
                 text = initial,
                 style = MaterialTheme.typography.headlineLarge,
@@ -190,7 +184,7 @@ fun StudentProfile(
 
         // Ism
         Text(
-            text = student.fullName.ifBlank { "Noma’lum talaba" },
+            text = student?.fullName?.ifBlank { "Noma’lum talaba" }?:"Noma’lum talaba",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -240,7 +234,8 @@ fun GroupItem(modifier: Modifier = Modifier, item: Group, onClick: ((Group) -> U
         modifier
             .fillMaxWidth()
             .padding(10.dp),
-        colors = CardDefaults.cardColors(colorResource(R.color.theme_background))
+        colors = CardDefaults.cardColors(colorResource(R.color.theme_background)),
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(
             modifier
@@ -252,3 +247,4 @@ fun GroupItem(modifier: Modifier = Modifier, item: Group, onClick: ((Group) -> U
         }
     }
 }
+private const val TAG = "composeUi"

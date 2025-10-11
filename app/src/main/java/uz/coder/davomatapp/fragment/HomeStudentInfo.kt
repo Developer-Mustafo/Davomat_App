@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,11 +16,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.colorResource
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentHomeStudentInfoBinding
 import uz.coder.davomatapp.model.Group
 import uz.coder.davomatapp.ui.AttendanceTopAppBar
@@ -70,7 +73,7 @@ class HomeStudentInfo : Fragment() {
         paddingValues: PaddingValues,
         list: List<Group>
     ) {
-        Column(modifier.fillMaxSize().padding(paddingValues)) {
+        Column(modifier.fillMaxSize().background(colorResource(R.color.theme_background)).padding(paddingValues)) {
             LazyColumn(modifier.fillMaxSize()) {
                 itemsIndexed(list){_,item->
                     GroupItem(item = item){

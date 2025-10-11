@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.colorResource
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
+import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentAttendanceBinding
 import uz.coder.davomatapp.model.Attendance
 import uz.coder.davomatapp.model.Student
@@ -30,7 +33,6 @@ import uz.coder.davomatapp.ui.StudentProfile
 import uz.coder.davomatapp.viewModel.AttendanceViewModel
 import uz.coder.davomatapp.viewModel.NetworkViewModel
 import uz.coder.davomatapp.viewModel.state.AttendanceState
-import java.time.LocalDate
 
 class AttendanceView : Fragment() {
     private var _binding: FragmentAttendanceBinding? = null
@@ -38,7 +40,7 @@ class AttendanceView : Fragment() {
     private val args by navArgs<AttendanceViewArgs>()
     private val viewModel by viewModels<AttendanceViewModel>()
     private val networkViewModel by activityViewModels<NetworkViewModel>()
-    private var student by mutableStateOf(Student("", 0, 0, "", 0, LocalDate.now()))
+    private var student by mutableStateOf<Student?>(null)
     private var list by mutableStateOf<List<Attendance>>(emptyList())
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +58,7 @@ class AttendanceView : Fragment() {
         binding.apply {
             composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             composeView.setContent {
-                Column(modifier = Modifier.Companion.fillMaxSize()) {
+                Column(modifier = Modifier.Companion.fillMaxSize().background(colorResource(R.color.theme_background))) {
                     println(student)
                     StudentProfile(student)
                     AttendanceCalendarPager(student, list)
