@@ -42,6 +42,11 @@ class Login : Fragment(){
     private val viewModel by viewModels<LoginViewModel>()
     private val networkViewModel by activityViewModels<NetworkViewModel>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isLogin()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,16 +72,13 @@ class Login : Fragment(){
     }
 
     private fun observeNetwork() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            networkViewModel.networkState.observe(viewLifecycleOwner){state->
-                if (isAdded){
-                    state?.let { it ->
-                        if (!it){
-                            InternetErrorDialog.show(requireContext()).show()
-                        }
+        networkViewModel.networkState.observe(viewLifecycleOwner){state->
+            if (isAdded){
+                state?.let { it ->
+                    if (!it){
+                        InternetErrorDialog.show(requireContext()).show()
                     }
                 }
-                Log.d(TAG, "observeNetwork: $state")
             }
         }
     }
@@ -145,9 +147,6 @@ class Login : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireView().post {
-            isLogin()
-        }
         with(binding){
             setFragmentResultListener(EMAIL){_, bundle->
                 val result = bundle.getString(EMAIL)

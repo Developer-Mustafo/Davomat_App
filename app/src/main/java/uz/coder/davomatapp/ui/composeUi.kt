@@ -1,8 +1,5 @@
-@file:Suppress("DEPRECATION")
-
 package uz.coder.davomatapp.ui
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,26 +20,36 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.accompanist.pager.HorizontalPagerIndicator
+import uz.coder.davomatapp.App.application
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.model.Attendance
 import uz.coder.davomatapp.model.Group
@@ -53,21 +61,72 @@ import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AttendanceTopAppBar(modifier: Modifier = Modifier) {
-    TopAppBar(
+fun AttendanceTopAppBar(modifier: Modifier = Modifier, title: String, menus: List<MenuItem> = emptyList(), onClicked:((Int, Int)-> Unit)? = null) {
+    var menuExpanded by remember { mutableStateOf(false) }
+    var selectedSubMenu by remember { mutableStateOf<Pair<List<MenuItem>?, Int>?>(Pair(null, -1)) }
+    CenterAlignedTopAppBar(
         title = {
             Text(
-                stringResource(R.string.groups),
-                fontSize = 20.sp,
+                title,
                 color = colorResource(R.color.white)
             )
         },
         modifier = modifier.fillMaxWidth(),
+        windowInsets = WindowInsets(0),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorResource(R.color.dark_yellow)
-        )
+        ),
+        actions = {
+            IconButton(onClick = { menuExpanded = true }) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = null
+                )
+            }
+            DropdownMenu(menuExpanded, onDismissRequest = {
+                menuExpanded=false
+            }) {
+                menus.forEachIndexed {index, menu ->
+                    DropdownMenuItem(text = {
+                        Text(menu.text, color = colorResource(R.color.dark_yellow))
+                    }, onClick = {
+                        if (menu.groups.isNotEmpty()){
+                            selectedSubMenu=Pair(menu.groups, index)
+                        }else{
+                            menuExpanded=!menuExpanded
+                            onClicked?.invoke(index, -1)
+                        }
+                    }, leadingIcon = {
+                        Icon(painterResource(menu.icon), null, tint = colorResource(R.color.dark_yellow))
+                    })
+                }
+            }
+            selectedSubMenu?.first?.let {
+                DropdownMenu(
+                    expanded = true,
+                    onDismissRequest = { selectedSubMenu = null }
+                ) {
+                    it.forEachIndexed { index, subMenu ->
+                        DropdownMenuItem(
+                            text = { Text(subMenu.text, color = colorResource(R.color.dark_yellow)) },
+                            leadingIcon = { Icon(painterResource(subMenu.icon), contentDescription = null, tint = colorResource(R.color.dark_yellow)) },
+                            onClick = {
+                                onClicked?.invoke(selectedSubMenu?.second?:-1, index)
+                                selectedSubMenu = null
+                                menuExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
+        }
     )
 }
+data class MenuItem(
+    val text:String,
+    val icon:Int,
+    val groups: List<MenuItem> = emptyList()
+)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -78,14 +137,11 @@ fun AttendanceCalendarPager(
     val today = LocalDate.now()
     val startMonth = YearMonth.from(student?.createdDate?:return)
     val currentMonth = YearMonth.from(today)
-
-    // student.createdDate dan hozirgacha bo'lgan barcha oylar ro'yxati
     val months = remember {
         generateSequence(startMonth) { it.plusMonths(1) }
             .takeWhile { it <= currentMonth }
             .toList()
     }
-    Log.d(TAG, "AttendanceCalendarPager: $months")
 
     val pagerState = rememberPagerState(initialPage = months.size - 1){
         months.size
@@ -163,7 +219,7 @@ fun StudentProfile(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        // Avatar
+
         Box(
             modifier = Modifier
                 .size(100.dp)
@@ -181,10 +237,8 @@ fun StudentProfile(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Ism
         Text(
-            text = student?.fullName?.ifBlank { "Noma’lum talaba" }?:"Noma’lum talaba",
+            text = student?.fullName?.ifBlank { application.getString(R.string.unkown_user) }?:application.getString(R.string.unkown_user),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -247,4 +301,3 @@ fun GroupItem(modifier: Modifier = Modifier, item: Group, onClick: ((Group) -> U
         }
     }
 }
-private const val TAG = "composeUi"

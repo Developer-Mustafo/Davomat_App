@@ -43,4 +43,13 @@
     <string name="role_admin">Admin</string>
     <string name="buy_limit_from_telegram_bot">Balansni bizning telegram bot orqali to\'ldirishingiz mumkin\nTelegram bot: @davomatAppBot\nro\'yhatdan o\'tgan raqamingizdagi telegramdan start bosing</string>
     <string name="groups">Guruhlar ro\'yhati</string>
+    <string name="unkown_user">Noma\'lum foydalanuvchi</string>
+    <string name="createCourse">Kurs yaratish</string>
+    <string name="upload_xls">Exel orqali</string>
+    <string name="createGroup">Guruh yaratish</string>
+    <string name="createStudent">Student yaratish</string>
+    <string name="add_one">Bitta yaratish</string>
+    <string name="createAttendance">Davomat qilish</string>
+    <string name="add_one_by_one">Birma-bir davomat qilish</string>
+    <string name="go_profile">Profil</string>
 </resources>

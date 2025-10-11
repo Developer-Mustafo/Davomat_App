@@ -8,7 +8,7 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
--keepclassmembers class uz.coder.davomatapp.domain.admin.Admin,uz.coder.davomatapp.domain.coure.Course,uz.coder.davomatapp.domain.davomat.Davomat,uz.coder.davomatapp.domain.davomat.Davomat {
+-keepclassmembers class uz.coder.davomatapp.network.dto.*, uz.coder.davomatapp.db.model.* {
    public *;
 }
 

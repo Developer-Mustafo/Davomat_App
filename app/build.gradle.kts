@@ -78,8 +78,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     //composeViewModel
 
-    implementation("com.google.accompanist:accompanist-pager:0.36.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.36.0")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-beta01")
     implementation("com.airbnb.android:lottie:6.6.10")

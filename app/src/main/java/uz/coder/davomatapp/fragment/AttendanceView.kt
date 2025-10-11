@@ -72,9 +72,11 @@ class AttendanceView : Fragment() {
 
     private fun observeNetwork() {
         networkViewModel.networkState.observe(viewLifecycleOwner){state->
-            state?.let {
-                if (!it){
-                    InternetErrorDialog.show(requireContext()).show()
+            if (isAdded){
+                state?.let { it ->
+                    if (!it){
+                        InternetErrorDialog.show(requireContext()).show()
+                    }
                 }
             }
         }
