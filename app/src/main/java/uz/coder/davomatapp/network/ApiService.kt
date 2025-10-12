@@ -47,7 +47,7 @@ interface ApiService {
     /***-------------Attendance---------------***/
 
     /***-------------Course---------------***/
-    @GET("api/course/getAllCourses/{userId}")
-    suspend fun getAllCourses(userId: Long): ResponseDTO<List<CourseDTO>>
+    @GET("/api/course/getAllCourses/{userId}")
+    suspend fun getAllCourses(@Path("userId") userId: Long): ResponseDTO<List<CourseDTO>>
     /***-------------Course---------------***/
 }

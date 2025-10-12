@@ -44,7 +44,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,6 +51,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import uz.coder.davomatapp.App.application
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.model.Attendance
+import uz.coder.davomatapp.model.Course
 import uz.coder.davomatapp.model.Group
 import uz.coder.davomatapp.model.Student
 import uz.coder.davomatapp.model.StudentCourses
@@ -247,7 +247,7 @@ fun StudentProfile(
     }
 }
 @Composable
-fun CourseItem(modifier: Modifier = Modifier, item: StudentCourses) {
+fun StudentCourseItem(modifier: Modifier = Modifier, item: StudentCourses) {
     val viewModel = viewModel<HomeStudentViewModel>()
     Card(
         onClick = {
@@ -275,6 +275,39 @@ fun CourseItem(modifier: Modifier = Modifier, item: StudentCourses) {
                 Text(item.course.title, modifier.fillMaxWidth(), fontSize = 25.sp)
                 if (item.course.description.isNotEmpty()) {
                     Text(item.course.description, modifier.fillMaxWidth(), fontSize = 20.sp)
+                }
+            }
+        }
+    }
+}
+@Composable
+fun CourseItem(modifier: Modifier = Modifier, item: Course, onClick: ((Course) -> Unit)?=null) {
+    Card(
+        onClick = {
+            onClick?.invoke(item)
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.theme_background)
+        )
+    ) {
+        Row(
+            modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+        ) {
+            Column(
+                modifier
+                    .fillMaxWidth()
+                    .weight(11.5f)
+            ) {
+                Text(item.title, modifier.fillMaxWidth(), fontSize = 25.sp)
+                if (item.description.isNotEmpty()) {
+                    Text(item.description, modifier.fillMaxWidth(), fontSize = 20.sp)
                 }
             }
         }

@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.SystemBarStyle
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -15,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.view.WindowCompat.enableEdgeToEdge
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,7 +26,7 @@ import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentHomeStudentBinding
 import uz.coder.davomatapp.model.StudentCourses
 import uz.coder.davomatapp.todo.userId
-import uz.coder.davomatapp.ui.CourseItem
+import uz.coder.davomatapp.ui.StudentCourseItem
 import uz.coder.davomatapp.ui.ErrorDialog
 import uz.coder.davomatapp.ui.InternetErrorDialog
 import uz.coder.davomatapp.viewModel.HomeStudentViewModel
@@ -62,7 +59,7 @@ class HomeStudent : Fragment() {
             setContent {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     itemsIndexed(list){_,item->
-                        CourseItem(item = item)
+                        StudentCourseItem(item = item)
                     }
                 }
             }

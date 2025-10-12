@@ -80,6 +80,10 @@ dependencies {
 
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
+    //filePicker
+    implementation("com.github.jaiselrahman:FilePicker:1.3.2")
+    //filePicker
+
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-beta01")
     implementation("com.airbnb.android:lottie:6.6.10")
     implementation ("com.google.code.gson:gson:2.13.2")
