@@ -1,14 +1,22 @@
 package uz.coder.davomatapp.network
 
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import uz.coder.davomatapp.network.dto.AttendanceResponse
 import uz.coder.davomatapp.network.dto.CourseDTO
+import uz.coder.davomatapp.network.dto.CreateAttendanceRequest
+import uz.coder.davomatapp.network.dto.CreateCourseRequest
+import uz.coder.davomatapp.network.dto.CreateGroupRequest
+import uz.coder.davomatapp.network.dto.CreateStudentRequest
+import uz.coder.davomatapp.network.dto.GroupDTO
 import uz.coder.davomatapp.network.dto.LoginResponse
 import uz.coder.davomatapp.network.dto.RegisterRequest
 import uz.coder.davomatapp.network.dto.RegisterResponse
@@ -39,15 +47,33 @@ interface ApiService {
     suspend fun seeCourses(@Path("userId") userId: Long): ResponseDTO<List<StudentCoursesDTO>>
     @GET("/api/student/findByGroupIdAndUserId")
     suspend fun findByGroupIdAndUserId(@Query("userId") userId: Long, @Query("groupId") groupId: Long): ResponseDTO<StudentResponse>
+    @POST("/api/student/addStudent")
+    suspend fun createStudent(@Body request: CreateStudentRequest): ResponseDTO<StudentResponse>
+    @POST("/api/student/upload-excel/{userId}")
+    @Multipart
+    suspend fun uploadStudentExcel(@Part file: MultipartBody.Part, @Path("userId") userId: Long): ResponseDTO<String>
     /***-------------Student---------------***/
 
     /***-------------Attendance---------------***/
     @GET("/api/attendance/student/{studentId}")
     suspend fun attendanceList(@Path("studentId") studentId: Long): ResponseDTO<List<AttendanceResponse>>
+    @POST("/api/attendance/add")
+    suspend fun createAttendance(@Body request: CreateAttendanceRequest): ResponseDTO<AttendanceResponse>
+    @Multipart
+    @POST("/api/attendance/excel")
+    suspend fun uploadAttendanceExcel(@Part file: MultipartBody.Part): ResponseDTO<String>
     /***-------------Attendance---------------***/
 
     /***-------------Course---------------***/
     @GET("/api/course/getAllCourses/{userId}")
     suspend fun getAllCourses(@Path("userId") userId: Long): ResponseDTO<List<CourseDTO>>
+
+    @POST("/api/course/create")
+    suspend fun createCourse(@Body request: CreateCourseRequest): ResponseDTO<CourseDTO>
     /***-------------Course---------------***/
+
+    /***-------------Group----------------***/
+    @POST("/api/group/addGroup")
+    suspend fun createGroup(@Body request: CreateGroupRequest): ResponseDTO<GroupDTO>
+    /***-------------Group----------------***/
 }

@@ -88,14 +88,14 @@ object InfoDialog {
 object VerifiedDialog {
     private var dialog: Dialog? = null
 
-    fun show(context: Context, onPositive: (DialogInterface) -> Unit): Dialog {
+    fun show(context: Context, onPositive: ((DialogInterface) -> Unit)? = null): Dialog {
         val binding = VerifiedDialogBinding.inflate(LayoutInflater.from(context), null, false)
         dialog = Dialog(context).apply {
             setContentView(binding.root)
             window?.setBackgroundDrawableResource(android.R.color.transparent)
             setCancelable(false)
         }
-        binding.ok.setOnClickListener { onPositive(dialog!!) }
+        binding.ok.setOnClickListener { onPositive?.invoke(dialog!!)?:dialog?.dismiss() }
         dialog?.show()
         return dialog!!
     }

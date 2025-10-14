@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.core.net.toFile
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -48,6 +50,7 @@ import uz.coder.davomatapp.ui.CourseItem
 import uz.coder.davomatapp.ui.ErrorDialog
 import uz.coder.davomatapp.ui.InternetErrorDialog
 import uz.coder.davomatapp.ui.MenuItem
+import uz.coder.davomatapp.ui.VerifiedDialog
 import uz.coder.davomatapp.viewModel.HomeViewModel
 import uz.coder.davomatapp.viewModel.NetworkViewModel
 import uz.coder.davomatapp.viewModel.state.HomeState
@@ -77,6 +80,8 @@ class Home : Fragment() {
                 uri?.let {
                     val filePath = copyUriToTempFile(it)
                     Log.d("StudentFile", "📘 Tanlangan student fayl: $filePath")
+                    val file = it.toFile()
+                    viewModel.uploadStudentExcel(file)
                 } ?: Log.e("StudentFile", "❌ Fayl tanlanmadi yoki uri null!")
             }
         }
@@ -88,6 +93,8 @@ class Home : Fragment() {
                 val uri = getPickedFileUri(result.data)
                 uri?.let {
                     val filePath = copyUriToTempFile(it)
+                    val file = it.toFile()
+                    viewModel.uploadAttendanceExcel(file)
                     Log.d("AttendanceFile", "🗒️ Tanlangan attendance fayl: $filePath")
                 } ?: Log.e("AttendanceFile", "❌ Fayl tanlanmadi yoki uri null!")
             }
@@ -139,8 +146,11 @@ class Home : Fragment() {
                             menus = menuItems,
                             onClicked = { parent, child ->
                                 when (parent) {
-                                    3 -> if (child == 0) filePicker(0)
-                                    4 -> if (child == 0) filePicker(1)
+                                    0 -> findNavController().navigate(R.id.action_home_to_profile)
+                                    1 -> createCourse()
+                                    2 -> createGroup()
+                                    3 -> if (child == 0) filePicker(0) else createStudent()
+                                    4 -> if (child == 0) filePicker(1) else createAttendance()
                                 }
                             }
                         )
@@ -189,7 +199,7 @@ class Home : Fragment() {
     }
 
     private fun getPickedFileUri(data: Intent?): Uri? {
-        val files = data?.getParcelableArrayListExtra<com.jaiselrahman.filepicker.model.MediaFile>(
+        @Suppress("DEPRECATION") val files = data?.getParcelableArrayListExtra<com.jaiselrahman.filepicker.model.MediaFile>(
             FilePickerActivity.MEDIA_FILES
         )
         return files?.firstOrNull()?.uri
@@ -226,10 +236,30 @@ class Home : Fragment() {
                             hideProgress()
                             list = it.date
                         }
+
+                        HomeState.Done -> {
+                            VerifiedDialog.show(requireContext()).show()
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun createCourse(){
+        TODO("Create Course")
+    }
+
+    private fun createGroup(){
+        TODO("Create Group")
+    }
+
+    private fun createStudent(){
+        TODO("Create Student")
+    }
+
+    private fun createAttendance(){
+        TODO("Create Attendance")
     }
 
     private fun observeNetwork() {
@@ -256,5 +286,6 @@ class Home : Fragment() {
         _binding = null
         ErrorDialog.dismiss()
         InternetErrorDialog.dismiss()
+        VerifiedDialog.dismiss()
     }
 }

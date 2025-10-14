@@ -84,6 +84,10 @@ dependencies {
     implementation("com.github.jaiselrahman:FilePicker:1.3.2")
     //filePicker
 
+    //get-string-as-response
+    implementation("com.squareup.retrofit2:converter-scalars:3.0.0")
+    //get-string-as-response
+
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-beta01")
     implementation("com.airbnb.android:lottie:6.6.10")
     implementation ("com.google.code.gson:gson:2.13.2")
