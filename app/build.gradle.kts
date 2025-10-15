@@ -88,6 +88,10 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-scalars:3.0.0")
     //get-string-as-response
 
+    //compose-navigation
+    implementation("androidx.navigation:navigation-compose:2.9.5")
+    //compose-navigation
+
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-beta01")
     implementation("com.airbnb.android:lottie:6.6.10")
     implementation ("com.google.code.gson:gson:2.13.2")

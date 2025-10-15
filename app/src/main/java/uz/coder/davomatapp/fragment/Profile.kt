@@ -50,6 +50,8 @@ class Profile : Fragment() {
                 state?.let { it ->
                     if (!it){
                         InternetErrorDialog.show(requireContext()).show()
+                    }else{
+                        viewModel.profile()
                     }
                 }
             }
@@ -101,7 +103,6 @@ class Profile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.profile()
         with(binding){
             buyLimit.setOnClickListener {
                 InfoDialog.show(requireContext(), requireContext().getString(R.string.buy_limit_from_telegram_bot)){

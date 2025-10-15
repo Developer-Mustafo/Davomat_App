@@ -64,7 +64,6 @@ class HomeStudent : Fragment() {
                 }
             }
         }
-        viewModel.seeCourses(userId)
     }
 
     private fun setupUI() {
@@ -90,6 +89,8 @@ class HomeStudent : Fragment() {
                 state?.let { it ->
                     if (!it){
                         InternetErrorDialog.show(requireContext()).show()
+                    }else{
+                        viewModel.seeCourses(userId)
                     }
                 }
             }

@@ -54,7 +54,6 @@ class AttendanceView : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeNetwork()
         observeViewModel()
-        viewModel.studentProfile(args.groupId)
         binding.apply {
             composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             composeView.setContent {
@@ -76,6 +75,8 @@ class AttendanceView : Fragment() {
                 state?.let { it ->
                     if (!it){
                         InternetErrorDialog.show(requireContext()).show()
+                    }else{
+                        viewModel.studentProfile(args.groupId)
                     }
                 }
             }
