@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DavomatApp"
         tools:targetApi="31">
-        <activity android:name=".activity.MainActivity"
+        <activity android:name=".presentation.MainActivity"
             android:exported="true"
             android:configChanges="screenSize|orientation">
             <intent-filter>
@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".broadcast.NetworkBroadcast" android:exported="false">
+        <receiver android:name=".data.broadcast.NetworkBroadcast" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.AIRPLANE_MODE"/>
             </intent-filter>

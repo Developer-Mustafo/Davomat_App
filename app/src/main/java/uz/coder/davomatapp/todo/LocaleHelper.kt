@@ -2,7 +2,6 @@ package uz.coder.davomatapp.todo
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import java.util.Locale
 
 object LocaleHelper {

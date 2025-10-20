@@ -4,6 +4,7 @@ plugins {
     id("androidx.navigation.safeargs")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -91,6 +92,12 @@ dependencies {
     //compose-navigation
     implementation("androidx.navigation:navigation-compose:2.9.5")
     //compose-navigation
+
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.57.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.57.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+    //hilt
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-beta01")
     implementation("com.airbnb.android:lottie:6.6.10")

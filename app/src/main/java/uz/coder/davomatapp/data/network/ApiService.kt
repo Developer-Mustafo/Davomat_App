@@ -1,0 +1,79 @@
+package uz.coder.davomatapp.data.network
+
+import okhttp3.MultipartBody
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
+import retrofit2.http.Path
+import retrofit2.http.Query
+import uz.coder.davomatapp.data.network.dto.AttendanceResponse
+import uz.coder.davomatapp.data.network.dto.CourseDTO
+import uz.coder.davomatapp.data.network.dto.CreateAttendanceRequest
+import uz.coder.davomatapp.data.network.dto.CreateCourseRequest
+import uz.coder.davomatapp.data.network.dto.CreateGroupRequest
+import uz.coder.davomatapp.data.network.dto.CreateStudentRequest
+import uz.coder.davomatapp.data.network.dto.GroupDTO
+import uz.coder.davomatapp.data.network.dto.LoginResponse
+import uz.coder.davomatapp.data.network.dto.RegisterRequest
+import uz.coder.davomatapp.data.network.dto.RegisterResponse
+import uz.coder.davomatapp.data.network.dto.ResponseDTO
+import uz.coder.davomatapp.data.network.dto.StudentCoursesDTO
+import uz.coder.davomatapp.data.network.dto.StudentResponse
+import uz.coder.davomatapp.data.network.dto.UserRequest
+import uz.coder.davomatapp.data.network.dto.UserResponse
+
+interface ApiService {
+    /***----------------User----------------***/
+    @POST("/api/user/login")
+    suspend fun loginUser(@Query("email") email:String, @Query("password") password:String): ResponseDTO<LoginResponse>
+    @POST("/api/user/register")
+    suspend fun registerUser(@Body registerRequest: RegisterRequest): ResponseDTO<RegisterResponse>
+    @DELETE("/api/user/delete/{id}")
+    suspend fun deleteUser(@Path("id") id: Long): ResponseDTO<Int>
+    @GET("/api/user/{id}")
+    suspend fun getUser(@Path("id") id: Long): ResponseDTO<UserResponse>
+    @GET("/api/user/phone/{phoneNumber}")
+    suspend fun getUserByPhoneNumber(@Path("phoneNumber") phoneNumber: String): ResponseDTO<UserResponse>
+    @PUT("/api/user/update")
+    suspend fun updateUser(@Body userRequest: UserRequest): ResponseDTO<UserResponse>
+    /***----------------User----------------***/
+
+    /***-------------Student---------------***/
+    @GET("/api/student/seeCourses/{userId}")
+    suspend fun seeCourses(@Path("userId") userId: Long): ResponseDTO<List<StudentCoursesDTO>>
+    @GET("/api/student/findByGroupIdAndUserId")
+    suspend fun findByGroupIdAndUserId(@Query("userId") userId: Long, @Query("groupId") groupId: Long): ResponseDTO<StudentResponse>
+    @POST("/api/student/addStudent")
+    suspend fun createStudent(@Body request: CreateStudentRequest): ResponseDTO<StudentResponse>
+    @POST("/api/student/upload-excel/{userId}")
+    @Multipart
+    suspend fun uploadStudentExcel(@Part file: MultipartBody.Part, @Path("userId") userId: Long): ResponseDTO<String>
+    /***-------------Student---------------***/
+
+    /***-------------Attendance---------------***/
+    @GET("/api/attendance/student/{studentId}")
+    suspend fun attendanceList(@Path("studentId") studentId: Long): ResponseDTO<List<AttendanceResponse>>
+    @POST("/api/attendance/add")
+    suspend fun createAttendance(@Body request: CreateAttendanceRequest): ResponseDTO<AttendanceResponse>
+    @Multipart
+    @POST("/api/attendance/excel")
+    suspend fun uploadAttendanceExcel(@Part file: MultipartBody.Part): ResponseDTO<String>
+    /***-------------Attendance---------------***/
+
+    /***-------------Course---------------***/
+    @GET("/api/course/getAllCourses/{userId}")
+    suspend fun getAllCourses(@Path("userId") userId: Long): ResponseDTO<List<CourseDTO>>
+
+    @POST("/api/course/create")
+    suspend fun createCourse(@Body request: CreateCourseRequest): ResponseDTO<CourseDTO>
+    /***-------------Course---------------***/
+
+    /***-------------Group----------------***/
+    @POST("/api/group/addGroup")
+    suspend fun createGroup(@Body request: CreateGroupRequest): ResponseDTO<GroupDTO>
+    /***-------------Group----------------***/
+}

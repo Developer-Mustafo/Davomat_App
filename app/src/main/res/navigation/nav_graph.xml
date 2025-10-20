@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="uz.coder.davomatapp.fragment.Login"
+        android:name="uz.coder.davomatapp.presentation.fragment.Login"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -26,12 +26,12 @@
     </fragment>
     <fragment
         android:id="@+id/register"
-        android:name="uz.coder.davomatapp.fragment.Register"
+        android:name="uz.coder.davomatapp.presentation.fragment.Register"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/home"
-        android:name="uz.coder.davomatapp.fragment.Home"
+        android:name="uz.coder.davomatapp.presentation.fragment.Home"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/home_student"
-        android:name="uz.coder.davomatapp.fragment.HomeStudent"
+        android:name="uz.coder.davomatapp.presentation.fragment.HomeStudent"
         android:label="fragment_home_student"
         tools:layout="@layout/fragment_home_student" >
         <action
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/profile"
-        android:name="uz.coder.davomatapp.fragment.Profile"
+        android:name="uz.coder.davomatapp.presentation.fragment.Profile"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeStudentInfo"
-        android:name="uz.coder.davomatapp.fragment.HomeStudentInfo"
+        android:name="uz.coder.davomatapp.presentation.fragment.HomeStudentInfo"
         android:label="fragment_home_info">
         <argument
             android:name="text"
@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/attendance"
-        android:name="uz.coder.davomatapp.fragment.AttendanceView"
+        android:name="uz.coder.davomatapp.presentation.fragment.AttendanceView"
         android:label="fragment_attendance"
         tools:layout="@layout/fragment_attendance" >
         <argument

@@ -3,8 +3,10 @@ package uz.coder.davomatapp;
 import android.app.Application;
 import android.content.Context;
 
+import dagger.hilt.android.HiltAndroidApp;
 import uz.coder.davomatapp.todo.LocaleHelper;
 
+@HiltAndroidApp
 public class App extends Application {
     public static Application application;
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.Login"
+    tools:context=".presentation.fragment.Login"
     android:background="@drawable/background">
     <TextView
         android:id="@+id/loginText"

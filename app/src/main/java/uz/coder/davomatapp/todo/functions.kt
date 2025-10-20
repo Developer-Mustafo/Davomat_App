@@ -1,13 +1,8 @@
 package uz.coder.davomatapp.todo
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -84,10 +79,6 @@ const val ERROR_EMAIL = -1
 const val EMAIL_NEEDS = -4
 const val ERROR_PASSWORD = -2
 const val SHORT = -7
-
-const val STUDENT = -111
-const val ATTENDANCE = 111
-
 const val ROLE_STUDENT = "ROLE_STUDENT"
 const val ROLE_TEACHER = "ROLE_TEACHER"
 const val ROLE_ADMIN = "ROLE_ADMIN"
