@@ -15,8 +15,8 @@ android {
         applicationId = "uz.coder.davomatapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
-        versionName = "2.0"
+        versionCode = 3
+        versionName = "2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk{
@@ -64,19 +64,19 @@ android {
 
 dependencies {
     //compose
-    implementation("androidx.compose.material:material:1.9.3")
+    implementation("androidx.compose.material:material:1.10.1")
     implementation("androidx.compose.compiler:compiler:1.5.15")
-    implementation("androidx.compose.ui:ui-tooling:1.9.3")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.9.3")
-    implementation("androidx.activity:activity-compose:1.11.0")
+    implementation("androidx.compose.ui:ui-tooling:1.10.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.10.1")
+    implementation("androidx.activity:activity-compose:1.12.2")
     //compose
 
     //compose+xml
-    implementation("androidx.activity:activity-compose:1.11.0")
+    implementation("androidx.activity:activity-compose:1.12.2")
     //compose+xml
 
     //composeViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
     //composeViewModel
 
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
@@ -90,7 +90,7 @@ dependencies {
     //get-string-as-response
 
     //compose-navigation
-    implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation("androidx.navigation:navigation-compose:2.9.6")
     //compose-navigation
 
     //hilt
@@ -99,27 +99,27 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
     //hilt
 
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-beta01")
-    implementation("com.airbnb.android:lottie:6.6.10")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0")
+    implementation("com.airbnb.android:lottie:6.7.1")
     implementation ("com.google.code.gson:gson:2.13.2")
     implementation ("com.squareup.retrofit2:retrofit:3.0.0")
     implementation ("com.squareup.retrofit2:converter-gson:3.0.0")
     implementation ("com.google.dagger:dagger:2.57.2")
-    implementation("androidx.activity:activity:1.11.0")
+    implementation("androidx.activity:activity:1.12.2")
     implementation("androidx.fragment:fragment:1.8.9")
     implementation("androidx.compose.material3:material3:1.4.0")
     ksp("com.google.dagger:dagger-compiler:2.57.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
-    implementation("androidx.room:room-ktx:2.8.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
+    implementation("androidx.room:room-ktx:2.8.4")
     implementation("com.android.support:support-annotations:28.0.0")
     implementation("androidx.annotation:annotation:1.9.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.4")
-    ksp("androidx.room:room-compiler:2.8.2")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.10.0")
+    ksp("androidx.room:room-compiler:2.8.4")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.13.0")

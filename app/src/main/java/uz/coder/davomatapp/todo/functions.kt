@@ -41,32 +41,22 @@ fun LocalDate.formatedDate(): String = this.format(DateTimeFormatter.ofPattern("
 
 fun Context.logOut() {
     try {
-        // Ilova fayllarini o'chirish (ichki xotira)
         val filesDir = this.filesDir
         if (filesDir.exists()) {
             filesDir.deleteRecursively()
         }
-
-        // Kesh fayllarini o'chirish (ichki kesh)
         val cacheDir = this.cacheDir
         if (cacheDir.exists()) {
             cacheDir.deleteRecursively()
         }
-
-        // Tashqi xotiradagi fayllarni o'chirish (agar ishlatilsa)
         val externalFilesDir = this.getExternalFilesDir(null)
         if (externalFilesDir != null && externalFilesDir.exists()) {
             externalFilesDir.deleteRecursively()
         }
-
-        // SharedPreferences ni tozalash
         val sharedPref = SharedPref.getInstance(this)
         sharedPref.clear()
-
-        // O'chirish muvaffaqiyatli bo'lganini loglash (ixtiyoriy)
         println("Logout successful: Files and SharedPreferences cleared")
     } catch (e: Exception) {
-        // Xatolarni loglash yoki foydalanuvchiga xabar berish
         println("Error during logout: ${e.message}")
     }
 }
