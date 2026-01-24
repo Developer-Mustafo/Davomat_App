@@ -48,7 +48,6 @@ import uz.coder.davomatapp.presentation.ui.MenuItem
 import uz.coder.davomatapp.presentation.viewModel.HomeViewModel
 import uz.coder.davomatapp.presentation.viewModel.NetworkViewModel
 import uz.coder.davomatapp.presentation.viewModel.state.HomeState
-import uz.coder.davomatapp.todo.userId
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -57,11 +56,11 @@ import java.io.InputStream
 fun HomeScreen(
     modifier: Modifier = Modifier,
     controller: NavHostController,
-    networkViewModel: NetworkViewModel
+    networkViewModel: NetworkViewModel,
+    activity: FragmentActivity?
 ) {
     val viewModel = hiltViewModel<HomeViewModel>()
     val context = LocalContext.current
-    val activity = context as FragmentActivity
     val lifecycleOwner = LocalLifecycleOwner.current
     var list by remember {
         mutableStateOf<List<Course>>(emptyList())
@@ -105,14 +104,14 @@ fun HomeScreen(
                 menus = menuItems(context),
                 onClicked = { parent, child ->
                     when (parent) {
-                        0 -> activity.toProfile()
+                        0 -> activity?.toProfile()
                         1 -> createCourse()
                         2 -> createGroup()
                         3 -> if (child == 0)
-                            filePicker(activity, studentLauncher)
+                            filePicker(activity!!, studentLauncher)
                         else createStudent()
                         4 -> if (child == 0)
-                            filePicker(activity, attendanceLauncher)
+                            filePicker(activity!!, attendanceLauncher)
                         else createAttendance()
                     }
                 }
@@ -156,7 +155,7 @@ fun HomeScreen(
     }
     // 🔹 Internet tarmoq holatini kuzatish
     DisposableEffect(lifecycleOwner) {
-        observeNetwork(networkViewModel, viewModel, activity, lifecycleOwner)
+        observeNetwork(networkViewModel, viewModel, activity!!, lifecycleOwner)
         onDispose { }
     }
     BackHandler {
@@ -176,7 +175,7 @@ private fun observeNetwork(
             if (!it) {
                 InternetErrorDialog.show(context).show()
             } else {
-                viewModel.getAllCourses(userId)
+                viewModel.getAllCourses()
             }
         }
     }

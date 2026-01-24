@@ -10,3 +10,6 @@ var userId: Long
 var role: String
     get() = sharedPref.getString("role")
     set(value) = sharedPref.setString("role", value)
+var token: String
+    get() = sharedPref.getString("token")
+    set(value) = sharedPref.setString("token", value)

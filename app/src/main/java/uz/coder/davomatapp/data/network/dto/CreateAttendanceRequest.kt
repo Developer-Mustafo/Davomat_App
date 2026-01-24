@@ -1,13 +1,11 @@
 package uz.coder.davomatapp.data.network.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
+@Serializable
 data class CreateAttendanceRequest(
-    @SerializedName("studentId")
     val studentId:Long? = null,
-    @SerializedName("date")
     val date: LocalDate?=null,
-    @SerializedName("status")
     val status:String?=null
 )

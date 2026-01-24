@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -47,14 +49,14 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
-    composeCompiler {
-        includeSourceInformation = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
-    viewBinding.enable = true
 
     //compose
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     packaging {
         resources {
@@ -104,11 +106,9 @@ dependencies {
     implementation (libs.gson)
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
-    implementation (libs.dagger)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.compose.material3)
-    ksp(libs.dagger.compiler)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import uz.coder.davomatapp.domain.usecase.attendance.AttendanceListUseCase
-import uz.coder.davomatapp.domain.usecase.student.FindByGroupIdAndUserIdUseCase
+import uz.coder.davomatapp.domain.usecase.student.FindByGroupIdUseCase
 import uz.coder.davomatapp.presentation.viewModel.state.AttendanceState
 import uz.coder.davomatapp.todo.userId
 import javax.inject.Inject
 
 @HiltViewModel
 class AttendanceViewModel @Inject constructor(
-    private val findByGroupIdAndUserIdUseCase : FindByGroupIdAndUserIdUseCase,
+    private val findByGroupIdUseCase : FindByGroupIdUseCase,
     private val attendanceListUseCase : AttendanceListUseCase
 ): ViewModel() {
     private val _state = MutableStateFlow<AttendanceState>(AttendanceState.Init)
@@ -24,7 +24,7 @@ class AttendanceViewModel @Inject constructor(
     fun studentProfile(groupId: Long){
         viewModelScope.launch {
             _state.emit(AttendanceState.Loading)
-            findByGroupIdAndUserIdUseCase(userId, groupId).catch {
+            findByGroupIdUseCase(groupId).catch {
                 _state.emit(AttendanceState.Error(it.message?:""))
             }.collect {student->
                 attendanceListUseCase(student.id).catch {

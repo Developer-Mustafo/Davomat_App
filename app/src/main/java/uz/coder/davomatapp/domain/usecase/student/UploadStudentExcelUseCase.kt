@@ -5,5 +5,5 @@ import java.io.File
 import javax.inject.Inject
 
 class UploadStudentExcelUseCase @Inject constructor(private val repository: StudentRepository) {
-    operator fun invoke(file: File, userId:Long) = repository.uploadStudentExcel(file, userId)
+    operator fun invoke(file: File) = repository.uploadStudentExcel(file)
 }

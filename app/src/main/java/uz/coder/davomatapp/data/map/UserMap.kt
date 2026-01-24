@@ -11,7 +11,6 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class UserMap @Inject constructor() {
-    fun toUser(response: LoginResponse?) = User(id=response?.id?:0L, firstName=response?.firstName?: "", lastName=response?.lastName?: "", email=response?.email?: "", password=response?.password?: "", phoneNumber=response?.phoneNumber?: "", payedDate=response?.payedDate?: LocalDate.now(), role=response?.role?: "")
     fun toRegisterRequest(
         email: String,
         firstName: String,
@@ -33,6 +32,5 @@ class UserMap @Inject constructor() {
         phoneNumber: String,
         role: String
     ) = UserRequest(email = email, id = id, firstName = firstName, lastName = lastName, password = password, phoneNumber = phoneNumber, role = role)
-    fun toUserEntity(data: LoginResponse?) = UserDbModel(email = data?.email?:"", firstName = data?.firstName?:"", lastName = data?.lastName?:"", password = data?.password?:"", phoneNumber = data?.phoneNumber?:"", role = data?.role?:"", payedDate = data?.payedDate?: LocalDate.now(), id = data?.id?:0L)
     fun toUserEntity(data: UserResponse?) = UserDbModel(email = data?.email?:"", id = data?.id?:0L, firstName = data?.firstName?:"", lastName = data?.lastName?:"", password = data?.password?:"", phoneNumber = data?.phoneNumber?:"", role = data?.role?:"", payedDate = data?.payedDate?: LocalDate.now())
 }

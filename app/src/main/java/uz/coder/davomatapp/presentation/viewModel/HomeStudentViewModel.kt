@@ -19,10 +19,10 @@ class HomeStudentViewModel @Inject constructor(
     private val _state = MutableStateFlow<HomeStudentState>(HomeStudentState.Init)
     val state = _state.asStateFlow()
 
-    fun seeCourses(userId: Long){
+    fun seeCourses(){
         viewModelScope.launch {
             _state.emit(HomeStudentState.Loading)
-            seeCoursesUseCase(userId).catch {
+            seeCoursesUseCase().catch {
                 _state.emit(HomeStudentState.Error(it.message.toString()))
             }.collect{
                 _state.emit(HomeStudentState.Success(it))

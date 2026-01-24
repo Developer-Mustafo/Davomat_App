@@ -49,7 +49,7 @@ class Profile : Fragment() {
     private fun observeNetwork() {
         networkViewModel.networkState.observe(viewLifecycleOwner){state->
             if (isAdded){
-                state?.let { it ->
+                state?.let {
                     if (!it){
                         InternetErrorDialog.show(requireContext()).show()
                     }else{

@@ -23,10 +23,10 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
     private val _state = MutableStateFlow<HomeState>(HomeState.Init)
     val state = _state.asStateFlow()
-    fun getAllCourses(userId: Long){
+    fun getAllCourses(){
         viewModelScope.launch {
             _state.emit(HomeState.Loading)
-            getAllCoursesUseCase(userId).catch {
+            getAllCoursesUseCase().catch {
                 _state.emit(HomeState.Error(it.message?:""))
             }.collect {
                 _state.emit(HomeState.Success(it))
@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     fun uploadStudentExcel(file: File) {
         viewModelScope.launch {
             _state.emit(HomeState.Loading)
-            uploadStudentExcelUseCase(file, userId).catch {
+            uploadStudentExcelUseCase(file).catch {
                 _state.emit(HomeState.Error(it.message?:""))
             }.collect {
                 _state.emit(HomeState.Done)

@@ -4,5 +4,5 @@ import uz.coder.davomatapp.domain.repository.StudentRepository
 import javax.inject.Inject
 
 class SeeCoursesUseCase @Inject constructor(private val studentRepository: StudentRepository) {
-    operator fun invoke(userId:Long) = studentRepository.seeCourses(userId)
+    operator fun invoke() = studentRepository.seeCourses()
 }

@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import uz.coder.davomatapp.todo.token
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
@@ -23,6 +24,9 @@ object ApiClient {
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
+            .addInterceptor{
+                it.proceed(it.request().newBuilder().addHeader("Authorization", "Bearer $token").build())
+            }
             .build()
         val retrofit = Retrofit.Builder()
             .baseUrl(getApiBaseUrl())

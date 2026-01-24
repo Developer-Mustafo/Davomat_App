@@ -26,10 +26,9 @@ import kotlinx.coroutines.launch
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.databinding.FragmentHomeStudentBinding
 import uz.coder.davomatapp.domain.model.StudentCourses
-import uz.coder.davomatapp.todo.userId
-import uz.coder.davomatapp.presentation.ui.StudentCourseItem
 import uz.coder.davomatapp.presentation.ui.ErrorDialog
 import uz.coder.davomatapp.presentation.ui.InternetErrorDialog
+import uz.coder.davomatapp.presentation.ui.StudentCourseItem
 import uz.coder.davomatapp.presentation.viewModel.HomeStudentViewModel
 import uz.coder.davomatapp.presentation.viewModel.NetworkViewModel
 import uz.coder.davomatapp.presentation.viewModel.state.HomeStudentState
@@ -71,7 +70,7 @@ class HomeStudent : Fragment() {
     private fun setupUI() {
         with(binding){
             swipeRefresh.setOnRefreshListener {
-                viewModel.seeCourses(userId)
+                viewModel.seeCourses()
             }
             topBar.setOnMenuItemClickListener {
                 when(it.itemId){
@@ -88,11 +87,11 @@ class HomeStudent : Fragment() {
     private fun observeNetwork() {
         networkViewModel.networkState.observe(viewLifecycleOwner){state->
             if (isAdded){
-                state?.let { it ->
+                state?.let {
                     if (!it){
                         InternetErrorDialog.show(requireContext()).show()
                     }else{
-                        viewModel.seeCourses(userId)
+                        viewModel.seeCourses()
                     }
                 }
             }

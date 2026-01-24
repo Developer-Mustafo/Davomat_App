@@ -4,7 +4,7 @@
 using namespace std;
 
 string getApiUrl() {
-    return "http://192.168.1.150:8080";
+    return "http://192.168.1.150:8080/";
 }
 
 extern "C" [[maybe_unused]] JNIEXPORT jstring

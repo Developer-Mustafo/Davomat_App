@@ -38,10 +38,10 @@ class LoginViewModel @Inject constructor(private val application: Application,
             if (isValidate(email, password)){
                 loginUseCase(email, password).catch {
                     _state.emit(LoginState.Error(it.message.toString()))
-                }.collect {
-                    _state.emit(LoginState.Success(it))
-                    userId = it.id
-                    role = it.role
+                }.collect {user->
+                    _state.emit(LoginState.Success(user))
+                    userId = user.id
+                    role = user.role
                 }
             }
         }

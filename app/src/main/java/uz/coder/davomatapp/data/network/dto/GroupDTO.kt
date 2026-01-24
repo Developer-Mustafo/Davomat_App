@@ -1,13 +1,11 @@
 package uz.coder.davomatapp.data.network.dto
 
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GroupDTO(
-    @SerializedName("courseId")
     val courseId: Long? = null,
-    @SerializedName("id")
     val id: Long? = null,
-    @SerializedName("title")
     val title: String? = null
 )

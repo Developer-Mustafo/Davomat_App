@@ -2,6 +2,7 @@ package uz.coder.davomatapp.presentation.navigationCompose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,11 +10,15 @@ import uz.coder.davomatapp.presentation.fragment.composeUi.HomeScreen
 import uz.coder.davomatapp.presentation.viewModel.NetworkViewModel
 
 @Composable
-fun AttendanceNavigation(modifier: Modifier = Modifier, viewModel: NetworkViewModel) {
+fun AttendanceNavigation(
+    modifier: Modifier = Modifier,
+    viewModel: NetworkViewModel,
+    activity: FragmentActivity?
+) {
     val controller = rememberNavController()
     NavHost(controller, startDestination = Screen.Home.route, modifier = modifier){
         composable(Screen.Home.route) {
-            HomeScreen(controller = controller, networkViewModel = viewModel)
+            HomeScreen(controller = controller, networkViewModel = viewModel, activity = activity)
         }
     }
 }

@@ -29,7 +29,7 @@ class ProfileViewModel @Inject constructor
         viewModelScope.launch {
             _state.value = ProfileState.Loading
             if (application.isConnected()){
-                getUserByIdUseCase(userId).catch {
+                getUserByIdUseCase().catch {
                     _state.value = ProfileState.Error(it.message.toString())
                 }.collect {
                     _state.value = ProfileState.Success(it)

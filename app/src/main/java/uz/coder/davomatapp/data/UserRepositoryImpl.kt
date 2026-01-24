@@ -6,7 +6,10 @@ import kotlinx.coroutines.withContext
 import uz.coder.davomatapp.data.db.AppDatabase
 import uz.coder.davomatapp.data.map.UserMap
 import uz.coder.davomatapp.data.network.ApiService
+import uz.coder.davomatapp.data.network.dto.LoginRequest
 import uz.coder.davomatapp.domain.repository.UserRepository
+import uz.coder.davomatapp.todo.token
+import uz.coder.davomatapp.todo.userId
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,10 +23,17 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ) = flow {
-        val loginUser = withContext(Dispatchers.IO){apiService.loginUser(email, password)}
+        val loginUser = withContext(Dispatchers.IO){apiService.loginUser(
+            LoginRequest(
+                email,
+                password
+            )
+        )}
         if(loginUser.code==200){
-            emit(map.toUser(loginUser.data))
-            database.userDao().insertUser(map.toUserEntity(loginUser.data))
+            token = loginUser.token?:""
+            val user = apiService.getUser()
+            emit(map.toUser(user.data))
+            database.userDao().insertUser(map.toUserEntity(user.data))
         }
         else if(loginUser.code==500){
             throw RuntimeException(loginUser.message)
@@ -47,19 +57,19 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteUser(id: Long) = flow {
-        val response = withContext(Dispatchers.IO){apiService.deleteUser(id)}
+    override fun deleteUser() = flow {
+        val response = withContext(Dispatchers.IO){apiService.deleteUser()}
         if(response.code==200){
             emit(response.data?:0)
-            database.userDao().deleteUserById(id)
+            database.userDao().deleteUserById(userId)
         }
         else if(response.code==500){
             throw RuntimeException(response.message)
         }
     }
 
-    override fun getUser(id: Long) = flow {
-        val response = withContext(Dispatchers.IO){apiService.getUser(id)}
+    override fun getUser() = flow {
+        val response = withContext(Dispatchers.IO){apiService.getUser()}
         if(response.code==200){
             emit(map.toUser(response.data))
         }

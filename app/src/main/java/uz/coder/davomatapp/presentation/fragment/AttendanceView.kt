@@ -59,7 +59,7 @@ class AttendanceView : Fragment() {
         binding.apply {
             composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             composeView.setContent {
-                Column(modifier = Modifier.Companion.fillMaxSize().background(colorResource(R.color.theme_background))) {
+                Column(modifier = Modifier.fillMaxSize().background(colorResource(R.color.theme_background))) {
                     println(student)
                     StudentProfile(student)
                     AttendanceCalendarPager(student, list)
@@ -74,7 +74,7 @@ class AttendanceView : Fragment() {
     private fun observeNetwork() {
         networkViewModel.networkState.observe(viewLifecycleOwner){state->
             if (isAdded){
-                state?.let { it ->
+                state?.let {
                     if (!it){
                         InternetErrorDialog.show(requireContext()).show()
                     }else{

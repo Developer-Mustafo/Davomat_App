@@ -36,7 +36,7 @@ class Home : Fragment() {
         binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                AttendanceNavigation(modifier = Modifier.fillMaxSize(), viewModel = activityViewModels)
+                AttendanceNavigation(modifier = Modifier.fillMaxSize(), viewModel = activityViewModels, activity)
             }
         }
     }

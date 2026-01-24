@@ -13,8 +13,8 @@ class CourseRepositoryImpl @Inject constructor(
     private val map: CourseMap,
     private val apiService: ApiService
 ): CourseRepository {
-    override fun getAllCourses(userId: Long) = flow {
-        val response = apiService.getAllCourses(userId)
+    override fun getAllCourses() = flow {
+        val response = apiService.getAllCourses()
         if (response.code==200){
             emit(map.toCourses(response.data))
         }else if (response.code==500){
