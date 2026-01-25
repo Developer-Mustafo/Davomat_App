@@ -18,4 +18,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Davomat App"
 include(":app")
-include(":mylibrary")
