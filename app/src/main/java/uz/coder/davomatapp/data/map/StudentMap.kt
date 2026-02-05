@@ -30,5 +30,5 @@ class StudentMap @Inject constructor() {
 
     fun toStudentCourses(data: List<StudentCoursesDTO>?) = data?.map { toStudentCourse(it) }?:emptyList()
     fun toStudent(data: StudentResponse?) = Student( fullName = data?.fullName?:"",  groupId = data?.groupId?:0L,  id = data?.id?:0L,  phoneNumber = data?.phoneNumber?:"",  userId = data?.userId?:0L, createdDate = data?.createdDate?: LocalDate.now())
-    fun toCreateStudentRequest(createStudent: CreateStudent) = CreateStudentRequest(fullName = createStudent.fullName, phoneNumber = createStudent.phoneNumber, userId = createStudent.userId, groupId = createStudent.groupId)
+    fun toCreateStudentRequest(createStudent: CreateStudent) = CreateStudentRequest(fullName = createStudent.fullName, phoneNumber = createStudent.phoneNumber, groupId = createStudent.groupId)
 }

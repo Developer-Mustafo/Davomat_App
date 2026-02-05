@@ -6,10 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import uz.coder.davomatapp.data.db.dao.UserDao
-import uz.coder.davomatapp.db.model.UserDbModel
+import uz.coder.davomatapp.data.db.model.UserDbModel
 import javax.inject.Singleton
 
-@Database(entities = [UserDbModel::class], version = 1)
+@Database(entities = [UserDbModel::class], version = 1, exportSchema = false)
 @TypeConverters(LocalDateConverter::class)
 @Singleton
 abstract class AppDatabase: RoomDatabase(){

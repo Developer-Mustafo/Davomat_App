@@ -3,8 +3,13 @@ package uz.coder.davomatapp.todo
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
+import kotlinx.datetime.todayIn
 import java.time.format.DateTimeFormatter
+import kotlin.time.Clock
+import java.time.LocalDate as JLocalDate
 
 
 fun Context.isConnected(): Boolean {
@@ -36,8 +41,7 @@ fun String.isPassword(): Int{
     else if (this.contains("@") || this.contains(".") || this.contains('=') || this.contains(' ') || this.contains(',') || this.contains('?') || this.contains('/') || this.contains(':') || this.contains('!') || this.contains('-') || this.contains('~') || this.contains('`') || this.contains('*') || this.contains('$') || this.contains('#') || this.contains('%') || this.contains('^') || this.contains('&') || this.contains('(') || this.contains(')') || this.contains('\"') || this.contains('\'')) return ERROR_PASSWORD
     return OK
 }
-
-fun LocalDate.formatedDate(): String = this.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+fun LocalDate.formatedDate(): String = this.formattedDate()
 
 fun Context.logOut() {
     try {
@@ -59,6 +63,15 @@ fun Context.logOut() {
     } catch (e: Exception) {
         println("Error during logout: ${e.message}")
     }
+}
+fun LocalDate.Companion.orToday(): LocalDate {
+    return Clock.System.todayIn(TimeZone.currentSystemDefault())
+}
+fun LocalDate.formattedDate(): String {
+    // kotlinx.datetime.LocalDate -> java.time.LocalDate
+    val jDate = JLocalDate.of(this.year, month.number, day)
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    return jDate.format(formatter)
 }
 
 /***

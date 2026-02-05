@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import uz.coder.davomatapp.db.model.UserDbModel
+import uz.coder.davomatapp.data.db.model.UserDbModel
 
 @Dao
 interface UserDao {

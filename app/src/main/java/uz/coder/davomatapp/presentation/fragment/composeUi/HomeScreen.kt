@@ -40,6 +40,7 @@ import com.jaiselrahman.filepicker.config.Configurations
 import com.jaiselrahman.filepicker.model.MediaFile
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.domain.model.Course
+import uz.coder.davomatapp.presentation.navigationCompose.Screen
 import uz.coder.davomatapp.presentation.ui.AttendanceTopAppBar
 import uz.coder.davomatapp.presentation.ui.CourseItem
 import uz.coder.davomatapp.presentation.ui.ErrorDialog
@@ -55,9 +56,9 @@ import java.io.InputStream
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    controller: NavHostController,
     networkViewModel: NetworkViewModel,
-    activity: FragmentActivity?
+    activity: FragmentActivity?,
+    navigateToCreateCourse:()->Unit
 ) {
     val viewModel = hiltViewModel<HomeViewModel>()
     val context = LocalContext.current
@@ -93,7 +94,6 @@ fun HomeScreen(
         }
     }
 
-    // 🔹 UI qismi
     Scaffold(
         modifier = modifier
             .fillMaxSize()
@@ -105,7 +105,7 @@ fun HomeScreen(
                 onClicked = { parent, child ->
                     when (parent) {
                         0 -> activity?.toProfile()
-                        1 -> createCourse()
+                        1 -> navigateToCreateCourse
                         2 -> createGroup()
                         3 -> if (child == 0)
                             filePicker(activity!!, studentLauncher)
@@ -153,17 +153,12 @@ fun HomeScreen(
             }
         }
     }
-    // 🔹 Internet tarmoq holatini kuzatish
     DisposableEffect(lifecycleOwner) {
         observeNetwork(networkViewModel, viewModel, activity!!, lifecycleOwner)
         onDispose { }
     }
-    BackHandler {
-        controller.popBackStack()
-    }
 }
 
-// 🔹 Internet kuzatuvchi funksiya
 private fun observeNetwork(
     networkViewModel: NetworkViewModel,
     viewModel: HomeViewModel,
@@ -181,14 +176,12 @@ private fun observeNetwork(
     }
 }
 
-// 🔹 Navigatsiya
 fun FragmentActivity.toProfile() {
     val controller =
         (this.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHost).navController
     controller.navigate(R.id.action_home_to_profile)
 }
 
-// 🔹 Faylni nusxalash (URI → File)
 private fun copyUriToTempFile(uri: Uri, context: Context): String? {
     return try {
         val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
@@ -204,7 +197,6 @@ private fun copyUriToTempFile(uri: Uri, context: Context): String? {
     }
 }
 
-// 🔹 Fayl tanlash oynasi
 private fun filePicker(
     activity: Activity,
     launcher: ActivityResultLauncher<Intent>
@@ -226,7 +218,6 @@ private fun filePicker(
     launcher.launch(intent)
 }
 
-// 🔹 Fayl URI olish
 private fun getPickedFileUri(data: Intent?): Uri? {
     @Suppress("DEPRECATION")
     val files = data?.getParcelableArrayListExtra<MediaFile>(
@@ -235,7 +226,6 @@ private fun getPickedFileUri(data: Intent?): Uri? {
     return files?.firstOrNull()?.uri
 }
 
-// 🔹 Menular
 private fun menuItems(context: Context) = listOf(
     MenuItem(context.getString(R.string.go_profile), R.drawable.ic_profile),
     MenuItem(context.getString(R.string.createCourse), R.drawable.ic_course),
@@ -257,11 +247,6 @@ private fun menuItems(context: Context) = listOf(
         )
     )
 )
-
-// 🔹 Bo‘sh funksiya (keyin to‘ldiriladi)
-private fun createCourse() {
-     TODO("Create Course")
-}
 private fun createGroup() {
      TODO("Create Group")
 }

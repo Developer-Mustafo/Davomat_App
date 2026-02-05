@@ -1,24 +1,14 @@
-package uz.coder.davomatapp;
+package uz.coder.davomatapp
 
-import android.app.Application;
-import android.content.Context;
-
-import dagger.hilt.android.HiltAndroidApp;
-import uz.coder.davomatapp.todo.LocaleHelper;
+import android.app.Application
+import android.content.Context
+import dagger.hilt.android.HiltAndroidApp
+import uz.coder.davomatapp.todo.LocaleHelper.setLocale
 
 @HiltAndroidApp
-public class App extends Application {
-    public static Application application;
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        Context newBase = LocaleHelper.INSTANCE.setLocale(base, "uz");
-        super.attachBaseContext(newBase);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        application = this;
+class App : Application() {
+    override fun attachBaseContext(base: Context) {
+        val newBase = setLocale(base, "uz")
+        super.attachBaseContext(newBase)
     }
 }

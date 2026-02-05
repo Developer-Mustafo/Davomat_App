@@ -1,7 +1,7 @@
 package uz.coder.davomatapp.data.network.dto
 
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Serializable
 data class StudentResponse(

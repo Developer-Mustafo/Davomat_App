@@ -1,8 +1,8 @@
-package uz.coder.davomatapp.db.model
+package uz.coder.davomatapp.data.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Entity(tableName = "user")
 data class UserDbModel(

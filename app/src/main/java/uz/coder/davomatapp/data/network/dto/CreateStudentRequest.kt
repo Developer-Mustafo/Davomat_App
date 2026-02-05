@@ -6,6 +6,5 @@ import kotlinx.serialization.Serializable
 data class CreateStudentRequest(
     val fullName:String? = null,
     val phoneNumber:String? = null,
-    val userId:Long? = null,
     val groupId:Long? = null
 )

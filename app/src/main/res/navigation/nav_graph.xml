@@ -64,7 +64,7 @@
             app:destination="@id/login"
             app:launchSingleTop="false"
             app:popUpTo="@id/login"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/homeStudentInfo"

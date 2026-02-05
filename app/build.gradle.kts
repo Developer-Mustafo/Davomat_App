@@ -1,14 +1,21 @@
 @file:Suppress("DEPRECATION")
 
+
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.safe.args)
-    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.android.dagger.hilt)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
+androidComponents{
+    onVariants {variant->
+        variant.signingConfig.enableV1Signing.set(false)
+    }
+}
 android {
     namespace = "uz.coder.davomatapp"
     compileSdk = 36
@@ -43,14 +50,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
+
+    kotlin{
+        composeCompiler {
+            jvmToolchain(21)
+        }
     }
 
     //compose
@@ -66,6 +73,13 @@ android {
 }
 
 dependencies {
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlin.stdlib.jdk8)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.kotlinx.datetime)
+
     //compose
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.compiler)
@@ -91,15 +105,23 @@ dependencies {
     implementation(libs.converter.scalars)
     //get-string-as-response
 
-    //compose-navigation
-    implementation(libs.androidx.navigation.compose)
-    //compose-navigation
-
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     //hilt
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+    //navigation3
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.material3.adaptive.navigation3)
+    implementation(libs.kotlinx.serialization.core)
+    //navigation3
 
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.lottie)
@@ -118,8 +140,6 @@ dependencies {
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
