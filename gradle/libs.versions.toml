@@ -33,17 +33,14 @@ swiperefreshlayout = "1.2.0"
 uiTooling = "1.10.2"
 compose-bom = "2026.01.01"
 android-application = "9.0.0"
-ksp = "2.3.2"
-kotlin = "2.3.10"
-kotlin-compose = "2.3.10"
 nav3Core = "1.0.0"
 lifecycleViewmodelNav3 = "2.10.0"
-kotlinSerialization = "2.3.10"
 kotlinxSerializationCore = "1.10.0"
 material3AdaptiveNav3 = "1.3.0-alpha07"
-
-
-
+kotlin = "2.1.10"
+kotlin-compose = "2.1.10"
+kotlinSerialization = "2.1.10"
+ksp = "2.1.10-1.0.29"
 
 [libraries]
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
