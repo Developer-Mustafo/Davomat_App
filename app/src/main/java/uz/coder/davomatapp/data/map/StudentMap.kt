@@ -1,5 +1,6 @@
 package uz.coder.davomatapp.data.map
 
+import kotlinx.datetime.LocalDate
 import uz.coder.davomatapp.domain.model.Course
 import uz.coder.davomatapp.domain.model.CreateStudent
 import uz.coder.davomatapp.domain.model.Group
@@ -8,7 +9,7 @@ import uz.coder.davomatapp.domain.model.StudentCourses
 import uz.coder.davomatapp.data.network.dto.CreateStudentRequest
 import uz.coder.davomatapp.data.network.dto.StudentCoursesDTO
 import uz.coder.davomatapp.data.network.dto.StudentResponse
-import java.time.LocalDate
+import uz.coder.davomatapp.todo.orToday
 import javax.inject.Inject
 
 class StudentMap @Inject constructor() {
@@ -29,6 +30,6 @@ class StudentMap @Inject constructor() {
         )
 
     fun toStudentCourses(data: List<StudentCoursesDTO>?) = data?.map { toStudentCourse(it) }?:emptyList()
-    fun toStudent(data: StudentResponse?) = Student( fullName = data?.fullName?:"",  groupId = data?.groupId?:0L,  id = data?.id?:0L,  phoneNumber = data?.phoneNumber?:"",  userId = data?.userId?:0L, createdDate = data?.createdDate?: LocalDate.now())
+    fun toStudent(data: StudentResponse?) = Student( fullName = data?.fullName?:"",  groupId = data?.groupId?:0L,  id = data?.id?:0L,  phoneNumber = data?.phoneNumber?:"",  userId = data?.userId?:0L, createdDate = data?.createdDate?: LocalDate.orToday())
     fun toCreateStudentRequest(createStudent: CreateStudent) = CreateStudentRequest(fullName = createStudent.fullName, phoneNumber = createStudent.phoneNumber, groupId = createStudent.groupId)
 }

@@ -10,7 +10,7 @@ import uz.coder.davomatapp.data.db.model.UserDbModel
 import javax.inject.Singleton
 
 @Database(entities = [UserDbModel::class], version = 1, exportSchema = false)
-@TypeConverters(LocalDateConverter::class)
+@TypeConverters(Converters::class)
 @Singleton
 abstract class AppDatabase: RoomDatabase(){
     abstract fun userDao(): UserDao

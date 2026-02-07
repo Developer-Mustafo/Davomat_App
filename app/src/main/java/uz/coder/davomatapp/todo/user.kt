@@ -1,6 +1,7 @@
 package uz.coder.davomatapp.todo
 
-import uz.coder.davomatapp.App.application
+import uz.coder.davomatapp.App.Companion.application
+
 
 private val sharedPref = SharedPref.getInstance(application)
 

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.DocumentsContract
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,13 +33,11 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
 import com.jaiselrahman.filepicker.activity.FilePickerActivity
 import com.jaiselrahman.filepicker.config.Configurations
 import com.jaiselrahman.filepicker.model.MediaFile
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.domain.model.Course
-import uz.coder.davomatapp.presentation.navigationCompose.Screen
 import uz.coder.davomatapp.presentation.ui.AttendanceTopAppBar
 import uz.coder.davomatapp.presentation.ui.CourseItem
 import uz.coder.davomatapp.presentation.ui.ErrorDialog
@@ -105,7 +102,7 @@ fun HomeScreen(
                 onClicked = { parent, child ->
                     when (parent) {
                         0 -> activity?.toProfile()
-                        1 -> navigateToCreateCourse
+                        1 -> navigateToCreateCourse()
                         2 -> createGroup()
                         3 -> if (child == 0)
                             filePicker(activity!!, studentLauncher)

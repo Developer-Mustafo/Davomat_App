@@ -1,12 +1,30 @@
 package uz.coder.davomatapp.presentation.fragment.composeUi
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -16,7 +34,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.navigation.NavHostController
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.presentation.ui.AttendanceTopAppBar
 import uz.coder.davomatapp.presentation.ui.ErrorDialog
@@ -29,9 +46,9 @@ import uz.coder.davomatapp.presentation.viewModel.state.CreateCourseState
 @Composable
 fun CreateCourseScreen(
     modifier: Modifier = Modifier,
-    controller: NavHostController,
     activity: FragmentActivity?,
-    networkViewModel: NetworkViewModel
+    networkViewModel: NetworkViewModel,
+    navigateBack:()-> Unit
 ) {
     val viewModel = hiltViewModel<CreateCourseViewModel>()
     val context = LocalContext.current
@@ -122,7 +139,7 @@ fun CreateCourseScreen(
                 }
                 CreateCourseState.Success -> {
                     isLoading = false
-                    controller.popBackStack()
+                    navigateBack()
                 }
             }
         }
@@ -131,10 +148,6 @@ fun CreateCourseScreen(
     DisposableEffect(lifecycleOwner) {
         observeNetwork(networkViewModel, activity!!, lifecycleOwner)
         onDispose { }
-    }
-
-    BackHandler {
-        controller.popBackStack()
     }
 }
 

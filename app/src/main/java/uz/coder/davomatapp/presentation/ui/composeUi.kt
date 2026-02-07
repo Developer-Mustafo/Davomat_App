@@ -48,7 +48,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import uz.coder.davomatapp.App.application
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
+import uz.coder.davomatapp.App.Companion.application
 import uz.coder.davomatapp.R
 import uz.coder.davomatapp.domain.model.Attendance
 import uz.coder.davomatapp.domain.model.Course
@@ -56,8 +58,9 @@ import uz.coder.davomatapp.domain.model.Group
 import uz.coder.davomatapp.domain.model.Student
 import uz.coder.davomatapp.domain.model.StudentCourses
 import uz.coder.davomatapp.presentation.viewModel.HomeStudentViewModel
-import java.time.LocalDate
-import java.time.YearMonth
+import uz.coder.davomatapp.todo.MyYearMonth
+import uz.coder.davomatapp.todo.formattedDate
+import uz.coder.davomatapp.todo.orToday
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -134,37 +137,38 @@ fun AttendanceCalendarPager(
     student: Student?,
     attendanceList: List<Attendance>
 ) {
-    val today = LocalDate.now()
-    val startMonth = YearMonth.from(student?.createdDate?:return)
-    val currentMonth = YearMonth.from(today)
+    if (student == null) return
+
+    val today = LocalDate.orToday()
+    val startDate = LocalDate.parse(student.createdDate.formattedDate())
+    val startMonth = MyYearMonth(startDate.year, startDate.month.number)
+    val currentMonth = MyYearMonth(today.year, today.month.number)
+
     val months = remember {
         generateSequence(startMonth) { it.plusMonths(1) }
             .takeWhile { it <= currentMonth }
             .toList()
     }
 
-    val pagerState = rememberPagerState(initialPage = months.size - 1){
-        months.size
-    }
+    val pagerState = rememberPagerState(initialPage = months.size - 1) { months.size }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.weight(1f)
         ) { page ->
             val month = months[page]
             val daysInMonth = (1..month.lengthOfMonth()).map { day ->
-                LocalDate.of(month.year, month.month, day)
+                LocalDate(month.year, month.month, day)
             }
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "${month.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${month.year}",
+                    text = "${month.month.toString().lowercase().replaceFirstChar { it.uppercase() }} ${month.year}",
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
                 )
 
@@ -178,8 +182,8 @@ fun AttendanceCalendarPager(
                 ) {
                     items(daysInMonth) { date ->
                         val attendance = attendanceList.find { it.date == date }
-                        val isBeforeJoin = date.isBefore(student.createdDate)
-                        val isFuture = date.isAfter(today)
+                        val isBeforeJoin = date < startDate
+                        val isFuture = date > today
 
                         val color = when {
                             isBeforeJoin || isFuture -> Color.LightGray.copy(alpha = 0.5f)
@@ -195,7 +199,7 @@ fun AttendanceCalendarPager(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = date.dayOfMonth.toString(),
+                                text = date.day.toString(),
                                 fontSize = 14.sp,
                                 color = Color.White
                             )
@@ -206,6 +210,7 @@ fun AttendanceCalendarPager(
         }
     }
 }
+
 
 
 @Composable
