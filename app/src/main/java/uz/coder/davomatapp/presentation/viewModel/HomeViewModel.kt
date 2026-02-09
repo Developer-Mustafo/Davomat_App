@@ -11,7 +11,6 @@ import uz.coder.davomatapp.domain.usecase.attendance.UploadAttendanceExcelUseCas
 import uz.coder.davomatapp.domain.usecase.course.GetAllCoursesUseCase
 import uz.coder.davomatapp.domain.usecase.student.UploadStudentExcelUseCase
 import uz.coder.davomatapp.presentation.viewModel.state.HomeState
-import uz.coder.davomatapp.todo.userId
 import java.io.File
 import javax.inject.Inject
 

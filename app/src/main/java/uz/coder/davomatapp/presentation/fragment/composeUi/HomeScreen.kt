@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -26,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -55,14 +55,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     networkViewModel: NetworkViewModel,
     activity: FragmentActivity?,
-    navigateToCreateCourse:()->Unit
+    navigateToCreateCourse: () -> Unit,
+    navigateToCreateGroup: () -> Unit
 ) {
     val viewModel = hiltViewModel<HomeViewModel>()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    var list by remember {
-        mutableStateOf<List<Course>>(emptyList())
-    }
+    var list by remember { mutableStateOf<List<Course>>(emptyList()) }
+
     val studentLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -73,7 +73,7 @@ fun HomeScreen(
                 val file = File(filePath!!)
                 viewModel.uploadStudentExcel(file)
                 Log.d("StudentFile", "📘 Tanlangan student fayl: $filePath")
-            } ?: Log.e("StudentFile", "❌ Fayl tanlanmadi yoki uri null!")
+            }
         }
     }
 
@@ -87,14 +87,13 @@ fun HomeScreen(
                 val file = File(filePath!!)
                 viewModel.uploadAttendanceExcel(file)
                 Log.d("AttendanceFile", "🗒️ Tanlangan attendance fayl: $filePath")
-            } ?: Log.e("AttendanceFile", "❌ Fayl tanlanmadi yoki uri null!")
+            }
         }
     }
 
     Scaffold(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorResource(R.color.theme_background)),
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background, // ✅ to‘g‘ri yo‘l
         topBar = {
             AttendanceTopAppBar(
                 title = stringResource(R.string.list_of_courses),
@@ -103,58 +102,52 @@ fun HomeScreen(
                     when (parent) {
                         0 -> activity?.toProfile()
                         1 -> navigateToCreateCourse()
-                        2 -> createGroup()
-                        3 -> if (child == 0)
-                            filePicker(activity!!, studentLauncher)
-                        else createStudent()
-                        4 -> if (child == 0)
-                            filePicker(activity!!, attendanceLauncher)
-                        else createAttendance()
+                        2 -> navigateToCreateGroup()
+                        3 -> if (child == 0) filePicker(activity!!, studentLauncher) else createStudent()
+                        4 -> if (child == 0) filePicker(activity!!, attendanceLauncher) else createAttendance()
                     }
                 }
             )
         },
         contentWindowInsets = WindowInsets(0)
     ) { padding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(R.color.theme_background))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(padding)
         ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
                 itemsIndexed(list) { _, item ->
                     CourseItem(item = item)
                 }
             }
         }
     }
-    LaunchedEffect(viewModel.state) {
+
+    LaunchedEffect(Unit) {
         viewModel.state.collect {
-            when(it){
-                HomeState.Done -> {
-
-                }
-                is HomeState.Error -> {
-                    ErrorDialog.show(context, it.error).show()
-                }
-                HomeState.Init -> {
-
-                }
-                HomeState.Loading -> {
-
-                }
-                is HomeState.Success -> {
-                    list = it.date
-                }
+            when (it) {
+                HomeState.Done -> Unit
+                is HomeState.Error -> ErrorDialog.show(context, it.error).show()
+                HomeState.Init -> Unit
+                HomeState.Loading -> Unit
+                is HomeState.Success -> list = it.date
             }
         }
     }
+
     DisposableEffect(lifecycleOwner) {
         observeNetwork(networkViewModel, viewModel, activity!!, lifecycleOwner)
         onDispose { }
     }
 }
+
 
 private fun observeNetwork(
     networkViewModel: NetworkViewModel,
@@ -244,9 +237,6 @@ private fun menuItems(context: Context) = listOf(
         )
     )
 )
-private fun createGroup() {
-     TODO("Create Group")
-}
 private fun createStudent() {
      TODO("Create Student")
 }

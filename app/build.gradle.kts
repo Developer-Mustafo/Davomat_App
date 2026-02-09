@@ -67,14 +67,13 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.jetbrains.kotlinx.serialization.json)
     implementation(libs.retrofit)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.datetime)
-
     implementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(platform(libs.androidx.compose.bom))
-
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui.tooling)

@@ -39,6 +39,7 @@ kotlinSerialization = "2.3.10"
 ksp = "2.3.2"
 
 [libraries]
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }

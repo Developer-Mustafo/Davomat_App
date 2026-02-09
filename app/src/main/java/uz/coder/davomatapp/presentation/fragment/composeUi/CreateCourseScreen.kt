@@ -27,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
@@ -48,7 +47,7 @@ fun CreateCourseScreen(
     modifier: Modifier = Modifier,
     activity: FragmentActivity?,
     networkViewModel: NetworkViewModel,
-    navigateBack:()-> Unit
+    navigateBack: () -> Unit
 ) {
     val viewModel = hiltViewModel<CreateCourseViewModel>()
     val context = LocalContext.current
@@ -59,9 +58,8 @@ fun CreateCourseScreen(
     var isLoading by remember { mutableStateOf(false) }
 
     Scaffold(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorResource(R.color.theme_background)),
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background, // ✅
         topBar = {
             AttendanceTopAppBar(
                 title = stringResource(R.string.createCourse),
@@ -71,15 +69,17 @@ fun CreateCourseScreen(
         },
         contentWindowInsets = WindowInsets(0)
     ) { padding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(R.color.theme_background))
+                .background(MaterialTheme.colorScheme.background) // ✅
                 .padding(padding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
@@ -115,24 +115,23 @@ fun CreateCourseScreen(
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onPrimary // ✅
                     )
                 } else {
-                    Text(stringResource(R.string.create))
+                    Text(
+                        text = stringResource(R.string.create),
+                        color = MaterialTheme.colorScheme.onPrimary // ixtiyoriy, default ham bo‘ladi
+                    )
                 }
             }
         }
     }
 
-    LaunchedEffect(viewModel.state) {
+    LaunchedEffect(Unit) {
         viewModel.state.collect { state ->
             when (state) {
-                CreateCourseState.Init -> {
-                    isLoading = false
-                }
-                CreateCourseState.Loading -> {
-                    isLoading = true
-                }
+                CreateCourseState.Init -> isLoading = false
+                CreateCourseState.Loading -> isLoading = true
                 is CreateCourseState.Error -> {
                     isLoading = false
                     ErrorDialog.show(context, state.error).show()
@@ -150,6 +149,7 @@ fun CreateCourseScreen(
         onDispose { }
     }
 }
+
 
 private fun observeNetwork(
     networkViewModel: NetworkViewModel,

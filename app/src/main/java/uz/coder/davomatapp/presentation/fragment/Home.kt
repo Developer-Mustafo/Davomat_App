@@ -1,5 +1,6 @@
 package uz.coder.davomatapp.presentation.fragment
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import uz.coder.davomatapp.databinding.FragmentHomeBinding
 import uz.coder.davomatapp.presentation.navigationCompose.AttendanceNavigation
+import uz.coder.davomatapp.presentation.theme.AppTheme
 import uz.coder.davomatapp.presentation.ui.ErrorDialog
 import uz.coder.davomatapp.presentation.ui.InternetErrorDialog
 import uz.coder.davomatapp.presentation.ui.VerifiedDialog
@@ -36,7 +38,16 @@ class Home : Fragment() {
         binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                AttendanceNavigation(modifier = Modifier.fillMaxSize(), viewModel = activityViewModels, activity)
+                val uiMode = requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                val isDarkTheme = uiMode == Configuration.UI_MODE_NIGHT_YES
+
+                AppTheme(darkTheme = isDarkTheme) {
+                    AttendanceNavigation(
+                        modifier = Modifier.fillMaxSize(),
+                        viewModel = activityViewModels,
+                        activity = requireActivity()
+                    )
+                }
             }
         }
     }

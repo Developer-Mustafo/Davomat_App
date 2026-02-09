@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -22,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -42,12 +44,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 import uz.coder.davomatapp.App.Companion.application
@@ -57,64 +57,87 @@ import uz.coder.davomatapp.domain.model.Course
 import uz.coder.davomatapp.domain.model.Group
 import uz.coder.davomatapp.domain.model.Student
 import uz.coder.davomatapp.domain.model.StudentCourses
-import uz.coder.davomatapp.presentation.viewModel.HomeStudentViewModel
 import uz.coder.davomatapp.todo.MyYearMonth
 import uz.coder.davomatapp.todo.formattedDate
 import uz.coder.davomatapp.todo.orToday
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AttendanceTopAppBar(modifier: Modifier = Modifier, title: String, menus: List<MenuItem> = emptyList(), onClicked:((Int, Int)-> Unit)? = null) {
+fun AttendanceTopAppBar(
+    modifier: Modifier = Modifier,
+    title: String,
+    menus: List<MenuItem> = emptyList(),
+    onClicked: ((Int, Int) -> Unit)? = null
+) {
     var menuExpanded by remember { mutableStateOf(false) }
-    var selectedSubMenu by remember { mutableStateOf<Pair<List<MenuItem>?, Int>?>(Pair(null, -1)) }
+    var selectedSubMenu by remember { mutableStateOf<Pair<List<MenuItem>?, Int>?>(null) }
+
     CenterAlignedTopAppBar(
         title = {
             Text(
                 title,
-                color = colorResource(R.color.white)
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold
             )
         },
         modifier = modifier.fillMaxWidth(),
         windowInsets = WindowInsets(0),
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorResource(R.color.dark_yellow)
+            containerColor = MaterialTheme.colorScheme.primary
         ),
         actions = {
             IconButton(onClick = { menuExpanded = true }) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
-            DropdownMenu(menuExpanded, onDismissRequest = {
-                menuExpanded=false
-            }) {
-                menus.forEachIndexed {index, menu ->
-                    DropdownMenuItem(text = {
-                        Text(menu.text, color = colorResource(R.color.dark_yellow))
-                    }, onClick = {
-                        if (menu.groups.isNotEmpty()){
-                            selectedSubMenu=Pair(menu.groups, index)
-                        }else{
-                            menuExpanded=!menuExpanded
-                            onClicked?.invoke(index, -1)
+
+            DropdownMenu(
+                expanded = menuExpanded,
+                onDismissRequest = { menuExpanded = false }
+            ) {
+                menus.forEachIndexed { index, menu ->
+                    DropdownMenuItem(
+                        text = { Text(menu.text) },
+                        leadingIcon = {
+                            Icon(
+                                painterResource(menu.icon),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        onClick = {
+                            if (menu.groups.isNotEmpty()) {
+                                selectedSubMenu = menu.groups to index
+                            } else {
+                                menuExpanded = false
+                                onClicked?.invoke(index, -1)
+                            }
                         }
-                    }, leadingIcon = {
-                        Icon(painterResource(menu.icon), null, tint = colorResource(R.color.dark_yellow))
-                    })
+                    )
                 }
             }
-            selectedSubMenu?.first?.let {
+
+            selectedSubMenu?.first?.let { subs ->
                 DropdownMenu(
                     expanded = true,
                     onDismissRequest = { selectedSubMenu = null }
                 ) {
-                    it.forEachIndexed { index, subMenu ->
+                    subs.forEachIndexed { index, sub ->
                         DropdownMenuItem(
-                            text = { Text(subMenu.text, color = colorResource(R.color.dark_yellow)) },
-                            leadingIcon = { Icon(painterResource(subMenu.icon), contentDescription = null, tint = colorResource(R.color.dark_yellow)) },
+                            text = { Text(sub.text) },
+                            leadingIcon = {
+                                Icon(
+                                    painterResource(sub.icon),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
                             onClick = {
-                                onClicked?.invoke(selectedSubMenu?.second?:-1, index)
+                                onClicked?.invoke(selectedSubMenu?.second ?: -1, index)
                                 selectedSubMenu = null
                                 menuExpanded = false
                             }
@@ -125,6 +148,7 @@ fun AttendanceTopAppBar(modifier: Modifier = Modifier, title: String, menus: Lis
         }
     )
 }
+
 data class MenuItem(
     val text:String,
     val icon:Int,
@@ -252,90 +276,135 @@ fun StudentProfile(
     }
 }
 @Composable
-fun StudentCourseItem(modifier: Modifier = Modifier, item: StudentCourses) {
-    val viewModel = viewModel<HomeStudentViewModel>()
+fun StudentCourseItem(
+    modifier: Modifier = Modifier,
+    item: StudentCourses,
+    onClick: (() -> Unit)? = null
+) {
     Card(
-        onClick = {
-            viewModel.clicked(item.group)
-        },
         modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp),
-        shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.theme_background)
-        )
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        onClick = { onClick?.invoke() }
     ) {
-        Row(
-            modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        ) {
-            Column(
-                modifier
-                    .fillMaxWidth()
-                    .weight(11.5f)
-            ) {
-                Text(item.course.title, modifier.fillMaxWidth(), fontSize = 25.sp)
-                if (item.course.description.isNotEmpty()) {
-                    Text(item.course.description, modifier.fillMaxWidth(), fontSize = 20.sp)
-                }
-            }
-        }
-    }
-}
-@Composable
-fun CourseItem(modifier: Modifier = Modifier, item: Course, onClick: ((Course) -> Unit)?=null) {
-    Card(
-        onClick = {
-            onClick?.invoke(item)
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.theme_background)
-        )
-    ) {
-        Row(
-            modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        ) {
-            Column(
-                modifier
-                    .fillMaxWidth()
-                    .weight(11.5f)
-            ) {
-                Text(item.title, modifier.fillMaxWidth(), fontSize = 25.sp)
-                if (item.description.isNotEmpty()) {
-                    Text(item.description, modifier.fillMaxWidth(), fontSize = 20.sp)
-                }
+        Column(Modifier.padding(16.dp)) {
+            Text(
+                item.course.title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            if (item.course.description.isNotBlank()) {
+                Text(
+                    item.course.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                )
             }
         }
     }
 }
 
 @Composable
-fun GroupItem(modifier: Modifier = Modifier, item: Group, onClick: ((Group) -> Unit)? = null) {
+fun CourseItem(
+    modifier: Modifier = Modifier,
+    item: Course,
+    onClick: ((Course) -> Unit)? = null,
+    onEdit: ((Course) -> Unit)? = null
+) {
     Card(
-        onClick = { onClick?.invoke(item) },
-        modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp),
-        colors = CardDefaults.cardColors(colorResource(R.color.theme_background)),
-        elevation = CardDefaults.cardElevation(8.dp)
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        onClick = { onClick?.invoke(item) }
     ) {
-        Column(
-            modifier
+        Row(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
-                .padding(vertical = 20.dp)
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(item.title, fontSize = 17.sp)
+
+            // Badge
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = item.title.firstOrNull()?.uppercase() ?: "?",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(Modifier.width(12.dp))
+
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = item.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1
+                )
+                if (item.description.isNotBlank()) {
+                    Text(
+                        text = item.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        maxLines = 2
+                    )
+                }
+            }
+
+            if (onEdit != null) {
+                IconButton(onClick = { onEdit(item) }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Edit,
+                        contentDescription = "Edit",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun GroupItem(
+    modifier: Modifier = Modifier,
+    item: Group,
+    onClick: ((Group) -> Unit)? = null
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        shape = RoundedCornerShape(14.dp),
+        elevation = CardDefaults.cardElevation(2.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        onClick = { onClick?.invoke(item) }
+    ) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                item.title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }
